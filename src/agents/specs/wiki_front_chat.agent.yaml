@@ -1,13 +1,13 @@
 name: wiki_front_chat
 root_skill: wiki_hub/root
-description: Knowledge-front agent for ingest, query, lint, and self-description driven by the project LLM Wiki.
+description: Shared wiki front agent for refresh, ingest, query, and lint driven by governance subagent extraction.
 toolboxes:
-  - files
-  - shell
   - wiki
+  - wiki_admin
 capabilities:
   - task
   - compact
+  - subagent
 llm:
   provider: mock
   model: mock

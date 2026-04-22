@@ -15,12 +15,7 @@ from .harness import Harness
 
 
 class Engine:
-    """Runtime facade.
-
-    The engine is intentionally thin: all assembly lives in EngineBuilder, turn
-    execution lives in Harness, control-plane logic lives in EngineControlService,
-    and child runtime creation lives in ChildEngineFactory.
-    """
+    """Runtime facade."""
 
     def __init__(
         self,
@@ -54,8 +49,6 @@ class Engine:
         self.audit = bundle.audit
         self.events = bundle.events
         self.runtime_state = bundle.runtime_state
-        self.failure_sink = bundle.failure_sink
-        self.fault_boundary = bundle.fault_boundary
         self.action_registry = bundle.action_registry
         self.toolboxes = bundle.toolboxes
         self.capabilities = bundle.capabilities
@@ -117,15 +110,14 @@ class Engine:
 
         engine.child_factory = ChildEngineFactory(storage_base=request.storage_base)
         engine.harness = Harness(engine.harness_ports)
+        bind = getattr(engine.knowledge_hub, "bind_engine", None)
+        if bind is not None:
+            bind(engine)
         return engine
 
     @property
-    def last_surface_snapshot(self):  # noqa: ANN201
+    def last_surface_snapshot(self):
         return self.runtime_state.last_surface_snapshot
-
-    @property
-    def last_fault(self):  # noqa: ANN201
-        return self.runtime_state.last_fault
 
     def inspect_skill(self, skill: str) -> str:
         return self.control.inspect_skill(skill)
@@ -163,8 +155,8 @@ class Engine:
                 return capability
         return None
 
-    def has_visible_wiki_actions(self, surface_snapshot) -> bool:  # noqa: ANN001
-        return any(spec.action_id.startswith("wiki.") for spec in surface_snapshot.visible_actions)
+    def has_visible_wiki_actions(self, surface_snapshot) -> bool:
+        return any(spec.action_id.startswith("wiki.") or spec.action_id.startswith("wiki_admin.") for spec in surface_snapshot.visible_actions)
 
     def chat(self, message: str) -> str:
         return self.harness.chat(message)
@@ -185,6 +177,7 @@ class Engine:
         enhancements: list[str],
         role_name: str,
         persistent_worker: bool = False,
+        toolboxes: list[str] | None = None,
     ):
         return self.child_factory.spawn_from_parent(
             self,
@@ -192,6 +185,7 @@ class Engine:
             enhancements=enhancements or self.enhancement_names,
             role_name=role_name,
             persistent_worker=persistent_worker,
+            toolboxes=toolboxes,
         )
 
     def tick(self) -> str:

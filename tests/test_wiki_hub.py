@@ -14,10 +14,8 @@ from agents.wiki_front_chat import build_engine as build_wiki_front_engine
 def build_engine() -> Engine:
     return build_wiki_front_engine(
         {
-            "provider": "openai",
-            "model": "qwen3.5-plus",
-            "api_key": "sk-sp-4794e9ca698446a9b42d9079e8474de1",
-            "base_url": "https://coding.dashscope.aliyuncs.com/v1",
+            "provider": "mock",
+            "model": "mock",
             "user_id": "test_user",
             "conversation_id": "wiki_suite",
             "task_id": "case_001",
@@ -25,20 +23,27 @@ def build_engine() -> Engine:
     )
 
 
-def test_wiki_toolbox_attached() -> None:
+def test_wiki_admin_toolbox_attached() -> None:
     engine = build_engine()
-    assert "wiki" in [toolbox.toolbox_name for toolbox in engine.toolboxes]
+    assert "wiki_admin" in [toolbox.toolbox_name for toolbox in engine.toolboxes]
+
+
+def test_wiki_refresh_builds_shared_store() -> None:
+    engine = build_engine()
+    payload = json.loads(engine.refresh_wiki())
+    assert payload["status"] == "ok"
+    assert payload["root"].endswith("data/wiki")
+    assert Path(payload["catalog_path"]).exists()
 
 
 def test_wiki_refresh_and_search() -> None:
     engine = build_engine()
-    payload = json.loads(engine.refresh_wiki())
-    assert payload["status"] == "ok"
-    results = json.loads(engine.knowledge_hub.search("inventory"))
+    engine.refresh_wiki()
+    results = json.loads(engine.knowledge_hub.search("wiki", limit=5))
     assert isinstance(results, list)
 
 
 def test_attachment_ingest_contract() -> None:
     engine = build_engine()
-    result = engine.ingest_files([{"name": "missing.txt", "url": "file:///tmp/does_not_exist.txt"}])
-    assert isinstance(result, str)
+    result = json.loads(engine.ingest_files([{"name": "missing.txt", "url": "file:///tmp/does_not_exist.txt"}]))
+    assert result["status"] == "ok"

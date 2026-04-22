@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import json
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
 from schemas.action import ActionSpec
 
 from .base import Capability
@@ -13,26 +16,87 @@ class SubagentCapability(Capability):
             ActionSpec(
                 "subagent.ask",
                 "Delegate to subagent",
-                "Delegate a subtask to a child engine and return the result.",
+                "Instantiate a child engine for one task and return the result.",
                 {
                     "type": "object",
-                    "properties": {"prompt": {"type": "string"}, "skill": {"type": "string"}, "enhancements": {"type": "array"}},
+                    "properties": {
+                        "prompt": {"type": "string"},
+                        "skill": {"type": "string"},
+                        "enhancements": {"type": "array"},
+                        "toolboxes": {"type": "array"},
+                        "role_name": {"type": "string"},
+                    },
                     "required": ["prompt"],
                 },
                 lambda args: self.ask(
                     args["prompt"],
                     args.get("skill"),
                     [str(item) for item in args.get("enhancements") or []],
+                    [str(item) for item in args.get("toolboxes") or []] if args.get("toolboxes") is not None else None,
+                    str(args.get("role_name") or "subagent"),
                 ),
                 "capability.subagent",
-            )
+            ),
+            ActionSpec(
+                "subagent.batch_run",
+                "Batch run subagents",
+                "Instantiate multiple child engines in parallel and run one prompt per child.",
+                {
+                    "type": "object",
+                    "properties": {
+                        "jobs": {"type": "array"},
+                        "max_workers": {"type": "integer"},
+                    },
+                    "required": ["jobs"],
+                },
+                lambda args: self.batch_run(
+                    [dict(item) for item in args.get("jobs") or []],
+                    int(args.get("max_workers") or 4),
+                ),
+                "capability.subagent",
+            ),
         ]
 
-    def ask(self, prompt: str, skill: str | None, enhancements: list[str]) -> str:
+    def ask(
+        self,
+        prompt: str,
+        skill: str | None,
+        enhancements: list[str],
+        toolboxes: list[str] | None,
+        role_name: str,
+    ) -> str:
         child = self.engine.spawn_child(
             skill=skill,
             enhancements=enhancements or self.engine.enhancement_names,
-            role_name="subagent",
+            role_name=role_name,
+            toolboxes=toolboxes,
         )
         return child.chat(prompt)
 
+    def batch_run(self, jobs: list[dict], max_workers: int = 4) -> str:
+        if not jobs:
+            return json.dumps({"status": "ok", "results": []}, ensure_ascii=False, indent=2)
+        max_workers = max(1, min(int(max_workers or 4), len(jobs), 16))
+        results: list[dict] = [None] * len(jobs)
+
+        def run_one(index: int, job: dict) -> dict:
+            try:
+                prompt = str(job["prompt"])
+                result = self.ask(
+                    prompt=prompt,
+                    skill=job.get("skill"),
+                    enhancements=[str(item) for item in job.get("enhancements") or self.engine.enhancement_names],
+                    toolboxes=[str(item) for item in job.get("toolboxes") or []] if job.get("toolboxes") is not None else None,
+                    role_name=str(job.get("role_name") or f"subagent_{index+1:03d}"),
+                )
+                return {"index": index, "ok": True, "result": result}
+            except Exception as exc:  # noqa: BLE001
+                return {"index": index, "ok": False, "error": f"{type(exc).__name__}: {exc}"}
+
+        with ThreadPoolExecutor(max_workers=max_workers, thread_name_prefix="subagent_batch") as pool:
+            futures = {pool.submit(run_one, index, job): index for index, job in enumerate(jobs)}
+            for future in as_completed(futures):
+                payload = future.result()
+                results[payload["index"]] = payload
+
+        return json.dumps({"status": "ok", "results": results}, ensure_ascii=False, indent=2)

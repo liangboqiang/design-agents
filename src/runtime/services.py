@@ -4,78 +4,55 @@ import json
 from pathlib import Path
 from typing import Any
 
+from wiki.service import SharedWikiService
+
 
 class KnowledgeHubService:
-    """Minimal runtime knowledge service.
+    """Shared wiki-backed knowledge service.
 
-    This version intentionally keeps runtime knowledge handling small and explicit:
-    it stores lightweight attachment/ingest metadata in session state and exposes
-    only the methods the engine and harness actually use.
+    Wiki主体固定落在 project_root/data/wiki，与session解耦。
+    当前session只保留附件摄取摘要，不承担wiki主体存储。
     """
-
-    STATE_FILE = "knowledge_hub_snapshot.json"
 
     def __init__(self, *, project_root: Path, registry, session):  # noqa: ANN001
         self.project_root = Path(project_root).resolve()
         self.registry = registry
         self.session = session
+        self.engine = None
+        self.shared = SharedWikiService(project_root=self.project_root, registry=self.registry)
+
+    def bind_engine(self, engine) -> None:  # noqa: ANN001
+        self.engine = engine
 
     def ensure_bootstrap(self) -> str:
-        snapshot = self.session.read_state_json(self.STATE_FILE, default={})
-        if snapshot:
-            return "Knowledge hub already initialized."
-        payload = {
-            "skills_root": str(getattr(self.registry, "skills_root", self.project_root / "src/skills")),
-            "attachment_count": 0,
-            "attachment_names": [],
-        }
-        self.session.write_state_json(self.STATE_FILE, payload)
-        return "Knowledge hub initialized."
+        self.shared.ensure_store()
+        return "Wiki store initialized."
 
     def refresh_from_registry(self) -> str:
-        snapshot = self.session.read_state_json(self.STATE_FILE, default={})
-        snapshot["skills_root"] = str(getattr(self.registry, "skills_root", self.project_root / "src/skills"))
-        snapshot["refreshed"] = True
-        self.session.write_state_json(self.STATE_FILE, snapshot)
-        return "Knowledge hub refreshed from registry."
+        if self.engine is None:
+            raise RuntimeError("KnowledgeHubService is not bound to engine.")
+        return self.shared.refresh_system(engine=self.engine)
 
     def ingest_user_files(self, files: list[dict[str, Any]] | None) -> str:
-        files = files or []
-        names = [self._file_name(item, idx) for idx, item in enumerate(files, start=1)]
-        snapshot = self.session.read_state_json(self.STATE_FILE, default={})
-        snapshot["attachment_count"] = len(files)
-        snapshot["attachment_names"] = names
-        snapshot["attachments"] = [self._file_summary(item, idx) for idx, item in enumerate(files, start=1)]
-        self.session.write_state_json(self.STATE_FILE, snapshot)
-        if not names:
-            return "No files ingested."
-        return json.dumps({"ingested": len(names), "files": names}, ensure_ascii=False, indent=2)
+        return self.shared.ingest_user_files(files or [])
 
     def system_brief(self) -> str:
-        snapshot = self.session.read_state_json(self.STATE_FILE, default={})
-        names = snapshot.get("attachment_names") or []
-        if not names:
-            return "Knowledge hub: no ingested user files in current task context."
-        joined = ", ".join(str(name) for name in names[:12])
-        return f"Knowledge hub: current task has {len(names)} ingested file(s): {joined}"
+        return self.shared.system_brief()
 
-    @staticmethod
-    def _file_name(item: dict[str, Any], idx: int) -> str:
-        return str(
-            item.get("name")
-            or item.get("filename")
-            or item.get("title")
-            or item.get("path")
-            or f"attachment_{idx}"
-        )
+    def search(self, query: str) -> str:
+        return self.shared.search(query)
 
-    def _file_summary(self, item: dict[str, Any], idx: int) -> dict[str, Any]:
-        return {
-            "name": self._file_name(item, idx),
-            "mime_type": item.get("mime_type") or item.get("content_type") or "",
-            "path": str(item.get("path") or item.get("local_path") or ""),
-            "size": item.get("size"),
-        }
+    def read_page(self, page_id: str) -> str:
+        return self.shared.read_page(page_id)
+
+    def read_source(self, page_id: str) -> str:
+        return self.shared.read_source(page_id)
+
+    def answer(self, query: str, limit: int = 5) -> str:
+        return self.shared.answer(query, limit=limit)
+
+    def lint(self) -> str:
+        return self.shared.lint()
 
 
 class AttachmentIngestionService:
@@ -87,7 +64,7 @@ class AttachmentIngestionService:
 
     def ingest(self, files: list[dict[str, Any]] | None) -> str:
         files = files or []
-        names = [KnowledgeHubService._file_name(item, idx) for idx, item in enumerate(files, start=1)]
+        names = [self._file_name(item, idx) for idx, item in enumerate(files, start=1)]
         snapshot = {
             "file_count": len(files),
             "file_names": names,
@@ -108,3 +85,13 @@ class AttachmentIngestionService:
         names = snapshot.get("file_names") or []
         joined = ", ".join(str(name) for name in names[:12])
         return [f"Attachment context: {count} file(s) currently ingested: {joined}"]
+
+    @staticmethod
+    def _file_name(item: dict[str, Any], idx: int) -> str:
+        return str(
+            item.get("name")
+            or item.get("filename")
+            or item.get("title")
+            or item.get("path")
+            or f"attachment_{idx}"
+        )

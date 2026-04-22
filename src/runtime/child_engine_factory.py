@@ -17,14 +17,16 @@ class ChildEngineFactory:
         enhancements: list[str],
         role_name: str,
         persistent_worker: bool = False,
+        toolboxes: list[str] | None = None,
     ):
         target_skill = parent.skill_runtime.active_skill_id if skill in (None, "", "root") else parent.skill_runtime.resolve_skill_alias(skill)
         child_task_id = f"{parent.settings.task_id}__{role_name}"
         storage_base = self.storage_base or parent.session.paths.root.parents[2]
+        child_toolboxes = list(toolboxes if toolboxes is not None else [toolbox.toolbox_name for toolbox in parent.toolboxes])
         spec = AgentSpec(
             name=role_name,
             root_skill=target_skill,
-            toolboxes=[toolbox.toolbox_name for toolbox in parent.toolboxes],
+            toolboxes=child_toolboxes,
             capabilities=list(enhancements),
             llm={
                 "provider": parent.provider,

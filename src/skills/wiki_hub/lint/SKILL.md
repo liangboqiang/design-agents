@@ -1,20 +1,16 @@
 ---
 name: wiki-lint
 description: |
-  对 wiki 做健康检查，查看索引、孤儿页、来源覆盖与明显缺失。
+  校验共享 wiki catalog 与页面的一致性。
 actions:
-  - wiki.lint
+  - wiki_admin.lint
 tags:
   - wiki
   - lint
 ---
 
-# Wiki Lint · 健康检查
+# Wiki Lint
 
-## 关注点
-
-- index 是否存在
-- 页面是否为空
-- 是否已经覆盖三类来源
-- 附件是否被记录
-- skill/tool/agent/system inventory 是否生成
+用于检查：
+- catalog 中是否存在空 page_id
+- page 文件是否缺失

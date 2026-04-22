@@ -2,6 +2,8 @@
 name: wiki-ingest
 description: |
   负责摄取三类知识源：skill 邻接业务资料、系统自描述扫描结果、用户输入与附件。
+refs:
+  - ../../governance/agent_build/SKILL.md
 actions:
   - wiki.refresh
   - wiki.ingest_files
@@ -33,6 +35,12 @@ tags:
   ]
 }
 ```
+
+## 与治理层 Agent Build 的关系
+
+本 Skill **显式引用**治理层 `agent_build/SKILL.md`。  
+当 wiki 需要对大量系统文件、业务资料或附件执行批量抽取时，应优先复用治理层的 `agent-build` 能力：
+
 
 ## 附件治理要求
 
