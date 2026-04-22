@@ -27,6 +27,7 @@ class MockClient(BaseLLMClient):
                 },
                 ensure_ascii=False,
             )
+
         skill_match = SKILL_RE.match(latest)
         if skill_match:
             return json.dumps(
@@ -38,18 +39,17 @@ class MockClient(BaseLLMClient):
                 },
                 ensure_ascii=False,
             )
-        if latest == "Continue based on the latest tool results.":
-            for message in reversed(messages[:-1]):
-                content = message.get("content", "")
-                match = TOOL_RESULT_RE.search(content)
-                if match:
-                    return json.dumps(
-                        {
-                            "assistant_message": match.group("body").strip(),
-                            "tool_calls": [],
-                        },
-                        ensure_ascii=False,
-                    )
+
+        tool_result_match = TOOL_RESULT_RE.fullmatch(latest)
+        if tool_result_match:
+            return json.dumps(
+                {
+                    "assistant_message": tool_result_match.group("body").strip(),
+                    "tool_calls": [],
+                },
+                ensure_ascii=False,
+            )
+
         return json.dumps(
             {
                 "assistant_message": f"[mock:{self.model}] {latest}",

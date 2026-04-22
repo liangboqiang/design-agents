@@ -6,21 +6,21 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from agents.engine import Engine
-from agents.llm.config import DEFAULT_MODEL, DEFAULT_PROVIDER, resolve_model, resolve_provider
 from agents.toolboxes.files import FileToolbox
+from agents.toolboxes.shell import ShellToolbox
 
 
 CONFIG = {
     "skill_root": Path("skills/domains/general/root"),
-    "provider": "mock",
-    "model": "mock",
-    "api_key": None,
-    "base_url": None,
+    "provider": "openai",
+    "model": "qwen3.5-plus",
+    "api_key": "sk-sp-4794e9ca698446a9b42d9079e8474de1",
+    "base_url": "https://coding.dashscope.aliyuncs.com/v1",
     "user_id": "check_user",
     "conversation_id": "check_conversation",
     "task_id": "check_task",
     "enhancements": ["todo", "task", "compact"],
-    "toolboxes": [FileToolbox()],
+    "toolboxes": [FileToolbox(), ShellToolbox()],
 }
 
 
@@ -40,14 +40,16 @@ def build_engine() -> Engine:
 
 
 def main() -> None:
-    assert resolve_provider(None) == DEFAULT_PROVIDER
-    assert resolve_model(None) == DEFAULT_MODEL
-
     engine = build_engine()
-    print(engine.chat('/call engine.inspect_skill {"skill":"root"}'))
-    print(engine.chat('/call todo.update {"items":[{"id":"1","text":"read skill","status":"in_progress"}]}'))
-    print(engine.chat('/call task.create {"subject":"demo task","description":"demo"}'))
-    print(engine.chat('/call task.list {}'))
+    commands = [
+        '/call engine.inspect_skill {"skill":"root"}',
+        '/call todo.update {"items":[{"id":"1","text":"read skill","status":"in_progress"}]}',
+        '/call task.create {"subject":"demo task","description":"demo"}',
+        "/call task.list {}",
+    ]
+    for command in commands:
+        print(f"> {command}")
+        print(engine.chat(command))
     print("self check finished")
 
 

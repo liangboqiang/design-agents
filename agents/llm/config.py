@@ -1,46 +1,64 @@
 from __future__ import annotations
 
 import os
+from dataclasses import dataclass
+
+from dotenv import load_dotenv
 
 
-DEFAULT_PROVIDER = "openai"
-DEFAULT_MODEL = "qwen3-coder-plus"
-DEFAULT_OPENAI_BASE_URL = "https://coding-intl.dashscope.aliyuncs.com/v1"
-DEFAULT_ANTHROPIC_BASE_URL = "https://coding-intl.dashscope.aliyuncs.com/apps/anthropic"
+load_dotenv(override=False)
 
-ENV_PROVIDER = "AGENTS_PROVIDER"
-ENV_MODEL = "AGENTS_MODEL"
-ENV_API_KEY = "AGENTS_API_KEY"
-ENV_BASE_URL = "AGENTS_BASE_URL"
+ENV_PROVIDER = "DESIGN_AGENTS_PROVIDER"
+ENV_MODEL = "DESIGN_AGENTS_MODEL"
+ENV_API_KEY = "DESIGN_AGENTS_API_KEY"
+ENV_BASE_URL = "DESIGN_AGENTS_BASE_URL"
 
-
-def resolve_provider(provider: str | None) -> str:
-    value = (provider or os.getenv(ENV_PROVIDER) or DEFAULT_PROVIDER).strip().lower()
-    if value not in {"openai", "anthropic", "mock"}:
-        raise ValueError(f"Unsupported provider: {value}")
-    return value
+DEFAULT_PROVIDER = "mock"
+DEFAULT_MODEL = "mock"
 
 
-def resolve_model(model: str | None) -> str:
-    value = (model or os.getenv(ENV_MODEL) or DEFAULT_MODEL).strip()
-    if not value:
-        raise ValueError("Model is required.")
-    return value
+@dataclass(frozen=True, slots=True)
+class LLMConfig:
+    provider: str
+    model: str
+    api_key: str | None
+    base_url: str | None
 
 
-def resolve_api_key(api_key: str | None) -> str | None:
-    value = (api_key or os.getenv(ENV_API_KEY) or "").strip()
-    return value or None
+def resolve_llm_config(
+    provider: str | None = None,
+    model: str | None = None,
+    api_key: str | None = None,
+    base_url: str | None = None,
+) -> LLMConfig:
+    resolved_provider = (provider or os.getenv(ENV_PROVIDER) or DEFAULT_PROVIDER).strip().lower()
+    if resolved_provider not in {"openai", "anthropic", "mock"}:
+        raise ValueError(f"Unsupported provider: {resolved_provider}")
 
+    raw_model = (model or os.getenv(ENV_MODEL) or "").strip()
+    resolved_model = raw_model or (DEFAULT_MODEL if resolved_provider == "mock" else "")
+    if not resolved_model:
+        raise ValueError(f"{resolved_provider} provider requires model.")
 
-def default_base_url(provider: str) -> str | None:
-    if provider == "openai":
-        return DEFAULT_OPENAI_BASE_URL
-    if provider == "anthropic":
-        return DEFAULT_ANTHROPIC_BASE_URL
-    return None
+    if resolved_provider == "mock":
+        return LLMConfig(
+            provider="mock",
+            model=resolved_model,
+            api_key=None,
+            base_url=None,
+        )
 
+    resolved_api_key = (api_key or os.getenv(ENV_API_KEY) or "").strip() or None
+    resolved_base_url = (base_url or os.getenv(ENV_BASE_URL) or "").strip().rstrip("/") or None
 
-def resolve_base_url(provider: str, base_url: str | None) -> str | None:
-    value = (base_url or os.getenv(ENV_BASE_URL) or default_base_url(provider) or "").strip().rstrip("/")
-    return value or None
+    if not resolved_api_key:
+        raise ValueError(f"{resolved_provider} provider requires api_key.")
+    if not resolved_base_url:
+        raise ValueError(f"{resolved_provider} provider requires base_url.")
+
+    return LLMConfig(
+        provider=resolved_provider,
+        model=resolved_model,
+        api_key=resolved_api_key,
+        base_url=resolved_base_url,
+    )

@@ -15,22 +15,19 @@ class ShellToolbox(Toolbox):
         self.workspace_root = workspace_root.resolve() if workspace_root else None
         self.timeout = timeout
 
-    def clone(self) -> "ShellToolbox":
-        return ShellToolbox(timeout=self.timeout)
-
-    def bind_workspace(self, workspace_root: Path) -> None:
-        self.workspace_root = workspace_root.resolve()
+    def spawn(self, workspace_root: Path) -> "ShellToolbox":
+        return ShellToolbox(workspace_root=workspace_root, timeout=self.timeout)
 
     def action_specs(self) -> Iterable[ActionSpec]:
         return [
             ActionSpec(
                 "shell.run",
                 "Run shell command",
-                "在当前工作区执行 shell 命令。",
+                "Run a shell command inside the current workspace.",
                 {"type": "object", "properties": {"command": {"type": "string"}}, "required": ["command"]},
                 lambda args: self._run(args["command"]),
                 self.toolbox_name,
-                "适合运行测试、目录检查、脚本调用。",
+                "Useful for tests, inspections, and project scripts.",
             ),
         ]
 
@@ -40,6 +37,13 @@ class ShellToolbox(Toolbox):
         blocked = ["rm -rf /", "shutdown", "reboot", "sudo "]
         if any(token in command for token in blocked):
             raise ValueError("Blocked dangerous shell command.")
-        completed = subprocess.run(command, shell=True, cwd=self.workspace_root, capture_output=True, text=True, timeout=self.timeout)
+        completed = subprocess.run(
+            command,
+            shell=True,
+            cwd=self.workspace_root,
+            capture_output=True,
+            text=True,
+            timeout=self.timeout,
+        )
         output = (completed.stdout + completed.stderr).strip()
         return output[:50000] if output else "(no output)"

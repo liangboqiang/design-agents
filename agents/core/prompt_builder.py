@@ -22,10 +22,11 @@ class PromptBuilder:
             for skill_id, summary in self.catalog.list_children_cards(context.active_skill_id)
         ) or "- (none)"
         action_lines = "\n".join(
-            f"- {a.action_id}: {a.description} | source={a.source}"
-            for a in visible_actions
+            f"- {action.action_id}: {action.description} | source={action.source}"
+            for action in visible_actions
         ) or "- (none)"
         state_block = "\n".join(state_fragments) if state_fragments else "(no extra state)"
+
         return dedent(
             f"""
             You are an instantiated skill engine.
@@ -36,11 +37,11 @@ class PromptBuilder:
             - active_skill: {context.active_skill_id}
             - provider: {context.settings.provider}
             - model: {context.settings.model}
-            - base_url: {context.settings.base_url or '(provider default)'}
+            - base_url: {context.settings.base_url or "(none)"}
 
             ## Active Skill Summary
             - title: {active.name}
-            - description: {active.description or 'No description'}
+            - description: {active.description or "No description"}
 
             ## Child Skills Available
             {child_lines}
@@ -79,13 +80,14 @@ class PromptBuilder:
                         "content": f"<tool_result action=\"{item['action']}\">\n{content}\n</tool_result>",
                     }
                 )
-            elif role == "system":
+                continue
+            if role == "system":
                 messages.append(
                     {
                         "role": "user",
-                        "content": f"<engine_note>\n{content}\n</engine_note>",
+                        "content": f"<system_note>\n{content}\n</system_note>",
                     }
                 )
-            else:
-                messages.append({"role": role, "content": content})
+                continue
+            messages.append({"role": role, "content": content})
         return messages

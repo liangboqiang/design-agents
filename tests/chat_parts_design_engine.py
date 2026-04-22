@@ -12,14 +12,14 @@ from agents.toolboxes.shell import ShellToolbox
 
 CONFIG = {
     "skill_root": Path("skills/domains/parts_design/root"),
-    "provider": "openai",
-    "model": "qwen3.5-plus",
-    "api_key": "sk-sp-4794e9ca698446a9b42d9079e8474de1",
-    "base_url": "https://coding.dashscope.aliyuncs.com/v1",
+    "provider": "mock",
+    "model": "mock",
+    "api_key": None,
+    "base_url": None,
     "user_id": "demo_user",
     "conversation_id": "parts_chat",
     "task_id": "task_001",
-    "enhancements": [],
+    "enhancements": ["todo", "task", "compact", "workspace"],
     "toolboxes": [FileToolbox(), ShellToolbox()],
 }
 

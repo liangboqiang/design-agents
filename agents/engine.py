@@ -3,8 +3,7 @@ from __future__ import annotations
 import json
 import uuid
 from pathlib import Path
-
-from dotenv import load_dotenv
+from typing import Any, Iterable
 
 from agents.capabilities.base import Capability
 from agents.capabilities.registry import create_capability
@@ -15,15 +14,12 @@ from agents.core.models import ActionSpec, EngineContext, EngineSettings
 from agents.core.prompt_builder import PromptBuilder
 from agents.core.response_parser import ResponseParser
 from agents.core.skill_loader import SkillCatalog
-from agents.core.storage import ensure_runtime_paths
-from agents.llm.config import resolve_api_key, resolve_base_url, resolve_model, resolve_provider
+from agents.core.storage import JsonStore, ensure_runtime_paths
+from agents.llm.config import resolve_llm_config
 from agents.llm.factory import LLMFactory
 from agents.toolboxes.base import Toolbox
 from agents.toolboxes.files import FileToolbox
 from agents.toolboxes.shell import ShellToolbox
-
-
-load_dotenv(override=True)
 
 
 class Engine:
@@ -45,33 +41,31 @@ class Engine:
         role_name: str | None = None,
         persistent_worker: bool = False,
     ):
-        resolved_provider = resolve_provider(provider)
-        resolved_model = resolve_model(model)
-        resolved_api_key = None if resolved_provider == "mock" else resolve_api_key(api_key)
-        resolved_base_url = resolve_base_url(resolved_provider, base_url)
+        llm_config = resolve_llm_config(provider, model, api_key, base_url)
 
         self.skill_root = self._resolve_skill_root(Path(skill_root))
         self.skill_space_root = self._detect_skill_space_root(self.skill_root)
-        self.provider = resolved_provider
-        self.model = resolved_model
-        self.api_key = resolved_api_key
-        self.base_url = resolved_base_url
+        self.provider = llm_config.provider
+        self.model = llm_config.model
+        self.api_key = llm_config.api_key
+        self.base_url = llm_config.base_url
         self.enhancement_names = [item.strip() for item in (enhancements or [])]
         self.engine_id = role_name or f"engine-{str(uuid.uuid4())[:8]}"
         self.persistent_worker = persistent_worker
         self.settings = EngineSettings(
-            resolved_provider,
-            resolved_model,
-            resolved_api_key,
-            resolved_base_url,
+            self.provider,
+            self.model,
+            self.api_key,
+            self.base_url,
             user_id,
             conversation_id,
             task_id,
             max_steps=max_steps,
         )
+
         storage_root = (storage_base or Path(".runtime_data")).resolve()
         self.paths = ensure_runtime_paths(storage_root, user_id, conversation_id, task_id)
-        self.workspace_root = self.paths.root / "workspace_root"
+        self.workspace_root = (self.paths.root / "workspace_root").resolve()
         self.workspace_root.mkdir(parents=True, exist_ok=True)
         self.history = HistoryStore(self.paths.history_dir)
         self.catalog = SkillCatalog(self.skill_space_root)
@@ -81,6 +75,7 @@ class Engine:
                 f"Skill root '{self.skill_root}' was not loaded from skill space "
                 f"'{self.skill_space_root}'."
             )
+
         self.active_skill_id = self.root_skill_id
         self.context = EngineContext(
             self.engine_id,
@@ -89,21 +84,15 @@ class Engine:
             self.settings,
             self.paths,
         )
-        self.llm = LLMFactory.create(
-            resolved_provider,
-            resolved_model,
-            resolved_api_key,
-            base_url=resolved_base_url,
-        )
-        self.toolboxes = toolboxes or [FileToolbox(), ShellToolbox()]
-        for toolbox in self.toolboxes:
-            if hasattr(toolbox, "bind_workspace"):
-                toolbox.bind_workspace(self.workspace_root)
+        self.llm = LLMFactory.create(self.provider, self.model, self.api_key, self.base_url)
+        requested_toolboxes = toolboxes or [FileToolbox(), ShellToolbox()]
+        self.toolboxes = self._prepare_toolboxes(requested_toolboxes)
         self.capabilities: list[Capability] = []
         for name in self.enhancement_names:
             capability = create_capability(name)
             capability.bind(self)
             self.capabilities.append(capability)
+
         self.action_registry: dict[str, ActionSpec] = {}
         self._register_core_actions()
         self._register_toolboxes()
@@ -115,7 +104,7 @@ class Engine:
     @staticmethod
     def _resolve_skill_root(skill_root: Path) -> Path:
         candidate = Path(skill_root)
-        search_roots = []
+        search_roots: list[Path] = []
         if candidate.is_absolute():
             search_roots.append(candidate)
         else:
@@ -142,6 +131,16 @@ class Engine:
             current = current.parent
         return skill_root.parent
 
+    def _prepare_toolboxes(self, toolboxes: Iterable[Toolbox]) -> list[Toolbox]:
+        prepared: list[Toolbox] = []
+        for toolbox in toolboxes:
+            bound_root = toolbox.workspace_root.resolve() if toolbox.workspace_root else None
+            if bound_root == self.workspace_root:
+                prepared.append(toolbox)
+            else:
+                prepared.append(toolbox.spawn(self.workspace_root))
+        return prepared
+
     def _register(self, spec: ActionSpec) -> None:
         self.action_registry[spec.action_id] = spec
 
@@ -160,18 +159,18 @@ class Engine:
             ActionSpec(
                 "engine.inspect_skill",
                 "Inspect skill",
-                "按需加载某个 skill 的完整 Markdown 内容。",
+                "Load the full SKILL.md for a reachable skill.",
                 {"type": "object", "properties": {"skill": {"type": "string"}}, "required": ["skill"]},
                 lambda args: self.inspect_skill(args["skill"]),
                 "core.engine",
-                "用于扩展阅读 skill，而不是把全部 skill 一次性塞入上下文。",
+                "Use this when you need the exact skill body instead of the summary already in context.",
             )
         )
         self._register(
             ActionSpec(
                 "engine.inspect_action",
                 "Inspect action",
-                "查看某个 action 的详细说明和输入 schema。",
+                "Inspect an action description and input schema.",
                 {"type": "object", "properties": {"action": {"type": "string"}}, "required": ["action"]},
                 lambda args: self.inspect_action(args["action"]),
                 "core.engine",
@@ -181,7 +180,7 @@ class Engine:
             ActionSpec(
                 "engine.enter_skill",
                 "Enter skill",
-                "切换当前激活 skill。",
+                "Switch the active skill.",
                 {"type": "object", "properties": {"skill": {"type": "string"}}, "required": ["skill"]},
                 lambda args: self.enter_skill(args["skill"]),
                 "core.engine",
@@ -191,7 +190,7 @@ class Engine:
             ActionSpec(
                 "engine.list_child_skills",
                 "List child skills",
-                "列出当前 skill 下的直接子 skill。",
+                "List the direct child skills of the current skill.",
                 {"type": "object", "properties": {}},
                 lambda args: self.list_child_skills(),
                 "core.engine",
@@ -203,6 +202,31 @@ class Engine:
             if capability.capability_name == name:
                 return capability
         return None
+
+    def append_system_note(self, content: str) -> None:
+        self.history.append_system(content)
+
+    def append_tool_result(self, action: str, content: str) -> None:
+        self.history.append_tool(action, content)
+
+    def replace_history(self, rows: list[dict]) -> None:
+        self.history.replace(rows)
+
+    def read_history(self) -> list[dict]:
+        return self.history.read()
+
+    def _state_path(self, name: str) -> Path:
+        target = (self.paths.state_dir / name).resolve()
+        state_root = self.paths.state_dir.resolve()
+        if not target.is_relative_to(state_root):
+            raise ValueError(f"State path escapes state dir: {name}")
+        return target
+
+    def read_state_json(self, name: str, default: Any):
+        return JsonStore(self._state_path(name)).read(default)
+
+    def write_state_json(self, name: str, payload: Any) -> None:
+        JsonStore(self._state_path(name)).write(payload)
 
     def inspect_skill(self, skill: str) -> str:
         target = self._resolve_skill_alias(skill)
@@ -262,11 +286,14 @@ class Engine:
     def chat(self, message: str) -> str:
         for capability in self.capabilities:
             capability.before_user_turn(message)
+
         self.history.append_user(message)
         final_answer = ""
+
         for _ in range(self.settings.max_steps):
             for capability in self.capabilities:
                 capability.before_model_call()
+
             visible_actions = self._visible_actions()
             system_prompt = self.prompt_builder.build_system_prompt(
                 self.context,
@@ -277,19 +304,24 @@ class Engine:
                 self.history.read(),
                 self.settings.history_keep_turns,
             )
+
             raw = self.llm.complete(system_prompt, messages)
             parsed = ResponseParser.parse(raw)
+
             if parsed.assistant_message:
                 self.history.append_assistant(parsed.assistant_message)
                 final_answer = parsed.assistant_message
+
             if not parsed.tool_calls:
                 return final_answer or ""
+
             for call in parsed.tool_calls:
                 result = self.dispatcher.dispatch(call.action, call.arguments)
-                self.history.append_tool(call.action, result)
+                self.append_tool_result(call.action, result)
                 for capability in self.capabilities:
                     capability.after_tool_call(call.action, result)
                 final_answer = result
+
         return final_answer or "Max steps reached."
 
     def spawn_child(
@@ -306,6 +338,16 @@ class Engine:
             else self.catalog.get(self._resolve_skill_alias(skill)).directory
         )
         child_task_id = f"{self.settings.task_id}__{role_name}"
+        storage_root = self.paths.root.parents[2]
+        child_paths = ensure_runtime_paths(
+            storage_root,
+            self.settings.user_id,
+            self.settings.conversation_id,
+            child_task_id,
+        )
+        child_workspace_root = (child_paths.root / "workspace_root").resolve()
+        child_workspace_root.mkdir(parents=True, exist_ok=True)
+
         return Engine(
             skill_root=target_skill_path,
             provider=self.provider,
@@ -315,9 +357,9 @@ class Engine:
             user_id=self.settings.user_id,
             conversation_id=self.settings.conversation_id,
             task_id=child_task_id,
-            toolboxes=[toolbox.clone() for toolbox in self.toolboxes],
+            toolboxes=[toolbox.spawn(child_workspace_root) for toolbox in self.toolboxes],
             enhancements=enhancements,
-            storage_base=self.paths.root.parents[2],
+            storage_base=storage_root,
             role_name=role_name,
             persistent_worker=persistent_worker,
         )

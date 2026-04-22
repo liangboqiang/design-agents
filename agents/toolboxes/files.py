@@ -14,11 +14,8 @@ class FileToolbox(Toolbox):
     def __init__(self, workspace_root: Path | None = None):
         self.workspace_root = workspace_root.resolve() if workspace_root else None
 
-    def clone(self) -> "FileToolbox":
-        return FileToolbox()
-
-    def bind_workspace(self, workspace_root: Path) -> None:
-        self.workspace_root = workspace_root.resolve()
+    def spawn(self, workspace_root: Path) -> "FileToolbox":
+        return FileToolbox(workspace_root=workspace_root)
 
     def _safe_path(self, raw: str) -> Path:
         if self.workspace_root is None:
@@ -33,34 +30,46 @@ class FileToolbox(Toolbox):
             ActionSpec(
                 "files.read_text",
                 "Read text",
-                "读取工作区内文本文件内容。",
+                "Read a text file from the workspace.",
                 {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"]},
                 lambda args: self._safe_path(args["path"]).read_text(encoding="utf-8"),
                 self.toolbox_name,
-                "适合读取代码、说明文档、配置文件。",
+                "Useful for source files, docs, and config files.",
             ),
             ActionSpec(
                 "files.write_text",
                 "Write text",
-                "写入文本文件；如果目录不存在则自动创建。",
-                {"type": "object", "properties": {"path": {"type": "string"}, "content": {"type": "string"}}, "required": ["path", "content"]},
+                "Write a text file inside the workspace, creating parent directories when needed.",
+                {
+                    "type": "object",
+                    "properties": {"path": {"type": "string"}, "content": {"type": "string"}},
+                    "required": ["path", "content"],
+                },
                 lambda args: self._write(args["path"], args["content"]),
                 self.toolbox_name,
-                "适合生成报告、代码、草稿、缓存摘要。",
+                "Useful for reports, generated code, and scratch files.",
             ),
             ActionSpec(
                 "files.edit_text",
                 "Edit text",
-                "在已有文件中进行一次精确替换。",
-                {"type": "object", "properties": {"path": {"type": "string"}, "old_text": {"type": "string"}, "new_text": {"type": "string"}}, "required": ["path", "old_text", "new_text"]},
+                "Replace one exact text fragment inside an existing workspace file.",
+                {
+                    "type": "object",
+                    "properties": {
+                        "path": {"type": "string"},
+                        "old_text": {"type": "string"},
+                        "new_text": {"type": "string"},
+                    },
+                    "required": ["path", "old_text", "new_text"],
+                },
                 lambda args: self._edit(args["path"], args["old_text"], args["new_text"]),
                 self.toolbox_name,
-                "适合对单处文本进行精确修改。",
+                "Useful for targeted edits when the surrounding file should stay intact.",
             ),
             ActionSpec(
                 "files.list_dir",
                 "List dir",
-                "列出目录下的文件和子目录。",
+                "List files and directories inside a workspace directory.",
                 {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"]},
                 lambda args: self._list_dir(args["path"]),
                 self.toolbox_name,
@@ -68,8 +77,12 @@ class FileToolbox(Toolbox):
             ActionSpec(
                 "files.diff_text",
                 "Diff files",
-                "对比两个文本文件差异。",
-                {"type": "object", "properties": {"old_path": {"type": "string"}, "new_path": {"type": "string"}}, "required": ["old_path", "new_path"]},
+                "Show a unified diff between two workspace text files.",
+                {
+                    "type": "object",
+                    "properties": {"old_path": {"type": "string"}, "new_path": {"type": "string"}},
+                    "required": ["old_path", "new_path"],
+                },
                 lambda args: self._diff(args["old_path"], args["new_path"]),
                 self.toolbox_name,
             ),
@@ -98,4 +111,6 @@ class FileToolbox(Toolbox):
     def _diff(self, old_path: str, new_path: str) -> str:
         old_lines = self._safe_path(old_path).read_text(encoding="utf-8").splitlines()
         new_lines = self._safe_path(new_path).read_text(encoding="utf-8").splitlines()
-        return "\n".join(difflib.unified_diff(old_lines, new_lines, fromfile=old_path, tofile=new_path, lineterm=""))
+        return "\n".join(
+            difflib.unified_diff(old_lines, new_lines, fromfile=old_path, tofile=new_path, lineterm="")
+        )
