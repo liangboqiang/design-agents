@@ -13,6 +13,7 @@ class AgentSpec:
     capabilities: list[str] = field(default_factory=list)
     llm: dict[str, Any] = field(default_factory=dict)
     context_policy: dict[str, Any] = field(default_factory=dict)
+    source_path: str = ""
 
     @classmethod
     def from_mapping(cls, payload: dict[str, Any]) -> "AgentSpec":
@@ -24,5 +25,5 @@ class AgentSpec:
             capabilities=[str(item) for item in payload.get("capabilities") or []],
             llm=dict(payload.get("llm") or {}),
             context_policy=dict(payload.get("context_policy") or {}),
+            source_path=str(payload.get("source_path") or ""),
         )
-

@@ -29,6 +29,8 @@ class SessionRuntime:
         self.workspaces = WorkspaceStore(self.paths.workspace_dir)
         self.inbox = InboxStore(self.paths.inbox_dir)
         self.transcripts = TranscriptStore(self.paths.logs_dir)
+        self.attachments_root = self.paths.attachments_dir.resolve()
+        self.attachments_root.mkdir(parents=True, exist_ok=True)
 
     def state_store(self, name: str) -> JsonStore:
         target = (self.paths.state_dir / name).resolve()
@@ -41,4 +43,3 @@ class SessionRuntime:
 
     def write_state_json(self, name: str, payload: Any) -> None:
         self.state_store(name).write(payload)
-

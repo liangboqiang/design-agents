@@ -1,6 +1,6 @@
 name: parts_design_chat
 root_skill: parts_design/root
-description: Parts design agent with task, workspace, and governance support.
+description: Parts design agent with task, workspace, governance support, and an LLM Wiki canonical knowledge hub.
 toolboxes:
   - files
   - shell
@@ -9,6 +9,7 @@ toolboxes:
   - load_refs
   - inspect_tools
   - normalize_tools
+  - wiki
 capabilities:
   - todo
   - task
@@ -21,4 +22,3 @@ llm:
   model: mock
 context_policy:
   max_prompt_chars: 22000
-

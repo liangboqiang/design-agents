@@ -12,6 +12,9 @@ from tools.indexes.toolbox_registry import ToolboxRegistry
 from .refs_resolver import RefsResolver
 
 
+TEXT_EXTENSIONS = {".md", ".markdown", ".txt", ".yaml", ".yml", ".json", ".csv", ".py", ".toml"}
+
+
 def _split_frontmatter(text: str) -> tuple[dict, str]:
     stripped = text.strip()
     if not stripped.startswith("---"):
@@ -31,6 +34,7 @@ class GovernanceRegistry:
         self.skills_root = self.src_root / "skills"
         self.agents_root = self.src_root / "agents"
         self.context_root = self.src_root / "context"
+        self.tools_root = self.src_root / "tools"
         self.toolbox_registry = ToolboxRegistry()
 
         self.skills: dict[str, SkillSpec] = {}
@@ -64,11 +68,22 @@ class GovernanceRegistry:
                 refs=list(meta.get("refs") or []),
                 actions=[str(item) for item in meta.get("actions") or []],
                 tags=[str(item) for item in meta.get("tags") or []],
+                knowledge_files=self._collect_knowledge_files(markdown.parent),
             )
         for skill in skills.values():
             skill.children = [self._normalize_ref(skill.directory, ref) for ref in skill.children]
             skill.refs = [self._normalize_ref(skill.directory, ref) for ref in skill.refs]
         return skills
+
+    def _collect_knowledge_files(self, directory: Path) -> list[Path]:
+        knowledge_dir = directory / "knowledge"
+        if not knowledge_dir.exists():
+            return []
+        rows: list[Path] = []
+        for path in sorted(knowledge_dir.rglob("*")):
+            if path.is_file() and path.suffix.lower() in TEXT_EXTENSIONS:
+                rows.append(path)
+        return rows
 
     def _skill_id_for(self, directory: Path) -> str:
         try:
@@ -92,13 +107,17 @@ class GovernanceRegistry:
             return specs
         for spec_path in sorted(specs_dir.glob("*.agent.yaml")):
             payload = yaml.safe_load(spec_path.read_text(encoding="utf-8")) or {}
+            payload["source_path"] = str(spec_path.relative_to(self.project_root).as_posix())
             spec = AgentSpec.from_mapping(payload)
             specs[spec.name] = spec
         return specs
 
     def _scan_context_assets(self) -> dict[str, Path]:
         assets: dict[str, Path] = {}
-        for path in sorted((self.context_root / "templates").glob("*")):
+        templates_dir = self.context_root / "templates"
+        if not templates_dir.exists():
+            return assets
+        for path in sorted(templates_dir.glob("*")):
             assets[path.name] = path
         return assets
 
@@ -115,3 +134,34 @@ class GovernanceRegistry:
 
     def get_agent_spec(self, agent_name: str) -> AgentSpec:
         return self.agent_specs[agent_name]
+
+    def iter_business_source_files(self) -> list[Path]:
+        rows: list[Path] = []
+        for skill in self.skills.values():
+            rows.extend(skill.knowledge_files)
+        return sorted({path.resolve() for path in rows})
+
+    def iter_system_source_files(self) -> list[Path]:
+        rows: list[Path] = []
+        include_roots = [
+            self.skills_root,
+            self.agents_root,
+            self.context_root,
+            self.tools_root,
+            self.src_root / "runtime",
+            self.src_root / "governance",
+        ]
+        for base in include_roots:
+            if not base.exists():
+                continue
+            for path in base.rglob("*"):
+                if not path.is_file():
+                    continue
+                if path.name.startswith("."):
+                    continue
+                if "__pycache__" in path.parts:
+                    continue
+                if path.suffix.lower() not in TEXT_EXTENSIONS:
+                    continue
+                rows.append(path.resolve())
+        return sorted(set(rows))

@@ -12,7 +12,7 @@ def ensure_runtime_paths(base_dir: Path, user_id: str, conversation_id: str, tas
     workspace_dir = root / "workspaces"
     inbox_dir = root / "inbox"
     logs_dir = root / "logs"
-    for path in (history_dir, state_dir, workspace_dir, inbox_dir, logs_dir):
+    attachments_dir = root / "attachments"
+    for path in (history_dir, state_dir, workspace_dir, inbox_dir, logs_dir, attachments_dir):
         path.mkdir(parents=True, exist_ok=True)
-    return RuntimePaths(root, history_dir, state_dir, workspace_dir, inbox_dir, logs_dir)
-
+    return RuntimePaths(root, history_dir, state_dir, workspace_dir, inbox_dir, logs_dir, attachments_dir)

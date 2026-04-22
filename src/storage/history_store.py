@@ -10,8 +10,11 @@ class HistoryStore:
     def __init__(self, history_dir: Path):
         self.store = JsonlStore(history_dir / "messages.jsonl")
 
-    def append_user(self, content: str) -> None:
-        self.store.append({"role": "user", "content": content})
+    def append_user(self, content: str, files: list[dict] | None = None) -> None:
+        row = {"role": "user", "content": content}
+        if files:
+            row["files"] = files
+        self.store.append(row)
 
     def append_assistant(self, content: str) -> None:
         self.store.append({"role": "assistant", "content": content})
@@ -27,4 +30,3 @@ class HistoryStore:
 
     def replace(self, rows: Iterable[dict]) -> None:
         self.store.replace(rows)
-

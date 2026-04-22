@@ -36,12 +36,26 @@ class ContextAssembler:
         recent_events: list,
         audit,
         registry,
+        wiki_hub=None,
     ) -> str:
         sections = [self.identity_layer.build(engine_context, skill_runtime)]
         sections.extend(self.surface_layer.build(surface_snapshot))
         sections.extend(self.state_layer.build(history_rows, self.normalizer.normalize_state_fragments(state_fragments)))
         sections.extend(self.expansion_layer.build(surface_snapshot, registry))
         sections.extend(self.feedback_layer.build(recent_events, audit))
+        if wiki_hub is not None:
+            sections.append(
+                (
+                    "Knowledge Hub",
+                    (
+                        "The LLM Wiki is the canonical knowledge center.\n"
+                        "Never treat raw source files, SKILL.md files, tool code, or user attachments as final truth if the wiki already has compiled pages.\n"
+                        "Use wiki.refresh when system/business/user sources may have changed.\n"
+                        "Use wiki.search / wiki.read_page / wiki.answer before asking the user to restate known information.\n\n"
+                        f"{wiki_hub.system_brief()}"
+                    ),
+                )
+            )
         sections = self.normalizer.normalize_sections(sections)
         sections = dedupe_sections(sections)
         sections = apply_prompt_budget(sections, limit=self.max_prompt_chars)
@@ -49,7 +63,7 @@ class ContextAssembler:
             "Return strict JSON only:\n"
             '{\n  "assistant_message": "string",\n  "tool_calls": [{"action": "action.id", "arguments": {}}]\n}\n'
             "Rules:\n"
-            "1. If you need more detail, inspect a skill or tool surface first.\n"
+            "1. If knowledge is needed, prefer wiki actions first.\n"
             "2. Only call visible actions.\n"
             "3. Use engine.enter_skill when another child skill is more suitable.\n"
             "4. Keep assistant_message concise before tool use."
@@ -73,6 +87,12 @@ class ContextAssembler:
             if role == "system":
                 messages.append({"role": "user", "content": f"<system_note>\n{content}\n</system_note>"})
                 continue
+            if role == "user" and item.get("files"):
+                file_block = "\n".join(
+                    f'- name="{row.get("name", "")}" url="{row.get("url", "")}"'
+                    for row in item["files"]
+                )
+                content = f"{content}\n\n<attachments>\n{file_block}\n</attachments>"
             messages.append({"role": role, "content": content})
         return messages
 
@@ -84,4 +104,3 @@ class ContextAssembler:
         if name == "compact_summary.md":
             return "[COMPACTED SUMMARY]\n{{summary}}"
         return "You are a governed skill runtime.\n\n{{sections}}"
-

@@ -20,4 +20,4 @@ class SkillSpec:
     refs: list[str] = field(default_factory=list)
     actions: list[str] = field(default_factory=list)
     tags: list[str] = field(default_factory=list)
-
+    knowledge_files: list[Path] = field(default_factory=list)

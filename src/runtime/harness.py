@@ -5,15 +5,20 @@ class Harness:
     def __init__(self, engine):  # noqa: ANN001
         self.engine = engine
 
-    def chat(self, message: str) -> str:
+    def chat(self, message: str, files: list[dict] | None = None) -> str:
         self.engine.lifecycle.before_user_turn(message)
         self.engine.events.emit(
             "user.turn.started",
             message=message,
             active_skill=self.engine.skill_runtime.active_skill_id,
+            attachments=len(files or []),
         )
 
-        self.engine.session.history.append_user(message)
+        if files:
+            ingest_result = self.engine.wiki_hub.ingest_user_files(files)
+            self.engine.session.history.append_system(f"Attachment ingest summary:\n{ingest_result}")
+
+        self.engine.session.history.append_user(message, files=files)
         final_answer = ""
 
         for step in range(self.engine.settings.max_steps):
@@ -37,6 +42,7 @@ class Harness:
                 recent_events=self.engine.events.recent(),
                 audit=self.engine.audit,
                 registry=self.engine.registry,
+                wiki_hub=self.engine.wiki_hub,
             )
             messages = self.engine.context_assembler.build_messages(
                 self.engine.session.history.read(),
@@ -59,10 +65,9 @@ class Harness:
                 result = self.engine.dispatcher.dispatch(call.action, call.arguments)
                 normalized_result = self.engine.normalizer.normalize_tool_result(call.action, result, limit=8_000)
                 self.engine.append_tool_result(call.action, normalized_result)
-                event_name = "tool.error" if result.startswith("Error") else "tool.result"
+                event_name = "tool.error" if isinstance(result, str) and result.startswith("Error") else "tool.result"
                 self.engine.events.emit(event_name, action=call.action, result=result)
                 self.engine.lifecycle.after_tool_call(call.action, result)
                 final_answer = result
 
         return final_answer or "Max steps reached."
-

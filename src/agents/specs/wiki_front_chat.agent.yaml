@@ -1,0 +1,15 @@
+name: wiki_front_chat
+root_skill: wiki_hub/root
+description: Knowledge-front agent for ingest, query, lint, and self-description driven by the project LLM Wiki.
+toolboxes:
+  - files
+  - shell
+  - wiki
+capabilities:
+  - task
+  - compact
+llm:
+  provider: mock
+  model: mock
+context_policy:
+  max_prompt_chars: 22000

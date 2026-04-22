@@ -20,8 +20,6 @@ from schemas.agent import AgentSpec
 from schemas.runtime import EngineContext, EngineSettings
 from shared.ids import new_id
 from shared.paths import project_root
-from tools.builtin.files import FileToolbox
-from tools.builtin.shell import ShellToolbox
 from tools.indexes.tool_index import ToolIndex
 from tools.indexes.toolbox_registry import Toolbox
 
@@ -34,6 +32,7 @@ from .lifecycle import LifecycleManager
 from .response_parser import ResponseParser
 from .session_runtime import SessionRuntime
 from .skill_runtime import SkillRuntime
+from .wiki_hub import WikiHub
 
 
 class Engine:
@@ -97,7 +96,9 @@ class Engine:
             agent_name=self.agent_spec.name,
         )
         self.llm = LLMFactory.create(self.provider, self.model, self.api_key, self.base_url)
-        requested_toolboxes = toolboxes or self.agent_spec.toolboxes or ["files", "shell"]
+        requested_toolboxes = list(toolboxes or self.agent_spec.toolboxes or ["files", "shell"])
+        if "wiki" not in [item if isinstance(item, str) else item.toolbox_name for item in requested_toolboxes]:
+            requested_toolboxes.append("wiki")
         self.toolboxes = self._prepare_toolboxes(requested_toolboxes)
         self.capabilities = self._prepare_capabilities(self.enhancement_names)
         self.lifecycle = LifecycleManager(self.capabilities)
@@ -113,6 +114,9 @@ class Engine:
         self.response_parser = ResponseParser()
         self.harness = Harness(self)
         self.last_surface_snapshot = None
+
+        self.wiki_hub = WikiHub(project_root=project_root(), registry=self.registry, session=self.session)
+        self.wiki_hub.refresh_from_registry()
 
     @classmethod
     def from_agent_spec(cls, spec: AgentSpec, **overrides):
@@ -285,6 +289,15 @@ class Engine:
     def chat(self, message: str) -> str:
         return self.harness.chat(message)
 
+    def chat_turn(self, message: str, files: list[dict] | None = None) -> str:
+        return self.harness.chat(message, files=files)
+
+    def refresh_wiki(self) -> str:
+        return self.wiki_hub.refresh_from_registry()
+
+    def ingest_files(self, files: list[dict] | None) -> str:
+        return self.wiki_hub.ingest_user_files(files)
+
     def spawn_child(
         self,
         *,
@@ -333,4 +346,5 @@ class Engine:
 
 def load_agent_spec(spec_path: Path) -> AgentSpec:
     payload = yaml.safe_load(spec_path.read_text(encoding="utf-8")) or {}
+    payload["source_path"] = str(spec_path.as_posix())
     return AgentSpec.from_mapping(payload)

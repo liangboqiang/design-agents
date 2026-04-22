@@ -14,6 +14,7 @@ class RuntimePaths:
     workspace_dir: Path
     inbox_dir: Path
     logs_dir: Path
+    attachments_dir: Path
 
 
 @dataclass(slots=True)
@@ -48,4 +49,3 @@ class SurfaceSnapshot:
     visible_toolboxes: list[str]
     activated_skill_ids: list[str] = field(default_factory=list)
     governance_notes: list[str] = field(default_factory=list)
-
