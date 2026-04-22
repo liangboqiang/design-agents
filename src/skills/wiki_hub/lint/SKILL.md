@@ -12,5 +12,7 @@ tags:
 # Wiki Lint
 
 用于检查：
-- catalog 中是否存在空 page_id
+
+- catalog 中是否存在空 `page_id`
 - page 文件是否缺失
+- 共享 wiki store 基本结构是否一致

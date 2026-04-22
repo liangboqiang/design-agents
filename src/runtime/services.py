@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from typing import Any
 
@@ -10,8 +9,8 @@ from wiki.service import SharedWikiService
 class KnowledgeHubService:
     """Shared wiki-backed knowledge service.
 
-    Wiki主体固定落在 project_root/data/wiki，与session解耦。
-    当前session只保留附件摄取摘要，不承担wiki主体存储。
+    The wiki store lives under ``project_root/data/wiki`` and is not tied to a
+    runtime session. Session state keeps only attachment ingest hints.
     """
 
     def __init__(self, *, project_root: Path, registry, session):  # noqa: ANN001
@@ -39,8 +38,8 @@ class KnowledgeHubService:
     def system_brief(self) -> str:
         return self.shared.system_brief()
 
-    def search(self, query: str) -> str:
-        return self.shared.search(query)
+    def search(self, query: str, limit: int = 20) -> str:
+        return self.shared.search(query, limit=limit)
 
     def read_page(self, page_id: str) -> str:
         return self.shared.read_page(page_id)

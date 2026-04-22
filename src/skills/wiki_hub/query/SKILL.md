@@ -20,3 +20,8 @@ tags:
 2. `wiki.read_page`
 3. 必要时 `wiki.read_source`
 4. `wiki.answer`
+
+## 约定
+
+- 优先阅读 wiki 页
+- 只有在核验或精读场景才回到原始 source

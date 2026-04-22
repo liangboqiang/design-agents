@@ -1,13 +1,13 @@
 ---
 name: wiki-hub-root
 description: |
-  共享持久化 Wiki 总入口。负责只读查询与管理入口分离，并通过治理层 subagent 能力完成批量抽取。
+  共享持久化 Wiki 总入口。负责只读查询与管理入口分离，并通过治理层 agent_build 能力完成批量抽取。
 children:
-  - ../ingest
-  - ../query
-  - ../lint
+  - ../ingest/SKILL.md
+  - ../query/SKILL.md
+  - ../lint/SKILL.md
 refs:
-  - ../../governance/subagent_engine/root
+  - ../../governance/agent_build/SKILL.md
 actions:
   - wiki.search
   - wiki.read_page
@@ -16,8 +16,6 @@ actions:
   - wiki_admin.refresh_system
   - wiki_admin.ingest_files
   - wiki_admin.lint
-  - subagent.ask
-  - subagent.batch_run
 tags:
   - wiki
   - knowledge-hub
@@ -30,7 +28,11 @@ tags:
 
 ## 约束
 
-- 普通查询只用 `wiki.*`
-- 构建/摄取/校验只用 `wiki_admin.*`
-- 系统文件不复制原文，仅生成摘要页并保留 source path / source uri
-- 批量抽取通过治理层 subagent 能力完成
+- 普通查询只使用 `wiki.*`
+- 构建、摄取、校验只使用 `wiki_admin.*`
+- 系统文件不复制原文，只生成摘要页并保留 source path / source uri / source hash
+- 批量抽取统一通过治理层 `agent_build` 能力完成
+
+## 引用约定
+
+本 Skill 的跨 Skill 引用统一使用显式 `.../SKILL.md` 路径，避免目录与文件写法混杂。

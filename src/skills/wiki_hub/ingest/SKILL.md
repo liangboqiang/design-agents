@@ -5,9 +5,8 @@ description: |
 refs:
   - ../../governance/agent_build/SKILL.md
 actions:
-  - wiki.refresh
-  - wiki.ingest_files
-  - files.read_text
+  - wiki_admin.refresh_system
+  - wiki_admin.ingest_files
 tags:
   - wiki
   - ingest
@@ -17,14 +16,14 @@ tags:
 
 ## 主要动作
 
-### `wiki.refresh`
-重新扫描：
+### `wiki_admin.refresh_system`
+重新扫描并重建共享 wiki 页：
 
 - 所有 Skill 邻接 `knowledge/`
 - 系统自描述文件
-- Agent / Tool / Runtime / Governance 关键文本
+- Agent / Tool / Runtime / Governance / Schema 关键文本
 
-### `wiki.ingest_files`
+### `wiki_admin.ingest_files`
 摄取用户附件，标准输入为：
 
 ```json
@@ -38,13 +37,16 @@ tags:
 
 ## 与治理层 Agent Build 的关系
 
-本 Skill **显式引用**治理层 `agent_build/SKILL.md`。  
-当 wiki 需要对大量系统文件、业务资料或附件执行批量抽取时，应优先复用治理层的 `agent-build` 能力：
+本 Skill 显式引用治理层 `agent_build/SKILL.md`。  
+当 wiki 需要对大量系统文件、业务资料或附件执行批量抽取时，应统一复用治理层的 `agent-build` 能力：
 
+- 由当前 wiki Agent 构建更小上下文的子 Agent
+- 默认继承父 Agent 基础配置
+- 通过 `subagent.batch_run` 执行一批独立抽取任务
+- 每个子 Agent 只负责单份或单批材料的抽取与摘要
 
 ## 附件治理要求
 
 - 统一标准输入字段为 `files`
 - 每个元素包含 `name` 与 `url`
-- 先落盘到运行态附件目录，再入 wiki
-- wiki 页必须记录来源类型为 `user_attachment`
+- 用户附件写入共享 wiki catalog 时，来源类型为 `user_file`

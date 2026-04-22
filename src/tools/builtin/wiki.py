@@ -20,8 +20,18 @@ class WikiToolbox(Toolbox):
                 "wiki.search",
                 "Search wiki",
                 "Search shared wiki pages.",
-                {"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]},
-                lambda args: self.engine.knowledge_hub.search(str(args["query"])),
+                {
+                    "type": "object",
+                    "properties": {
+                        "query": {"type": "string"},
+                        "limit": {"type": "integer"},
+                    },
+                    "required": ["query"],
+                },
+                lambda args: self.engine.knowledge_hub.search(
+                    str(args["query"]),
+                    limit=int(args.get("limit") or 20),
+                ),
                 self.toolbox_name,
             ),
             ActionSpec(
@@ -52,7 +62,10 @@ class WikiToolbox(Toolbox):
                     },
                     "required": ["query"],
                 },
-                lambda args: self.engine.knowledge_hub.answer(str(args["query"]), int(args.get("limit") or 5)),
+                lambda args: self.engine.knowledge_hub.answer(
+                    str(args["query"]),
+                    limit=int(args.get("limit") or 5),
+                ),
                 self.toolbox_name,
             ),
         ]
@@ -70,7 +83,7 @@ class WikiAdminToolbox(Toolbox):
             ActionSpec(
                 "wiki_admin.refresh_system",
                 "Refresh wiki system pages",
-                "Scan allowed system/business sources and rebuild shared wiki pages through subagent batch extraction.",
+                "Scan allowed system/business sources and rebuild shared wiki pages through agent_build batch extraction.",
                 {"type": "object", "properties": {}},
                 lambda args: self.engine.refresh_wiki(),
                 self.toolbox_name,
@@ -78,7 +91,7 @@ class WikiAdminToolbox(Toolbox):
             ActionSpec(
                 "wiki_admin.ingest_files",
                 "Ingest files into wiki",
-                "Record user files into shared wiki.",
+                "Record user files into the shared wiki store.",
                 {"type": "object", "properties": {"files": {"type": "array"}}, "required": ["files"]},
                 lambda args: self.engine.ingest_files(list(args.get("files") or [])),
                 self.toolbox_name,
@@ -86,7 +99,7 @@ class WikiAdminToolbox(Toolbox):
             ActionSpec(
                 "wiki_admin.lint",
                 "Lint wiki",
-                "Check catalog/page consistency.",
+                "Check wiki catalog/page consistency.",
                 {"type": "object", "properties": {}},
                 lambda args: self.engine.knowledge_hub.lint(),
                 self.toolbox_name,
