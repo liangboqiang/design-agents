@@ -19,9 +19,10 @@ pip install -r requirements.txt
 推荐复制仓库根目录下的 `.env.example`，并填写你的套餐密钥：
 
 ```env
-CODING_PLAN_API_KEY=sk-sp-your-coding-plan-key
-CODING_PLAN_OPENAI_BASE_URL=https://coding-intl.dashscope.aliyuncs.com/v1
-CODING_PLAN_ANTHROPIC_BASE_URL=https://coding-intl.dashscope.aliyuncs.com/apps/anthropic
+AGENTS_PROVIDER=openai
+AGENTS_MODEL=qwen3-coder-plus
+AGENTS_API_KEY=sk-sp-your-coding-plan-key
+AGENTS_BASE_URL=https://coding-intl.dashscope.aliyuncs.com/v1
 ```
 
 ## 快速开始
@@ -67,9 +68,9 @@ python tests/chat_general_engine.py
 ```python
 from pathlib import Path
 
-from design_agents.engine import Engine
-from design_agents.toolboxes.files import FileToolbox
-from design_agents.toolboxes.shell import ShellToolbox
+from agents.engine import Engine
+from agents.toolboxes.files import FileToolbox
+from agents.toolboxes.shell import ShellToolbox
 
 engine = Engine(
     skill_root=Path("skills/domains/general/root"),
@@ -90,10 +91,10 @@ print(engine.chat("请先读取当前目录并告诉我有哪些文件。"))
 ## 能力结构
 
 - `skills/`: 技能树
-- `design_agents/core/`: 核心调度、prompt、skill catalog、history
-- `design_agents/llm/`: Coding Plan OpenAI / Anthropic / mock 客户端
-- `design_agents/toolboxes/`: 文件、shell、MCP stdio 工具箱
-- `design_agents/capabilities/`: todo、task、subagent、background、workspace 等增强能力
+- `agents/core/`: 核心调度、prompt、skill catalog、history
+- `agents/llm/`: Coding Plan OpenAI / Anthropic / mock 客户端
+- `agents/toolboxes/`: 文件、shell、MCP stdio 工具箱
+- `agents/capabilities/`: todo、task、subagent、background、workspace 等增强能力
 - `tests/`: 对话入口和离线自检脚本
 
 ## 增强能力

@@ -5,9 +5,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from design_agents.engine import Engine
-from design_agents.llm.config import DEFAULT_MODEL, DEFAULT_PROVIDER, resolve_model, resolve_provider
-from design_agents.toolboxes.files import FileToolbox
+from agents.engine import Engine
+from agents.llm.config import DEFAULT_MODEL, DEFAULT_PROVIDER, resolve_model, resolve_provider
+from agents.toolboxes.files import FileToolbox
 
 
 CONFIG = {
