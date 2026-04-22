@@ -5,9 +5,15 @@ class LifecycleManager:
     def __init__(self, participants: list):
         self.participants = participants
 
-    def before_user_turn(self, message: str) -> None:
+    def before_user_turn(self, message: str, files: list[dict] | None = None) -> None:
         for participant in self.participants:
-            participant.before_user_turn(message)
+            hook = getattr(participant, "before_user_turn", None)
+            if hook is None:
+                continue
+            try:
+                hook(message, files=files)
+            except TypeError:
+                hook(message)
 
     def before_model_call(self) -> None:
         for participant in self.participants:
@@ -22,4 +28,3 @@ class LifecycleManager:
         for participant in self.participants:
             fragments.extend(participant.state_fragments())
         return fragments
-

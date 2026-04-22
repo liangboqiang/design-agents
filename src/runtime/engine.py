@@ -26,13 +26,14 @@ from tools.indexes.toolbox_registry import Toolbox
 from .action_compiler import ActionCompiler
 from .capabilities.base import Capability
 from .capabilities.registry import create_capability
+from .core_participants import AttachmentIngressParticipant
 from .dispatcher import Dispatcher
 from .harness import Harness
 from .lifecycle import LifecycleManager
 from .response_parser import ResponseParser
+from .services import AttachmentIngestionService, KnowledgeHubService
 from .session_runtime import SessionRuntime
 from .skill_runtime import SkillRuntime
-from .wiki_hub import WikiHub
 
 
 class Engine:
@@ -96,12 +97,17 @@ class Engine:
             agent_name=self.agent_spec.name,
         )
         self.llm = LLMFactory.create(self.provider, self.model, self.api_key, self.base_url)
-        requested_toolboxes = list(toolboxes or self.agent_spec.toolboxes or ["files", "shell"])
-        if "wiki" not in [item if isinstance(item, str) else item.toolbox_name for item in requested_toolboxes]:
-            requested_toolboxes.append("wiki")
+
+        self.knowledge_hub = KnowledgeHubService(project_root=project_root(), registry=self.registry, session=self.session)
+        self.wiki_hub = self.knowledge_hub
+        self.knowledge_hub.ensure_bootstrap()
+        self.knowledge_hub.refresh_from_registry()
+
+        requested_toolboxes = list(toolboxes if toolboxes is not None else (self.agent_spec.toolboxes or ["files", "shell"]))
         self.toolboxes = self._prepare_toolboxes(requested_toolboxes)
         self.capabilities = self._prepare_capabilities(self.enhancement_names)
-        self.lifecycle = LifecycleManager(self.capabilities)
+        self.core_participants = self._prepare_core_participants()
+        self.lifecycle = LifecycleManager([*self.core_participants, *self.capabilities])
         self.tool_index = ToolIndex()
         self.action_registry: dict[str, ActionSpec] = {}
         self._register_core_actions()
@@ -114,9 +120,6 @@ class Engine:
         self.response_parser = ResponseParser()
         self.harness = Harness(self)
         self.last_surface_snapshot = None
-
-        self.wiki_hub = WikiHub(project_root=project_root(), registry=self.registry, session=self.session)
-        self.wiki_hub.refresh_from_registry()
 
     @classmethod
     def from_agent_spec(cls, spec: AgentSpec, **overrides):
@@ -175,6 +178,15 @@ class Engine:
             capability.bind(self)
             prepared.append(capability)
         return prepared
+
+    def _prepare_core_participants(self) -> list[object]:
+        attachment_service = AttachmentIngestionService(knowledge_hub=self.knowledge_hub, session=self.session)
+        participants = [AttachmentIngressParticipant(attachment_service)]
+        for participant in participants:
+            bind = getattr(participant, "bind", None)
+            if bind is not None:
+                bind(self)
+        return participants
 
     def _register(self, spec: ActionSpec) -> None:
         self.action_registry[spec.action_id] = spec
@@ -286,6 +298,9 @@ class Engine:
                 return capability
         return None
 
+    def has_visible_wiki_actions(self, surface_snapshot) -> bool:  # noqa: ANN001
+        return any(spec.action_id.startswith("wiki.") for spec in surface_snapshot.visible_actions)
+
     def chat(self, message: str) -> str:
         return self.harness.chat(message)
 
@@ -293,10 +308,10 @@ class Engine:
         return self.harness.chat(message, files=files)
 
     def refresh_wiki(self) -> str:
-        return self.wiki_hub.refresh_from_registry()
+        return self.knowledge_hub.refresh_from_registry()
 
     def ingest_files(self, files: list[dict] | None) -> str:
-        return self.wiki_hub.ingest_user_files(files)
+        return self.knowledge_hub.ingest_user_files(files)
 
     def spawn_child(
         self,

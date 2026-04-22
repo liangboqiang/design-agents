@@ -27,8 +27,9 @@ def test_context_assembler_builds_layered_prompt() -> None:
         recent_events=engine.events.recent(),
         audit=engine.audit,
         registry=engine.registry,
+        knowledge_brief=engine.knowledge_hub.system_brief() if engine.has_visible_wiki_actions(surface) else None,
+        knowledge_actions_visible=engine.has_visible_wiki_actions(surface),
     )
     assert "## Identity" in prompt
     assert "## Visible Actions" in prompt
     assert "## Response Contract" in prompt
-

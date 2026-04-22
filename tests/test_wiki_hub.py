@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -31,10 +32,10 @@ def test_wiki_toolbox_attached() -> None:
 
 def test_wiki_refresh_and_search() -> None:
     engine = build_engine()
-    message = engine.refresh_wiki()
-    assert "Wiki refresh complete" in message
-    results = engine.wiki_hub.search("inventory")
-    assert results
+    payload = json.loads(engine.refresh_wiki())
+    assert payload["status"] == "ok"
+    results = json.loads(engine.knowledge_hub.search("inventory"))
+    assert isinstance(results, list)
 
 
 def test_attachment_ingest_contract() -> None:

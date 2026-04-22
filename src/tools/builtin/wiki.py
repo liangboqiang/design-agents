@@ -17,7 +17,7 @@ class WikiToolbox(Toolbox):
     def _hub(self):
         if self.engine is None:
             raise ValueError("WikiToolbox engine not bound yet.")
-        return self.engine.wiki_hub
+        return getattr(self.engine, "knowledge_hub", None) or getattr(self.engine, "wiki_hub")
 
     def action_specs(self) -> Iterable[ActionSpec]:
         return [
