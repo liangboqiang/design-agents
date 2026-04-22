@@ -26,6 +26,8 @@ from .capabilities.registry import create_capability
 from .core_participants import AttachmentIngressParticipant
 from .dispatcher import Dispatcher
 from .engine_ports import EngineRuntimeState, TurnRuntimePorts
+from .failure_sink import FailureSink
+from .fault_boundary import FaultBoundary
 from .lifecycle import LifecycleManager
 from .response_parser import ResponseParser
 from .services import AttachmentIngestionService, KnowledgeHubService
@@ -72,6 +74,8 @@ class EngineRuntimeBundle:
     audit: GovernanceAudit
     events: EventBus
     runtime_state: EngineRuntimeState = field(default_factory=EngineRuntimeState)
+    failure_sink: FailureSink | None = None
+    fault_boundary: FaultBoundary | None = None
     action_registry: dict[str, ActionSpec] = field(default_factory=dict)
     toolboxes: list[Toolbox] = field(default_factory=list)
     capabilities: list[Capability] = field(default_factory=list)
@@ -101,6 +105,7 @@ class EngineBuilder:
         )
         storage_root = (request.storage_base or project_root() / ".runtime_data").resolve()
         session = SessionRuntime(settings, storage_root)
+        runtime_state = EngineRuntimeState()
         audit = GovernanceAudit()
         events = EventBus()
         normalizer = Normalizer()
@@ -118,6 +123,9 @@ class EngineBuilder:
         knowledge_hub = KnowledgeHubService(project_root=project_root(), registry=registry, session=session)
         knowledge_hub.ensure_bootstrap()
         knowledge_hub.refresh_from_registry()
+        failure_sink = FailureSink(session=session, audit=audit, events=events, runtime_state=runtime_state)
+        fault_boundary = FaultBoundary(failure_sink)
+        events.set_fault_reporter(fault_boundary.report)
         return EngineRuntimeBundle(
             registry=registry,
             agent_spec=agent_spec,
@@ -134,6 +142,9 @@ class EngineBuilder:
             normalizer=normalizer,
             audit=audit,
             events=events,
+            runtime_state=runtime_state,
+            failure_sink=failure_sink,
+            fault_boundary=fault_boundary,
         )
 
     def install_runtime(self, engine, request: EngineBuildRequest) -> None:  # noqa: ANN001
@@ -143,7 +154,10 @@ class EngineBuilder:
         engine.toolboxes = self._prepare_toolboxes(engine, requested_toolboxes)
         engine.capabilities = self._prepare_capabilities(engine, enhancement_names)
         engine.core_participants = self._prepare_core_participants(engine)
-        engine.lifecycle = LifecycleManager([*engine.core_participants, *engine.capabilities])
+        engine.lifecycle = LifecycleManager(
+            [*engine.core_participants, *engine.capabilities],
+            fault_reporter=engine.fault_boundary.report,
+        )
 
         for toolbox in engine.toolboxes:
             specs = list(toolbox.action_specs())
@@ -153,7 +167,7 @@ class EngineBuilder:
         for capability in engine.capabilities:
             self._register_many(engine.action_registry, capability.action_specs())
 
-        engine.dispatcher = Dispatcher(engine.action_registry)
+        engine.dispatcher = Dispatcher(engine.action_registry, fault_reporter=engine.fault_boundary.report)
         engine.harness_ports = TurnRuntimePorts(
             lifecycle=engine.lifecycle,
             events=engine.events,
@@ -172,6 +186,8 @@ class EngineBuilder:
             knowledge_hub=engine.knowledge_hub,
             action_registry=engine.action_registry,
             state=engine.runtime_state,
+            failure_sink=engine.failure_sink,
+            fault_boundary=engine.fault_boundary,
         )
 
     @staticmethod

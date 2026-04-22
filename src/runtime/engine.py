@@ -54,6 +54,8 @@ class Engine:
         self.audit = bundle.audit
         self.events = bundle.events
         self.runtime_state = bundle.runtime_state
+        self.failure_sink = bundle.failure_sink
+        self.fault_boundary = bundle.fault_boundary
         self.action_registry = bundle.action_registry
         self.toolboxes = bundle.toolboxes
         self.capabilities = bundle.capabilities
@@ -120,6 +122,10 @@ class Engine:
     @property
     def last_surface_snapshot(self):  # noqa: ANN201
         return self.runtime_state.last_surface_snapshot
+
+    @property
+    def last_fault(self):  # noqa: ANN201
+        return self.runtime_state.last_fault
 
     def inspect_skill(self, skill: str) -> str:
         return self.control.inspect_skill(skill)

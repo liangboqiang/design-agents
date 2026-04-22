@@ -14,10 +14,10 @@ from agents.wiki_front_chat import build_engine as build_wiki_front_engine
 def build_engine() -> Engine:
     return build_wiki_front_engine(
         {
-            "provider": "mock",
-            "model": "mock",
-            "api_key": None,
-            "base_url": None,
+            "provider": "openai",
+            "model": "qwen3.5-plus",
+            "api_key": "sk-sp-4794e9ca698446a9b42d9079e8474de1",
+            "base_url": "https://coding.dashscope.aliyuncs.com/v1",
             "user_id": "test_user",
             "conversation_id": "wiki_suite",
             "task_id": "case_001",
