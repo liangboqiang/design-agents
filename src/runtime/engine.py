@@ -59,6 +59,8 @@ class Engine:
         self.harness = None
         self.control = None
         self.child_factory = None
+        self.failure_sink = bundle.failure_sink
+        self.fault_boundary = bundle.fault_boundary
 
     @classmethod
     def from_agent_spec(cls, spec: AgentSpec, **overrides) -> "Engine":
