@@ -16,6 +16,7 @@ from design_agents.core.prompt_builder import PromptBuilder
 from design_agents.core.response_parser import ResponseParser
 from design_agents.core.skill_loader import SkillCatalog
 from design_agents.core.storage import ensure_runtime_paths
+from design_agents.llm.config import resolve_api_key, resolve_base_url, resolve_model, resolve_provider
 from design_agents.llm.factory import LLMFactory
 from design_agents.toolboxes.base import Toolbox
 from design_agents.toolboxes.files import FileToolbox
@@ -29,8 +30,8 @@ class Engine:
     def __init__(
         self,
         skill_root: Path,
-        provider: str,
-        model: str,
+        provider: str | None = None,
+        model: str | None = None,
         api_key: str | None = None,
         base_url: str | None = None,
         *,
@@ -44,20 +45,25 @@ class Engine:
         role_name: str | None = None,
         persistent_worker: bool = False,
     ):
+        resolved_provider = resolve_provider(provider)
+        resolved_model = resolve_model(model)
+        resolved_api_key = None if resolved_provider == "mock" else resolve_api_key(api_key)
+        resolved_base_url = resolve_base_url(resolved_provider, base_url)
+
         self.skill_root = self._resolve_skill_root(Path(skill_root))
         self.skill_space_root = self._detect_skill_space_root(self.skill_root)
-        self.provider = provider
-        self.model = model
-        self.api_key = api_key
-        self.base_url = base_url
+        self.provider = resolved_provider
+        self.model = resolved_model
+        self.api_key = resolved_api_key
+        self.base_url = resolved_base_url
         self.enhancement_names = [item.strip() for item in (enhancements or [])]
         self.engine_id = role_name or f"engine-{str(uuid.uuid4())[:8]}"
         self.persistent_worker = persistent_worker
         self.settings = EngineSettings(
-            provider,
-            model,
-            api_key,
-            base_url,
+            resolved_provider,
+            resolved_model,
+            resolved_api_key,
+            resolved_base_url,
             user_id,
             conversation_id,
             task_id,
@@ -83,7 +89,12 @@ class Engine:
             self.settings,
             self.paths,
         )
-        self.llm = LLMFactory.create(provider, model, api_key, base_url=base_url)
+        self.llm = LLMFactory.create(
+            resolved_provider,
+            resolved_model,
+            resolved_api_key,
+            base_url=resolved_base_url,
+        )
         self.toolboxes = toolboxes or [FileToolbox(), ShellToolbox()]
         for toolbox in self.toolboxes:
             if hasattr(toolbox, "bind_workspace"):
@@ -253,7 +264,6 @@ class Engine:
             capability.before_user_turn(message)
         self.history.append_user(message)
         final_answer = ""
-        current_user_message = message
         for _ in range(self.settings.max_steps):
             for capability in self.capabilities:
                 capability.before_model_call()
@@ -265,7 +275,6 @@ class Engine:
             )
             messages = self.prompt_builder.build_messages(
                 self.history.read(),
-                current_user_message,
                 self.settings.history_keep_turns,
             )
             raw = self.llm.complete(system_prompt, messages)
@@ -281,7 +290,6 @@ class Engine:
                 for capability in self.capabilities:
                     capability.after_tool_call(call.action, result)
                 final_answer = result
-            current_user_message = "Continue based on the latest tool results."
         return final_answer or "Max steps reached."
 
     def spawn_child(
@@ -307,7 +315,7 @@ class Engine:
             user_id=self.settings.user_id,
             conversation_id=self.settings.conversation_id,
             task_id=child_task_id,
-            toolboxes=[self._clone_toolbox(tb) for tb in self.toolboxes],
+            toolboxes=[toolbox.clone() for toolbox in self.toolboxes],
             enhancements=enhancements,
             storage_base=self.paths.root.parents[2],
             role_name=role_name,
@@ -322,10 +330,3 @@ class Engine:
         if result and not result.startswith("No unclaimed"):
             return self.chat(f"Auto-claimed task detail:\n{result}")
         return result
-
-    def _clone_toolbox(self, toolbox: Toolbox) -> Toolbox:
-        if isinstance(toolbox, FileToolbox):
-            return FileToolbox()
-        if isinstance(toolbox, ShellToolbox):
-            return ShellToolbox(timeout=toolbox.timeout)
-        return toolbox

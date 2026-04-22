@@ -66,23 +66,26 @@ class PromptBuilder:
             """
         ).strip()
 
-    def build_messages(
-        self,
-        history: list[dict],
-        user_message: str,
-        keep_turns: int,
-    ) -> list[dict]:
+    def build_messages(self, history: list[dict], keep_turns: int) -> list[dict]:
         rows = history[-keep_turns:] if keep_turns > 0 else history
         messages: list[dict] = []
         for item in rows:
-            if item["role"] == "tool":
+            role = item["role"]
+            content = item["content"]
+            if role == "tool":
                 messages.append(
                     {
                         "role": "user",
-                        "content": f"<tool_result action=\"{item['action']}\">\n{item['content']}\n</tool_result>",
+                        "content": f"<tool_result action=\"{item['action']}\">\n{content}\n</tool_result>",
+                    }
+                )
+            elif role == "system":
+                messages.append(
+                    {
+                        "role": "user",
+                        "content": f"<engine_note>\n{content}\n</engine_note>",
                     }
                 )
             else:
-                messages.append({"role": item["role"], "content": item["content"]})
-        messages.append({"role": "user", "content": user_message})
+                messages.append({"role": role, "content": content})
         return messages

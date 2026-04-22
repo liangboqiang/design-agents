@@ -15,12 +15,23 @@ class ShellToolbox(Toolbox):
         self.workspace_root = workspace_root.resolve() if workspace_root else None
         self.timeout = timeout
 
+    def clone(self) -> "ShellToolbox":
+        return ShellToolbox(timeout=self.timeout)
+
     def bind_workspace(self, workspace_root: Path) -> None:
         self.workspace_root = workspace_root.resolve()
 
     def action_specs(self) -> Iterable[ActionSpec]:
         return [
-            ActionSpec("shell.run", "Run shell command", "在当前工作区执行 shell 命令。", {"type": "object", "properties": {"command": {"type": "string"}}, "required": ["command"]}, lambda args: self._run(args["command"]), self.toolbox_name, "适合运行测试、目录检查、脚本调用。"),
+            ActionSpec(
+                "shell.run",
+                "Run shell command",
+                "在当前工作区执行 shell 命令。",
+                {"type": "object", "properties": {"command": {"type": "string"}}, "required": ["command"]},
+                lambda args: self._run(args["command"]),
+                self.toolbox_name,
+                "适合运行测试、目录检查、脚本调用。",
+            ),
         ]
 
     def _run(self, command: str) -> str:

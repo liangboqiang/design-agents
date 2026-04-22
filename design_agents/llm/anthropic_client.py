@@ -3,15 +3,17 @@ from __future__ import annotations
 import requests
 
 from .base import BaseLLMClient
-from .coding_plan import resolve_anthropic_base_url, resolve_coding_plan_api_key
 
 
 class AnthropicClient(BaseLLMClient):
-    def __init__(self, model: str, api_key: str | None, base_url: str | None = None):
+    def __init__(self, model: str, api_key: str, base_url: str):
+        if not api_key:
+            raise ValueError("Anthropic-compatible API key is required.")
+        if not base_url:
+            raise ValueError("Anthropic-compatible base_url is required.")
         self.model = model
-        self.api_key = resolve_coding_plan_api_key(api_key)
-        self.base_url = resolve_anthropic_base_url(base_url)
-        self.url = f"{self.base_url}/v1/messages"
+        self.api_key = api_key
+        self.url = f"{base_url.rstrip('/')}/v1/messages"
 
     def complete(self, system_prompt: str, messages: list[dict]) -> str:
         payload = {
@@ -31,26 +33,7 @@ class AnthropicClient(BaseLLMClient):
             json=payload,
             timeout=180,
         )
-        try:
-            response.raise_for_status()
-        except requests.HTTPError as exc:
-            detail = ""
-            try:
-                payload = response.json()
-                detail = payload.get("error", {}).get("message", "")
-            except Exception:
-                detail = response.text.strip()
-            if response.status_code == 401:
-                raise ValueError(
-                    "Coding Plan Anthropic authentication failed (401 Unauthorized). "
-                    "Check that the API key starts with 'sk-sp-' and that the "
-                    "Base URL is the Coding Plan Anthropic endpoint."
-                    + (f" Detail: {detail}" if detail else "")
-                ) from exc
-            raise ValueError(
-                f"Coding Plan Anthropic request failed with status {response.status_code}."
-                + (f" Detail: {detail}" if detail else "")
-            ) from exc
+        response.raise_for_status()
         data = response.json()
         return "\n".join(
             part.get("text", "")

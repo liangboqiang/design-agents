@@ -3,15 +3,17 @@ from __future__ import annotations
 import requests
 
 from .base import BaseLLMClient
-from .coding_plan import resolve_coding_plan_api_key, resolve_openai_base_url
 
 
 class OpenAIClient(BaseLLMClient):
-    def __init__(self, model: str, api_key: str | None, base_url: str | None = None):
+    def __init__(self, model: str, api_key: str, base_url: str):
+        if not api_key:
+            raise ValueError("OpenAI-compatible API key is required.")
+        if not base_url:
+            raise ValueError("OpenAI-compatible base_url is required.")
         self.model = model
-        self.api_key = resolve_coding_plan_api_key(api_key)
-        self.base_url = resolve_openai_base_url(base_url)
-        self.url = f"{self.base_url}/chat/completions"
+        self.api_key = api_key
+        self.url = f"{base_url.rstrip('/')}/chat/completions"
 
     def complete(self, system_prompt: str, messages: list[dict]) -> str:
         payload = {
@@ -29,24 +31,5 @@ class OpenAIClient(BaseLLMClient):
             json=payload,
             timeout=180,
         )
-        try:
-            response.raise_for_status()
-        except requests.HTTPError as exc:
-            detail = ""
-            try:
-                payload = response.json()
-                detail = payload.get("error", {}).get("message", "")
-            except Exception:
-                detail = response.text.strip()
-            if response.status_code == 401:
-                raise ValueError(
-                    "Coding Plan OpenAI authentication failed (401 Unauthorized). "
-                    "Check that the API key starts with 'sk-sp-' and that the "
-                    "Base URL is the Coding Plan OpenAI endpoint."
-                    + (f" Detail: {detail}" if detail else "")
-                ) from exc
-            raise ValueError(
-                f"Coding Plan OpenAI request failed with status {response.status_code}."
-                + (f" Detail: {detail}" if detail else "")
-            ) from exc
+        response.raise_for_status()
         return response.json()["choices"][0]["message"]["content"]

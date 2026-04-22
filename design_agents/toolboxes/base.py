@@ -12,3 +12,7 @@ class Toolbox(ABC):
     @abstractmethod
     def action_specs(self) -> Iterable[ActionSpec]:
         raise NotImplementedError
+
+    @abstractmethod
+    def clone(self) -> "Toolbox":
+        raise NotImplementedError

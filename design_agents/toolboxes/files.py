@@ -14,6 +14,9 @@ class FileToolbox(Toolbox):
     def __init__(self, workspace_root: Path | None = None):
         self.workspace_root = workspace_root.resolve() if workspace_root else None
 
+    def clone(self) -> "FileToolbox":
+        return FileToolbox()
+
     def bind_workspace(self, workspace_root: Path) -> None:
         self.workspace_root = workspace_root.resolve()
 
