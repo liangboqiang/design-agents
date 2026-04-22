@@ -1,6 +1,29 @@
-# Design Agents
+# Design Agents VNext
 
-`agents/` is a lightweight skill-driven agent engine built around `Skill + Action + Toolbox`.
+This repository now follows a `src/`-first architecture built around:
+
+- flat resource layers under `src/skills`, `src/tools`, `src/context`, and `src/agents`
+- a unified `GovernanceRegistry` that scans skills, tools, agent specs, and context assets
+- `SkillRuntime + SurfaceResolver + ContextAssembler + Harness` as the main execution spine
+- event-driven governance additions with audit trails
+- thin agent entrypoints that assemble runtime behavior from `.agent.yaml` specs
+
+## Layout
+
+```text
+src/
+  agents/
+  context/
+  governance/
+  llm/
+  runtime/
+  schemas/
+  shared/
+  skills/
+  storage/
+  tools/
+tests/
+```
 
 ## Install
 
@@ -8,9 +31,9 @@
 pip install -r requirements.txt
 ```
 
-## Environment Config
+## LLM Config
 
-Copy `.env.example` to `.env` and fill in these values when you want a real LLM backend:
+By default the runtime reads LLM settings from `.env`:
 
 ```env
 DESIGN_AGENTS_PROVIDER=openai
@@ -19,50 +42,22 @@ DESIGN_AGENTS_API_KEY=your_api_key
 DESIGN_AGENTS_BASE_URL=https://your-base-url
 ```
 
-`Engine(...)` resolves LLM config from a single place:
+Explicit constructor arguments or agent/test overrides still win over `.env`.
 
-- Explicit `provider / model / api_key / base_url` arguments win.
-- Missing arguments fall back to `.env`.
-- `mock` does not require `api_key` or `base_url`.
+## Agent Entrypoints
 
-## Engine Usage
+Agent entrypoints live in `src/agents/`, and each one is backed by a YAML spec in `src/agents/specs/`.
 
-Default from `.env`:
+- `src/agents/general_chat.py`
+- `src/agents/parts_design_chat.py`
+- `src/agents/worker_agent.py`
+- `src/agents/review_agent.py`
 
-```python
-from pathlib import Path
+Each entrypoint uses the same `runtime.engine.Engine` and differs only by spec-driven assembly.
 
-from agents.engine import Engine
+## Running the Thin Test Entrypoints
 
-engine = Engine(skill_root=Path("skills/domains/general/root"))
-```
-
-Explicit override:
-
-```python
-from pathlib import Path
-
-from agents.engine import Engine
-from agents.toolboxes.files import FileToolbox
-from agents.toolboxes.shell import ShellToolbox
-
-engine = Engine(
-    skill_root=Path("skills/domains/general/root"),
-    provider="openai",
-    model="gpt-4.1-mini",
-    api_key="your_api_key",
-    base_url="https://your-base-url/v1",
-    user_id="u01",
-    conversation_id="c01",
-    task_id="t01",
-    toolboxes=[FileToolbox(), ShellToolbox()],
-    enhancements=["todo", "task", "compact", "background"],
-)
-```
-
-## Test Scripts
-
-The test scripts are intentionally simple application entrypoints. Edit the top-level `CONFIG` in each file, then run it directly:
+The chat scripts in `tests/` are now thin wrappers over agent specs:
 
 ```bash
 python tests/chat_general_engine.py
@@ -70,21 +65,29 @@ python tests/chat_parts_design_engine.py
 python tests/self_check.py
 ```
 
-Notes:
+The top-level `CONFIG` dictionaries in those files only override runtime values such as provider, model, and session identifiers.
 
-- `tests/chat_general_engine.py` uses `skills/domains/general/root`.
-- `tests/chat_parts_design_engine.py` uses `skills/domains/parts_design/root`.
-- `tests/self_check.py` runs a fixed mock self-check sequence.
-- With the default mock configs, all three scripts run without `.env`.
+## Running the Structural Tests
 
-## Layout
+```bash
+pytest tests/test_registry.py tests/test_context_assembler.py tests/test_action_surface.py tests/test_refs_activation.py
+```
 
-- `skills/`: skill tree
-- `agents/core/`: prompt assembly, dispatching, history, storage
-- `agents/llm/`: LLM clients and config resolution
-- `agents/toolboxes/`: workspace file and shell toolboxes
-- `agents/capabilities/`: optional capability modules
-- `tests/`: simple engine entry scripts
+These tests validate:
+
+- registry scanning across skills/tools/agents/context assets
+- layered prompt assembly
+- deduped action surface compilation
+- event-driven governance activation for refs/task/workspace expansion
+
+## Key Runtime Components
+
+- `governance/registry.py`: unified scanning and indexing of skills, tools, agent specs, and context assets
+- `runtime/skill_runtime.py`: active skill closure and child/ref navigation
+- `governance/surface_resolver.py`: final action/tool/skill surface resolution
+- `context/assembler/context_assembler.py`: identity/surface/state/expansion/feedback prompt assembly
+- `runtime/harness.py`: thin loop for lifecycle, model calls, parsing, dispatching, and continuation
+- `runtime/engine.py`: the only external runtime entrypoint
 
 ## Runtime Data
 
@@ -100,3 +103,9 @@ Notes:
         logs/
         workspace_root/
 ```
+
+## Upgrade Notes
+
+- legacy top-level `skills/` resources have moved to `src/skills/`
+- tests and agent launchers no longer carry a parallel configuration system
+- refs activation, tool surface governance, context layering, and runtime audit are now explicit subsystems rather than implicit engine logic

@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "design-agents"
-version = "0.1.0"
-description = "Frozen Core + Layered Augmentation agent engine with skill-instantiated runtimes"
+version = "0.2.0"
+description = "VNext skill-governed agent runtime with src-first registry, context, and surface assembly."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -18,5 +18,11 @@ dependencies = [
 include-package-data = true
 
 [tool.setuptools.packages.find]
-where = ["."]
-include = ["agents*"]
+where = ["src"]
+include = ["agents*", "context*", "governance*", "llm*", "runtime*", "schemas*", "shared*", "skills*", "storage*", "tools*"]
+
+[tool.setuptools.package-data]
+agents = ["specs/*.agent.yaml"]
+context = ["templates/*.md"]
+skills = ["**/*.md"]
+

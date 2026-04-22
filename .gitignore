@@ -20,8 +20,11 @@ pip-wheel-metadata/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.tox/
+.nox/
 .coverage
 .coverage.*
+coverage.xml
 htmlcov/
 
 # Local environment files
@@ -35,3 +38,5 @@ htmlcov/
 .vscode/
 .DS_Store
 Thumbs.db
+*.tmp
+*.log

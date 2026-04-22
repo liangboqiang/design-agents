@@ -1,0 +1,22 @@
+name: general_chat
+root_skill: general/root
+description: General-purpose chat agent using the governed VNext runtime.
+toolboxes:
+  - files
+  - shell
+  - textops
+  - runtime_tools
+  - load_refs
+  - inspect_tools
+capabilities:
+  - todo
+  - task
+  - compact
+  - background
+  - subagent
+llm:
+  provider: mock
+  model: mock
+context_policy:
+  max_prompt_chars: 18000
+

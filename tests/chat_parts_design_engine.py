@@ -3,15 +3,15 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
 
-from agents.engine import Engine
-from agents.toolboxes.files import FileToolbox
-from agents.toolboxes.shell import ShellToolbox
+from runtime.engine import Engine
+
+from agents.parts_design_chat import build_engine as build_parts_design_engine
 
 
 CONFIG = {
-    "skill_root": Path("skills/domains/parts_design/root"),
     "provider": "mock",
     "model": "mock",
     "api_key": None,
@@ -19,29 +19,16 @@ CONFIG = {
     "user_id": "demo_user",
     "conversation_id": "parts_chat",
     "task_id": "task_001",
-    "enhancements": ["todo", "task", "compact", "workspace"],
-    "toolboxes": [FileToolbox(), ShellToolbox()],
 }
 
 
 def build_engine() -> Engine:
-    return Engine(
-        skill_root=CONFIG["skill_root"],
-        provider=CONFIG["provider"],
-        model=CONFIG["model"],
-        api_key=CONFIG["api_key"],
-        base_url=CONFIG["base_url"],
-        user_id=CONFIG["user_id"],
-        conversation_id=CONFIG["conversation_id"],
-        task_id=CONFIG["task_id"],
-        toolboxes=CONFIG["toolboxes"],
-        enhancements=CONFIG["enhancements"],
-    )
+    return build_parts_design_engine(CONFIG)
 
 
 def main() -> None:
     engine = build_engine()
-    print("parts_design engine ready. Enter q to quit.")
+    print("parts_design_chat test harness ready. Enter q to quit.")
     while True:
         try:
             message = input("parts> ").strip()

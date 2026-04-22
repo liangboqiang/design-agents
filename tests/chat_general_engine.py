@@ -3,45 +3,32 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
 
-from agents.engine import Engine
-from agents.toolboxes.files import FileToolbox
-from agents.toolboxes.shell import ShellToolbox
+from runtime.engine import Engine
+
+from agents.general_chat import build_engine as build_general_engine
 
 
 CONFIG = {
-    "skill_root": Path("skills/domains/general/root"),
-    "provider": "openai",
-    "model": "qwen3.5-plus",
-    "api_key": "sk-sp-4794e9ca698446a9b42d9079e8474de1",
-    "base_url": "https://coding.dashscope.aliyuncs.com/v1",
+    "provider": "mock",
+    "model": "mock",
+    "api_key": None,
+    "base_url": None,
     "user_id": "demo_user",
     "conversation_id": "general_chat",
     "task_id": "task_001",
-    "enhancements": [],
-    "toolboxes": [FileToolbox(), ShellToolbox()],
 }
 
 
 def build_engine() -> Engine:
-    return Engine(
-        skill_root=CONFIG["skill_root"],
-        provider=CONFIG["provider"],
-        model=CONFIG["model"],
-        api_key=CONFIG["api_key"],
-        base_url=CONFIG["base_url"],
-        user_id=CONFIG["user_id"],
-        conversation_id=CONFIG["conversation_id"],
-        task_id=CONFIG["task_id"],
-        toolboxes=CONFIG["toolboxes"],
-        enhancements=CONFIG["enhancements"],
-    )
+    return build_general_engine(CONFIG)
 
 
 def main() -> None:
     engine = build_engine()
-    print("general engine ready. Enter q to quit.")
+    print("general_chat test harness ready. Enter q to quit.")
     while True:
         try:
             message = input("general> ").strip()
