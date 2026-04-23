@@ -1,9 +1,6 @@
-# Workspace.remove
+# Workspace Remove
 
-Canonical tool page for `workspace.remove`.
-
-## Action ID
-- `workspace.remove`
+Remove a task workspace that is no longer needed.
 
 ## Implementation
 - `impl.py`

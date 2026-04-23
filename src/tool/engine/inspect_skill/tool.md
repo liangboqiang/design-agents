@@ -1,9 +1,6 @@
-# Engine.inspect Skill
+# Engine Inspect Skill
 
-Canonical tool page for `engine.inspect_skill`.
-
-## Action ID
-- `engine.inspect_skill`
+Inspect a reachable skill and its surfaced behavior.
 
 ## Implementation
 - `impl.py`

@@ -1,9 +1,6 @@
-# Task.update
+# Task Update
 
-Canonical tool page for `task.update`.
-
-## Action ID
-- `task.update`
+Update an existing task in the shared task queue.
 
 ## Implementation
 - `impl.py`

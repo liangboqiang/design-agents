@@ -1,9 +1,6 @@
-# Workspace.list
+# Workspace List
 
-Canonical tool page for `workspace.list`.
-
-## Action ID
-- `workspace.list`
+List available task workspaces.
 
 ## Implementation
 - `impl.py`

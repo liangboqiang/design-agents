@@ -1,9 +1,6 @@
-# Engine.list Child Skills
+# Engine List Child Skills
 
-Canonical tool page for `engine.list_child_skills`.
-
-## Action ID
-- `engine.list_child_skills`
+List the child skills that can be entered from the current skill.
 
 ## Implementation
 - `impl.py`

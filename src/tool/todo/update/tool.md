@@ -1,9 +1,6 @@
-# Todo.update
+# Todo Update
 
-Canonical tool page for `todo.update`.
-
-## Action ID
-- `todo.update`
+Update the runtime todo list.
 
 ## Implementation
 - `impl.py`

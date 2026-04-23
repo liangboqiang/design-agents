@@ -1,9 +1,6 @@
-# Compact.now
+# Compact Now
 
-Canonical tool page for `compact.now`.
-
-## Action ID
-- `compact.now`
+Compact the current conversation state into the summary context.
 
 ## Implementation
 - `impl.py`

@@ -1,9 +1,6 @@
-# Governance.inspect Tool Surface
+# Governance Inspect Tool Surface
 
-Canonical tool page for `governance.inspect_tool_surface`.
-
-## Action ID
-- `governance.inspect_tool_surface`
+Inspect the visible tool surface and exposed actions.
 
 ## Implementation
 - `impl.py`

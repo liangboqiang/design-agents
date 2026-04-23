@@ -1,9 +1,6 @@
-# Task.list
+# Task List
 
-Canonical tool page for `task.list`.
-
-## Action ID
-- `task.list`
+List tasks from the shared task queue.
 
 ## Implementation
 - `impl.py`

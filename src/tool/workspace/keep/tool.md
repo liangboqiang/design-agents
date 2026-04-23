@@ -1,9 +1,6 @@
-# Workspace.keep
+# Workspace Keep
 
-Canonical tool page for `workspace.keep`.
-
-## Action ID
-- `workspace.keep`
+Persist the current workspace for later reuse.
 
 ## Implementation
 - `impl.py`

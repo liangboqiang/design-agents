@@ -1,9 +1,6 @@
-# Team.read Inbox
+# Team Read Inbox
 
-Canonical tool page for `team.read_inbox`.
-
-## Action ID
-- `team.read_inbox`
+Read messages from the shared team inbox.
 
 ## Implementation
 - `impl.py`

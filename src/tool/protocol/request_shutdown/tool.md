@@ -1,9 +1,6 @@
-# Protocol.request Shutdown
+# Protocol Request Shutdown
 
-Canonical tool page for `protocol.request_shutdown`.
-
-## Action ID
-- `protocol.request_shutdown`
+Request a governed shutdown handshake for the current run.
 
 ## Implementation
 - `impl.py`

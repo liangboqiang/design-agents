@@ -1,9 +1,6 @@
-# Protocol.submit Plan
+# Protocol Submit Plan
 
-Canonical tool page for `protocol.submit_plan`.
-
-## Action ID
-- `protocol.submit_plan`
+Submit a plan for governed review and tracking.
 
 ## Implementation
 - `impl.py`

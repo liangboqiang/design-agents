@@ -1,9 +1,6 @@
-# Task.get
+# Task Get
 
-Canonical tool page for `task.get`.
-
-## Action ID
-- `task.get`
+Read one task from the shared task queue.
 
 ## Implementation
 - `impl.py`

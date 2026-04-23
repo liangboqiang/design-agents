@@ -1,9 +1,6 @@
-# Workspace.run
+# Workspace Run
 
-Canonical tool page for `workspace.run`.
-
-## Action ID
-- `workspace.run`
+Run a command inside a task workspace.
 
 ## Implementation
 - `impl.py`

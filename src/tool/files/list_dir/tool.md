@@ -1,9 +1,6 @@
-# Files.list Dir
+# Files List Dir
 
-Canonical tool page for `files.list_dir`.
-
-## Action ID
-- `files.list_dir`
+List files and folders in the current workspace.
 
 ## Implementation
 - `impl.py`

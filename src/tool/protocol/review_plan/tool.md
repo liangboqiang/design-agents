@@ -1,9 +1,6 @@
-# Protocol.review Plan
+# Protocol Review Plan
 
-Canonical tool page for `protocol.review_plan`.
-
-## Action ID
-- `protocol.review_plan`
+Review a proposed execution plan before continuing work.
 
 ## Implementation
 - `impl.py`

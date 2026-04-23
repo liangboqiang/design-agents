@@ -471,7 +471,7 @@
       "links": [
         "governance/protocol_index"
       ],
-      "content_hash": "6aa742c4626b22c9e96ed35a53b014643e8e70b5",
+      "content_hash": "ed167eb69b573e72143fe5030a69e04f7b528591",
       "runtime_action": null,
       "section_map": {
         "核心规则": "- 单文件夹最多一个 `.md`\n- `[[...]]` 链接必须可解析\n- 仓库中不得残留旧知识库路径和旧动作名",
@@ -1625,20 +1625,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "0cfa5a88dccf64cc2ef2ec0020f35482455fc993",
+      "content_hash": "1b3f79b3c2930ed2cd0b96dc6155106c3119d202",
       "runtime_action": "compact.now",
       "section_map": {
-        "action id": "- `compact.now`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "compact.now"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -1655,20 +1650,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "54fd1451d9a3e05fb4e5ef340ee83c1c9295f000",
+      "content_hash": "de54ed14e600ae96d47d718f85c6c6dee2263d89",
       "runtime_action": "engine.enter_skill",
       "section_map": {
-        "action id": "- `engine.enter_skill`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "engine.enter_skill"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -1685,20 +1675,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "f9e1c767b786a4e4356ea80e34f0a66f4d99bd25",
+      "content_hash": "90c7b289ee8e3101d0a286810ea7fce8045d8d20",
       "runtime_action": "engine.inspect_action",
       "section_map": {
-        "action id": "- `engine.inspect_action`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "engine.inspect_action"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -1715,20 +1700,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "4a5abec63b6a4eb82cb0cc459da4a52b425cb44c",
+      "content_hash": "d1d890286ceb468fba272658c8656961922a4f13",
       "runtime_action": "engine.inspect_skill",
       "section_map": {
-        "action id": "- `engine.inspect_skill`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "engine.inspect_skill"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -1745,20 +1725,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "3bab80cb9d719ed4b4ea20dd1dfc9089a880df4a",
+      "content_hash": "da0afe29bf9c1746432dce1740cd955beaa0802b",
       "runtime_action": "engine.list_child_skills",
       "section_map": {
-        "action id": "- `engine.list_child_skills`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "engine.list_child_skills"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -1775,20 +1750,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "427b05078a7d0f662ca107b16940c5fc1302fc29",
+      "content_hash": "5352e172fbfb2d2672321522364699bcd8c24003",
       "runtime_action": "files.edit_text",
       "section_map": {
-        "action id": "- `files.edit_text`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "files.edit_text"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -1805,20 +1775,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "d95c0c3f2151d03fbcb3f53ebca012cf2db15926",
+      "content_hash": "62dcb85c74b373605f911e631555f07e15b1c967",
       "runtime_action": "files.list_dir",
       "section_map": {
-        "action id": "- `files.list_dir`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "files.list_dir"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -1835,20 +1800,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "6535f461db135eafc96e69504ca024256a8a91f2",
+      "content_hash": "cae4f8a66f67cae07cc4764cf6020abb4559e35d",
       "runtime_action": "files.read_text",
       "section_map": {
-        "action id": "- `files.read_text`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "files.read_text"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -1865,20 +1825,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "da1292c852dbe722521fa127422d9de2942c6d83",
+      "content_hash": "3d9a494e7f9e40b7ccebe88cff0488392779f1da",
       "runtime_action": "files.write_text",
       "section_map": {
-        "action id": "- `files.write_text`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "files.write_text"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -1895,20 +1850,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "edb88fee1045f0b2814e5e626f6882e0daaf05b7",
+      "content_hash": "9030a7049e73b50d8632eaa613f7d85d8d18c1d9",
       "runtime_action": "governance.inspect_tool_surface",
       "section_map": {
-        "action id": "- `governance.inspect_tool_surface`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "governance.inspect_tool_surface"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -1925,20 +1875,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "70060adc6c122463cd186808540b9956ab17eec0",
+      "content_hash": "4f6bf67813dd648524f54ea9c0b2f76ad58af482",
       "runtime_action": "governance.load_refs",
       "section_map": {
-        "action id": "- `governance.load_refs`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "governance.load_refs"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -1955,20 +1900,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "1c2cc07d2beaaa15cf832ce2109be1d6c81d92aa",
+      "content_hash": "5b8d04dfb2f34e7f7c9a2eeb185a4ba305d9bf8a",
       "runtime_action": "governance.normalize_tool_result",
       "section_map": {
-        "action id": "- `governance.normalize_tool_result`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "governance.normalize_tool_result"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -1985,20 +1925,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "2c29dc8156809395e4e91d387e563a16e7408c99",
+      "content_hash": "889d7e8563da4b8cb440ea2a8a6931a77e4f6d62",
       "runtime_action": "protocol.request_shutdown",
       "section_map": {
-        "action id": "- `protocol.request_shutdown`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "protocol.request_shutdown"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2015,20 +1950,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "346b7696f9279c2c42e67e387341d1a590c275ec",
+      "content_hash": "8ee1ced2d7108037a6e9ebd2abb038e8ea67a4ce",
       "runtime_action": "protocol.respond_shutdown",
       "section_map": {
-        "action id": "- `protocol.respond_shutdown`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "protocol.respond_shutdown"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2045,20 +1975,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "f17e2c11bea9da4d2b3c52e13fadf28a9c514c64",
+      "content_hash": "ebb4d886d47b6e33ebaaa03ced2a5b6fedf79ba8",
       "runtime_action": "protocol.review_plan",
       "section_map": {
-        "action id": "- `protocol.review_plan`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "protocol.review_plan"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2075,20 +2000,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "22bfb74bc78590c013a396616a39b920827d63e8",
+      "content_hash": "d9d2b780182354e6ada2a7499e167a4241317d04",
       "runtime_action": "protocol.submit_plan",
       "section_map": {
-        "action id": "- `protocol.submit_plan`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "protocol.submit_plan"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2105,20 +2025,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "5941ad38b67a4097ddb49f58ea8ac58758a42a44",
+      "content_hash": "5a1fecb122d253c8cb2f59f9abf71de73eb964c8",
       "runtime_action": "shell.run",
       "section_map": {
-        "action id": "- `shell.run`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "shell.run"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2135,20 +2050,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "d2aea1dcb8e9d7d68a771dc120bed6834e64167f",
+      "content_hash": "520a465fa3bab305d5272f5916d83df3d463d333",
       "runtime_action": "subagent.ask",
       "section_map": {
-        "action id": "- `subagent.ask`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "subagent.ask"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2165,20 +2075,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "4fd3cb76fdd016c5b0302b31dd71c3e18068c1db",
+      "content_hash": "20a562cffa9c2440d68e186351223fccd909f510",
       "runtime_action": "subagent.batch_run",
       "section_map": {
-        "action id": "- `subagent.batch_run`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "subagent.batch_run"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2195,20 +2100,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "43c90d127e8c216864e410166ac5cb7d3fd999e1",
+      "content_hash": "0e1607163edf1cb33ff01b84c9b5f6679b4a29fe",
       "runtime_action": "task.claim",
       "section_map": {
-        "action id": "- `task.claim`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "task.claim"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2225,20 +2125,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "3746c1e5123a6e80efbed5053680d650f7f23063",
+      "content_hash": "a36dd28050eef24a348f79e131f10adfe7854d07",
       "runtime_action": "task.create",
       "section_map": {
-        "action id": "- `task.create`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "task.create"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2255,20 +2150,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "470aa08d37bdaf74d7c134879dbbaf0262aa6b79",
+      "content_hash": "291f28c39d9b2563e1ab401dcb3e7d36a4ec7ded",
       "runtime_action": "task.get",
       "section_map": {
-        "action id": "- `task.get`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "task.get"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2285,20 +2175,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "a92baf325d07fe137a1f5b3c6ae0a10d76fb2a78",
+      "content_hash": "ba94545ab702e2998475ee97f97b5adbe92dbd2d",
       "runtime_action": "task.list",
       "section_map": {
-        "action id": "- `task.list`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "task.list"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2315,20 +2200,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "c9fd23bd3cdd002d4860023c8b9641f62f4cc34b",
+      "content_hash": "18b6452db435d234a519328e8f5e036dddaee8cc",
       "runtime_action": "task.update",
       "section_map": {
-        "action id": "- `task.update`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "task.update"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2345,20 +2225,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "f0b89c0100609fc7d2c02059f310952c69f01379",
+      "content_hash": "871559c0e794cb61b4aedac5c13a03ebc3a358b1",
       "runtime_action": "team.read_inbox",
       "section_map": {
-        "action id": "- `team.read_inbox`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "team.read_inbox"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2375,20 +2250,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "3c3ba537aa22f3a27d914a37b9462c1d0fec37d0",
+      "content_hash": "d6f1f2df728f4f91a8551b088e9f7ebe9f8c427c",
       "runtime_action": "todo.update",
       "section_map": {
-        "action id": "- `todo.update`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "todo.update"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2405,20 +2275,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "c5246163f9c240e6d30e13a942f0f180b4cbdb26",
+      "content_hash": "bacecfd265fda333f7e0912312d0aad4986ceb75",
       "runtime_action": "todo.view",
       "section_map": {
-        "action id": "- `todo.view`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "todo.view"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2646,20 +2511,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "7f303074c00d81645277b8940fa675fe6e928e3c",
+      "content_hash": "511059ce3cd96fb02628ed6a89b90f5f873cd133",
       "runtime_action": "workspace.create",
       "section_map": {
-        "action id": "- `workspace.create`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "workspace.create"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2676,20 +2536,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "d874c74983f29de8acf65dd1ddc541ef34deaa5e",
+      "content_hash": "f8edeb1f6da9cd53283105aa1ca727511160b1ea",
       "runtime_action": "workspace.keep",
       "section_map": {
-        "action id": "- `workspace.keep`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "workspace.keep"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2706,20 +2561,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "adacf4b5f2114d087756668c5efc4a276f2bd4cf",
+      "content_hash": "47cda23117373ebcf7dce5094a7309e670c81492",
       "runtime_action": "workspace.list",
       "section_map": {
-        "action id": "- `workspace.list`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "workspace.list"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2736,20 +2586,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "e09d23e28ffbad43429e28b09b7823e59b056a88",
+      "content_hash": "f597cdb45fc09636515ff71b251544c6121a4aba",
       "runtime_action": "workspace.remove",
       "section_map": {
-        "action id": "- `workspace.remove`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "workspace.remove"
-        ],
         "implementation": [
           "impl.py"
         ]
@@ -2766,20 +2611,15 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "83f65281e0dc75c8913096a189e7c69aa27390f5",
+      "content_hash": "27bae1a9ec57a6a5b4e1f66e4b8c626f4d8b523c",
       "runtime_action": "workspace.run",
       "section_map": {
-        "action id": "- `workspace.run`",
         "implementation": "- `impl.py`"
       },
       "section_links": {
-        "action id": [],
         "implementation": []
       },
       "code_items": {
-        "action id": [
-          "workspace.run"
-        ],
         "implementation": [
           "impl.py"
         ]

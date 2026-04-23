@@ -1,9 +1,6 @@
-# Files.read Text
+# Files Read Text
 
-Canonical tool page for `files.read_text`.
-
-## Action ID
-- `files.read_text`
+Read text content from a workspace file.
 
 ## Implementation
 - `impl.py`

@@ -1,9 +1,6 @@
-# Protocol.respond Shutdown
+# Protocol Respond Shutdown
 
-Canonical tool page for `protocol.respond_shutdown`.
-
-## Action ID
-- `protocol.respond_shutdown`
+Respond to a governed shutdown request.
 
 ## Implementation
 - `impl.py`

@@ -1,9 +1,6 @@
-# Task.create
+# Task Create
 
-Canonical tool page for `task.create`.
-
-## Action ID
-- `task.create`
+Create a task in the shared task queue.
 
 ## Implementation
 - `impl.py`

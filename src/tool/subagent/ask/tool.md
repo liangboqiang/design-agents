@@ -1,9 +1,6 @@
-# Subagent.ask
+# Subagent Ask
 
-Canonical tool page for `subagent.ask`.
-
-## Action ID
-- `subagent.ask`
+Delegate one focused question to a subagent.
 
 ## Implementation
 - `impl.py`

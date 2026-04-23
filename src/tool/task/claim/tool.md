@@ -1,9 +1,6 @@
-# Task.claim
+# Task Claim
 
-Canonical tool page for `task.claim`.
-
-## Action ID
-- `task.claim`
+Claim a task from the shared task queue.
 
 ## Implementation
 - `impl.py`

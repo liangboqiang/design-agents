@@ -1,9 +1,6 @@
-# Governance.load Refs
+# Governance Load Refs
 
-Canonical tool page for `governance.load_refs`.
-
-## Action ID
-- `governance.load_refs`
+Load referenced skills into the active governed surface.
 
 ## Implementation
 - `impl.py`

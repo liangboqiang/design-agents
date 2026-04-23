@@ -1,9 +1,6 @@
-# Todo.view
+# Todo View
 
-Canonical tool page for `todo.view`.
-
-## Action ID
-- `todo.view`
+Read the current runtime todo list.
 
 ## Implementation
 - `impl.py`

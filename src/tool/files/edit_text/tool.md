@@ -1,9 +1,6 @@
-# Files.edit Text
+# Files Edit Text
 
-Canonical tool page for `files.edit_text`.
-
-## Action ID
-- `files.edit_text`
+Edit text content inside a workspace file.
 
 ## Implementation
 - `impl.py`

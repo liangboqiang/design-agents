@@ -1,9 +1,6 @@
-# Workspace.create
+# Workspace Create
 
-Canonical tool page for `workspace.create`.
-
-## Action ID
-- `workspace.create`
+Create a workspace for the current task.
 
 ## Implementation
 - `impl.py`

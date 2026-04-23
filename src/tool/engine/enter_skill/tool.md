@@ -1,9 +1,6 @@
-# Engine.enter Skill
+# Engine Enter Skill
 
-Canonical tool page for `engine.enter_skill`.
-
-## Action ID
-- `engine.enter_skill`
+Enter a reachable skill and switch the active runtime scope.
 
 ## Implementation
 - `impl.py`

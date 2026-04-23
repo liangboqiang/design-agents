@@ -36,6 +36,7 @@ class RepositoryLint:
         self._check_skill_tool_links(result.entities)
         self._check_agent_runtime_sections(result.entities)
         self._check_tool_implementation_sections(result.entities)
+        self._check_tool_page_protocol_noise(result.entities)
 
         return {
             "status": "ok" if not self.issues else "error",
@@ -168,6 +169,22 @@ class RepositoryLint:
                     "truth_ext": node.truth_ext,
                 }
             )
+
+    def _check_tool_page_protocol_noise(self, entities: dict[str, Any]) -> None:
+        banned_markers = ("Canonical tool page", "## Action ID")
+        for node in entities.values():
+            if node.kind != "tool":
+                continue
+            text = (self.project_root / node.path).read_text(encoding="utf-8")
+            violations = [marker for marker in banned_markers if marker in text]
+            if violations:
+                self.issues.append(
+                    {
+                        "rule": "tool_page_not_protocolized",
+                        "path": node.path,
+                        "markers": violations,
+                    }
+                )
 
 
 def lint_repository(project_root: Path) -> str:

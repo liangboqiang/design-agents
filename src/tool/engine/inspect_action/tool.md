@@ -1,9 +1,6 @@
-# Engine.inspect Action
+# Engine Inspect Action
 
-Canonical tool page for `engine.inspect_action`.
-
-## Action ID
-- `engine.inspect_action`
+Inspect one action that is currently available in the runtime surface.
 
 ## Implementation
 - `impl.py`

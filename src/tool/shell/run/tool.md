@@ -1,9 +1,6 @@
-# Shell.run
+# Shell Run
 
-Canonical tool page for `shell.run`.
-
-## Action ID
-- `shell.run`
+Run a shell command in the current workspace.
 
 ## Implementation
 - `impl.py`

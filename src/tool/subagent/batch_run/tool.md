@@ -1,9 +1,6 @@
-# Subagent.batch Run
+# Subagent Batch Run
 
-Canonical tool page for `subagent.batch_run`.
-
-## Action ID
-- `subagent.batch_run`
+Run a batch of subagent jobs in one coordinated pass.
 
 ## Implementation
 - `impl.py`

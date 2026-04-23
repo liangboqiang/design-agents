@@ -1,9 +1,6 @@
-# Governance.normalize Tool Result
+# Governance Normalize Tool Result
 
-Canonical tool page for `governance.normalize_tool_result`.
-
-## Action ID
-- `governance.normalize_tool_result`
+Normalize tool outputs into a cleaner runtime result format.
 
 ## Implementation
 - `impl.py`
