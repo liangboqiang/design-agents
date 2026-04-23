@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
 from schemas.agent import AgentSpec
@@ -8,18 +7,13 @@ from schemas.skill import SkillSpec
 from shared.errors import RegistryError
 from tool.indexes.toolbox_registry import ToolboxRegistry
 
-from .protocol_index import (
-    ProtocolIndexer,
-    extract_markdown_links,
-    extract_markdown_title,
-    extract_section_code_items,
-    first_paragraph,
-    split_markdown_sections,
-)
+from .protocol_index import ProtocolIndexer, tool_link_to_action_id
 from .refs_resolver import RefsResolver
 
 
-TEXT_EXTENSIONS = {".md", ".markdown", ".txt", ".yaml", ".yml", ".json", ".csv", ".py", ".toml"}
+TEXT_EXTENSIONS = {".md", ".markdown", ".txt", ".yaml", ".yml", ".json", ".csv", ".py", ".toml", ".cfg", ".env"}
+
+LLM_SETTING_KEYS = {"provider", "model", "api_key", "base_url"}
 
 
 class GovernanceRegistry:
@@ -55,82 +49,47 @@ class GovernanceRegistry:
             if not skill_id.startswith("skill/"):
                 continue
             markdown = self.project_root / node.path
-            text = markdown.read_text(encoding="utf-8")
-            sections = split_markdown_sections(text)
-            children = self._links_from_sections(
-                sections,
-                {"子技能", "Child Skills", "Children"},
-                prefix="skill/",
-            )
-            refs = self._links_from_sections(
-                sections,
-                {"引用", "相关内容", "Refs", "Related"},
-                prefix="skill/",
-            )
-            actions = self._actions_from_sections(sections)
             skills[skill_id] = SkillSpec(
                 skill_id=skill_id,
-                name=extract_markdown_title(text, markdown.parent.name),
-                description=first_paragraph(text),
+                name=node.title,
+                description=node.summary,
                 directory=markdown.parent,
                 markdown_path=markdown,
-                markdown_body=text,
+                markdown_body=markdown.read_text(encoding="utf-8"),
                 frontmatter={},
-                children=children,
-                refs=refs,
-                actions=actions,
+                children=self._links_from_node(node, {"child skills"}, prefix="skill/"),
+                refs=self._links_from_node(node, {"refs"}, prefix="skill/"),
+                actions=self._actions_from_node(node),
                 tags=[],
                 knowledge_files=self._collect_knowledge_files(markdown.parent),
             )
         return skills
-
-    def _collect_knowledge_files(self, directory: Path) -> list[Path]:
-        knowledge_dir = directory / "knowledge"
-        if not knowledge_dir.exists():
-            return []
-        rows: list[Path] = []
-        for path in sorted(knowledge_dir.rglob("*")):
-            if path.is_file() and path.suffix.lower() in TEXT_EXTENSIONS:
-                rows.append(path)
-        return rows
-
-    def _skill_id_for(self, directory: Path) -> str:
-        try:
-            rel = directory.resolve().relative_to(self.skills_root)
-        except ValueError as exc:
-            raise RegistryError(
-                f"Skill reference escaped skills root: {directory.resolve()} is outside {self.skills_root}"
-            ) from exc
-        return str(rel).replace("\\", "/")
-
-    def _normalize_ref(self, owner_directory: Path, ref: str) -> str:
-        ref_path = (owner_directory / ref).resolve()
-        if ref_path.is_file():
-            ref_path = ref_path.parent
-        return self._skill_id_for(ref_path)
 
     def _scan_agent_specs(self) -> dict[str, AgentSpec]:
         specs: dict[str, AgentSpec] = {}
         for agent_id, node in sorted(self.protocol.entities.items()):
             if not agent_id.startswith("agent/"):
                 continue
-            markdown = self.project_root / node.path
-            text = markdown.read_text(encoding="utf-8")
-            sections = split_markdown_sections(text)
-            root_skill_links = self._links_from_sections(sections, {"根技能", "Root Skill"}, prefix="skill/")
+            root_skill_links = self._links_from_node(node, {"root skill"}, prefix="skill/")
             if not root_skill_links:
-                raise RegistryError(f"Agent page is missing a root skill link: {markdown}")
+                raise RegistryError(f"Agent page is missing a root skill link: {node.path}")
+
+            llm = self._mapping_from_settings(node.settings, include_keys=LLM_SETTING_KEYS)
+            context_policy = self._mapping_from_settings(node.settings, exclude_keys=LLM_SETTING_KEYS)
+            if not llm:
+                llm = self._mapping_from_items(self._code_items_from_node(node, "llm"))
+            if not context_policy:
+                context_policy = self._mapping_from_items(self._code_items_from_node(node, "context policy"))
+
             spec = AgentSpec(
                 name=agent_id.rsplit("/", 1)[-1],
                 root_skill=root_skill_links[0],
-                description=first_paragraph(text),
-                toolboxes=self._section_code_items(sections, "工具箱", "Toolboxes"),
-                capabilities=self._section_code_items(sections, "能力", "Capabilities"),
-                llm=self._llm_from_section(sections.get("LLM", "")),
-                context_policy=self._context_policy_from_section(
-                    sections.get("上下文策略", "") or sections.get("Context Policy", "")
-                ),
-                source_path=str(markdown.relative_to(self.project_root).as_posix()),
+                description=node.summary,
+                toolboxes=self._code_items_from_node(node, "toolboxes"),
+                capabilities=self._code_items_from_node(node, "capabilities"),
+                llm=llm,
+                context_policy=context_policy,
+                source_path=node.path,
             )
             specs[spec.name] = spec
         return specs
@@ -146,6 +105,16 @@ class GovernanceRegistry:
             if path.exists():
                 assets[name] = path
         return assets
+
+    def _collect_knowledge_files(self, directory: Path) -> list[Path]:
+        knowledge_dir = directory / "knowledge"
+        if not knowledge_dir.exists():
+            return []
+        rows: list[Path] = []
+        for path in sorted(knowledge_dir.rglob("*")):
+            if path.is_file() and path.suffix.lower() in TEXT_EXTENSIONS:
+                rows.append(path)
+        return rows
 
     def get_skill(self, skill_id: str) -> SkillSpec:
         return self.skills[skill_id]
@@ -195,13 +164,60 @@ class GovernanceRegistry:
         return sorted(set(rows))
 
     @staticmethod
-    def _links_from_sections(sections: dict[str, str], titles: set[str], *, prefix: str | None = None) -> list[str]:
+    def _links_from_node(node, titles: set[str], *, prefix: str | None = None) -> list[str]:  # noqa: ANN001
         rows: list[str] = []
         for title in titles:
-            for link in extract_markdown_links(sections.get(title, "")):
+            for link in node.section_links.get(title, []):
                 if prefix and not link.startswith(prefix):
                     continue
                 rows.append(link)
+        return GovernanceRegistry._ordered_unique(rows)
+
+    @staticmethod
+    def _code_items_from_node(node, *titles: str) -> list[str]:  # noqa: ANN001
+        rows: list[str] = []
+        for title in titles:
+            rows.extend(node.code_items.get(title, []))
+        return GovernanceRegistry._ordered_unique(rows)
+
+    def _actions_from_node(self, node) -> list[str]:  # noqa: ANN001
+        tool_links = self._links_from_node(node, {"tools"}, prefix="tool/")
+        rows = [tool_link_to_action_id(link) for link in tool_links]
+        rows.extend(self._code_items_from_node(node, "actions"))
+        return self._ordered_unique(rows)
+
+    @staticmethod
+    def _mapping_from_items(items: list[str]) -> dict[str, int | str]:
+        payload: dict[str, int | str] = {}
+        for item in items:
+            if "=" not in item:
+                continue
+            key, value = item.split("=", 1)
+            cleaned_key = key.strip().strip("`")
+            cleaned_value = value.strip().strip("`")
+            if not cleaned_key:
+                continue
+            payload[cleaned_key] = int(cleaned_value) if cleaned_value.isdigit() else cleaned_value
+        return payload
+
+    @staticmethod
+    def _mapping_from_settings(
+        settings: dict[str, str],
+        *,
+        include_keys: set[str] | None = None,
+        exclude_keys: set[str] | None = None,
+    ) -> dict[str, int | str]:
+        payload: dict[str, int | str] = {}
+        for key, value in settings.items():
+            if include_keys is not None and key not in include_keys:
+                continue
+            if exclude_keys is not None and key in exclude_keys:
+                continue
+            payload[key] = int(value) if value.isdigit() else value
+        return payload
+
+    @staticmethod
+    def _ordered_unique(rows: list[str]) -> list[str]:
         seen: set[str] = set()
         ordered: list[str] = []
         for item in rows:
@@ -210,57 +226,3 @@ class GovernanceRegistry:
             seen.add(item)
             ordered.append(item)
         return ordered
-
-    def _actions_from_sections(self, sections: dict[str, str]) -> list[str]:
-        rows: list[str] = []
-        for title in ("动作", "Actions", "使用动作", "入口动作"):
-            rows.extend(extract_section_code_items(sections.get(title, "")))
-        if rows:
-            return rows
-        tool_links = self._links_from_sections(
-            sections,
-            {"入口工具", "使用工具", "Tools", "相关内容"},
-            prefix="tool/",
-        )
-        return [self._tool_link_to_action_id(link) for link in tool_links]
-
-    @staticmethod
-    def _tool_link_to_action_id(link: str) -> str:
-        parts = link.split("/")
-        if len(parts) < 3:
-            return link.replace("/", ".")
-        return ".".join(parts[1:])
-
-    @staticmethod
-    def _llm_from_section(section: str) -> dict[str, str]:
-        payload: dict[str, str] = {}
-        for line in section.splitlines():
-            stripped = line.strip().lstrip("- ").strip()
-            if "=" not in stripped:
-                continue
-            key, value = stripped.split("=", 1)
-            payload[key.strip().strip("`")] = value.strip().strip("`")
-        return payload
-
-    @staticmethod
-    def _context_policy_from_section(section: str) -> dict[str, int | str]:
-        payload: dict[str, int | str] = {}
-        for line in section.splitlines():
-            stripped = line.strip().lstrip("- ").strip()
-            if "=" not in stripped:
-                continue
-            key, value = stripped.split("=", 1)
-            value = value.strip().strip("`")
-            if value.isdigit():
-                payload[key.strip().strip("`")] = int(value)
-            else:
-                payload[key.strip().strip("`")] = value
-        return payload
-
-    @staticmethod
-    def _section_code_items(sections: dict[str, str], *titles: str) -> list[str]:
-        for title in titles:
-            text = sections.get(title, "")
-            if text:
-                return extract_section_code_items(text)
-        return []

@@ -121,7 +121,6 @@ class EngineBuilder:
         )
         llm = LLMFactory.create(llm_config.provider, llm_config.model, llm_config.api_key, llm_config.base_url)
         knowledge_hub = KnowledgeHubService(project_root=project_root(), registry=registry, session=session)
-        knowledge_hub.ensure_bootstrap()
         failure_sink = FailureSink(session=session, audit=audit, events=events, runtime_state=runtime_state)
         fault_boundary = FaultBoundary(failure_sink)
         events.set_fault_reporter(fault_boundary.report)

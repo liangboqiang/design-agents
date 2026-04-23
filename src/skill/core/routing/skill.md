@@ -2,7 +2,7 @@
 
 Skill page for `skill/core/routing`.
 
-## Actions
-- `engine.list_child_skills`
-- `engine.enter_skill`
-- `governance.inspect_tool_surface`
+## Tools
+- [[tool/engine/list_child_skills]]
+- [[tool/engine/enter_skill]]
+- [[tool/governance/inspect_tool_surface]]

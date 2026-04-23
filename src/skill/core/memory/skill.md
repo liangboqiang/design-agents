@@ -2,6 +2,6 @@
 
 Skill page for `skill/core/memory`.
 
-## Actions
-- `compact.now`
-- `governance.load_refs`
+## Tools
+- [[tool/compact/now]]
+- [[tool/governance/load_refs]]

@@ -11,6 +11,7 @@ import requests
 from governance.protocol_index import ProtocolIndexer
 from governance.repo_lint import lint_repository
 
+from ..render import WikiLinkRenderer
 from ..store import WikiStore
 
 class SharedWikiService:
@@ -72,7 +73,8 @@ class SharedWikiService:
         tokens = [token for token in query.split() if token]
         for page_id, row in pages.items():
             body = self._read_repo_text(str(row.get("path") or ""))
-            hay = " ".join([str(row.get("title") or ""), str(row.get("path") or ""), body[:4000]]).lower()
+            summary = str(row.get("summary") or "").strip()
+            hay = " ".join([str(row.get("title") or ""), str(row.get("path") or ""), summary, body[:4000]]).lower()
             score = sum(hay.count(token) for token in tokens) if tokens else 1
             if score > 0 or not tokens:
                 scored.append(
@@ -83,7 +85,7 @@ class SharedWikiService:
                             "title": row.get("title"),
                             "path": row.get("path"),
                             "score": score,
-                            "summary": body[:400],
+                            "summary": summary or body[:400],
                         },
                     )
                 )
@@ -97,7 +99,9 @@ class SharedWikiService:
         row = (catalog.get("pages") or {}).get(page_id)
         if row is None:
             return f"Page not found: {page_id}"
-        return self._read_repo_text(str(row.get("path") or ""))
+        text = self._read_repo_text(str(row.get("path") or ""))
+        renderer = WikiLinkRenderer(index=self.store.read_index(), catalog=catalog)
+        return renderer.render(text)
 
     def read_source(self, page_id: str) -> str:
         self.ensure_store()

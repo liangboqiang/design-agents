@@ -23,10 +23,3 @@ General-purpose chat agent using the governed runtime and LLM Wiki knowledge hub
 
 ## Context
 - [[ctx/system/default]]
-
-## Context Policy
-- `max_prompt_chars=18000`
-
-## LLM
-- `provider=mock`
-- `model=mock`

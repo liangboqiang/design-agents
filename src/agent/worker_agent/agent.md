@@ -18,10 +18,3 @@ Thin worker agent that shares the same runtime and governance stack.
 
 ## Context
 - [[ctx/system/default]]
-
-## Context Policy
-- `max_prompt_chars=16000`
-
-## LLM
-- `provider=mock`
-- `model=mock`

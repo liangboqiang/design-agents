@@ -1,9 +1,10 @@
-# Wiki Admin.lint
+# Lint Wiki Store
 
-Canonical tool page for `wiki_admin.lint`.
-
-## Action ID
-- `wiki_admin.lint`
+Lint the shared wiki store and protocol links.
 
 ## Implementation
 - `impl.py`
+
+## Related Pages
+- [[skill/wiki_hub/lint]]
+- [[skill/wiki_hub/root]]

@@ -1,9 +1,6 @@
-# Wiki.read Source
+# Read Wiki Source
 
-Canonical tool page for `wiki.read_source`.
-
-## Action ID
-- `wiki.read_source`
+Read the original source text behind a wiki page.
 
 ## Implementation
 - `impl.py`

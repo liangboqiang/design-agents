@@ -6,15 +6,15 @@ Skill page for `skill/parts_design/crankshaft/root`.
 - [[skill/parts_design/common/requirement_parse]]
 - [[skill/parts_design/common/report]]
 
-## Actions
-- `engine.inspect_skill`
-- `engine.inspect_action`
-- `todo.update`
-- `todo.view`
-- `task.create`
-- `task.update`
-- `task.list`
-- `files.read_text`
-- `files.write_text`
-- `workspace.create`
-- `workspace.run`
+## Tools
+- [[tool/engine/inspect_skill]]
+- [[tool/engine/inspect_action]]
+- [[tool/todo/update]]
+- [[tool/todo/view]]
+- [[tool/task/create]]
+- [[tool/task/update]]
+- [[tool/task/list]]
+- [[tool/files/read_text]]
+- [[tool/files/write_text]]
+- [[tool/workspace/create]]
+- [[tool/workspace/run]]

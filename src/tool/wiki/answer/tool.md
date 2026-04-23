@@ -1,9 +1,6 @@
-# Wiki.answer
+# Answer From Wiki
 
-Canonical tool page for `wiki.answer`.
-
-## Action ID
-- `wiki.answer`
+Draft an answer from the shared wiki store.
 
 ## Implementation
 - `impl.py`

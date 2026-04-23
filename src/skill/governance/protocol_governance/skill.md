@@ -2,9 +2,9 @@
 
 Skill page for `skill/governance/protocol_governance`.
 
-## Actions
-- `protocol.request_shutdown`
-- `protocol.respond_shutdown`
-- `protocol.submit_plan`
-- `protocol.review_plan`
-- `team.read_inbox`
+## Tools
+- [[tool/protocol/request_shutdown]]
+- [[tool/protocol/respond_shutdown]]
+- [[tool/protocol/submit_plan]]
+- [[tool/protocol/review_plan]]
+- [[tool/team/read_inbox]]

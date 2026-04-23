@@ -2,6 +2,6 @@
 
 Skill page for `skill/governance/agent_build`.
 
-## Actions
-- `subagent.ask`
-- `subagent.batch_run`
+## Tools
+- [[tool/subagent/ask]]
+- [[tool/subagent/batch_run]]

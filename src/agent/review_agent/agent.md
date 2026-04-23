@@ -17,10 +17,3 @@ Review-focused agent with inspection-heavy surface defaults.
 
 ## Context
 - [[ctx/system/default]]
-
-## Context Policy
-- `max_prompt_chars=16000`
-
-## LLM
-- `provider=mock`
-- `model=mock`

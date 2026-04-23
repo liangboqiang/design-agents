@@ -2,9 +2,9 @@
 
 Skill page for `skill/governance/workspace_governance`.
 
-## Actions
-- `workspace.create`
-- `workspace.list`
-- `workspace.run`
-- `workspace.keep`
-- `workspace.remove`
+## Tools
+- [[tool/workspace/create]]
+- [[tool/workspace/list]]
+- [[tool/workspace/run]]
+- [[tool/workspace/keep]]
+- [[tool/workspace/remove]]

@@ -1,9 +1,10 @@
-# Wiki Admin.refresh System
+# Refresh Wiki System
 
-Canonical tool page for `wiki_admin.refresh_system`.
-
-## Action ID
-- `wiki_admin.refresh_system`
+Refresh the shared wiki index and system summaries.
 
 ## Implementation
 - `impl.py`
+
+## Related Pages
+- [[skill/wiki_hub/ingest]]
+- [[skill/wiki_hub/root]]

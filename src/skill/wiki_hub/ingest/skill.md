@@ -5,6 +5,6 @@ Skill page for `skill/wiki_hub/ingest`.
 ## Refs
 - [[skill/governance/agent_build]]
 
-## Actions
-- `wiki_admin.refresh_system`
-- `wiki_admin.ingest_files`
+## Tools
+- [[tool/wiki_admin/refresh_system]]
+- [[tool/wiki_admin/ingest_files]]

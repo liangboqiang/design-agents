@@ -2,5 +2,5 @@
 
 Skill page for `skill/wiki_hub/lint`.
 
-## Actions
-- `wiki_admin.lint`
+## Tools
+- [[tool/wiki_admin/lint]]

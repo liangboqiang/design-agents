@@ -9,13 +9,13 @@ Skill page for `skill/general/root`.
 ## Refs
 - [[skill/core/report]]
 
-## Actions
-- `engine.inspect_skill`
-- `engine.inspect_action`
-- `engine.enter_skill`
-- `engine.list_child_skills`
-- `files.list_dir`
-- `files.read_text`
-- `files.write_text`
-- `files.edit_text`
-- `shell.run`
+## Tools
+- [[tool/engine/inspect_skill]]
+- [[tool/engine/inspect_action]]
+- [[tool/engine/enter_skill]]
+- [[tool/engine/list_child_skills]]
+- [[tool/files/list_dir]]
+- [[tool/files/read_text]]
+- [[tool/files/write_text]]
+- [[tool/files/edit_text]]
+- [[tool/shell/run]]

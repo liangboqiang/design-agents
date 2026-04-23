@@ -2,9 +2,9 @@
 
 Skill page for `skill/parts_design/common/requirement_parse`.
 
-## Actions
-- `todo.update`
-- `todo.view`
-- `task.create`
-- `task.list`
-- `files.write_text`
+## Tools
+- [[tool/todo/update]]
+- [[tool/todo/view]]
+- [[tool/task/create]]
+- [[tool/task/list]]
+- [[tool/files/write_text]]

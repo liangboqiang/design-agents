@@ -25,10 +25,3 @@ Parts design agent with task, workspace, governance support, and an LLM Wiki can
 
 ## Context
 - [[ctx/system/default]]
-
-## Context Policy
-- `max_prompt_chars=22000`
-
-## LLM
-- `provider=mock`
-- `model=mock`

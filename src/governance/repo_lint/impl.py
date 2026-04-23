@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -14,6 +15,8 @@ LEGACY_PATTERNS = (
     "wiki" + ".refresh",
     "wiki" + ".ingest_files",
 )
+
+ACTION_LINE_RE = re.compile(r"^[-*]\s+`?([a-z][a-z0-9_]*\.[a-z0-9_]+)`?\s*$")
 
 
 @dataclass(slots=True)
@@ -30,6 +33,9 @@ class RepositoryLint:
         self._check_links(resolvable)
         self._check_legacy_paths()
         self._check_forbidden_other()
+        self._check_skill_tool_links(result.entities)
+        self._check_agent_runtime_sections(result.entities)
+        self._check_tool_implementation_sections(result.entities)
 
         return {
             "status": "ok" if not self.issues else "error",
@@ -60,10 +66,7 @@ class RepositoryLint:
             for link in extract_markdown_links(path.read_text(encoding="utf-8")):
                 if link in resolvable:
                     continue
-                if link.startswith("page/"):
-                    rule = "page_link_resolves"
-                else:
-                    rule = "entity_link_resolves"
+                rule = "page_link_resolves" if link.startswith("page/") else "entity_link_resolves"
                 self.issues.append(
                     {
                         "rule": rule,
@@ -99,6 +102,70 @@ class RepositoryLint:
                 {
                     "rule": "no_src_other",
                     "path": str(other_path.relative_to(self.project_root).as_posix()),
+                }
+            )
+
+    def _check_skill_tool_links(self, entities: dict[str, Any]) -> None:
+        for node_id, node in sorted(entities.items()):
+            if node.kind != "skill":
+                continue
+            path = self.project_root / node.path
+            text = path.read_text(encoding="utf-8")
+            if "actions" in node.section_map:
+                self.issues.append(
+                    {
+                        "rule": "skill_uses_tool_links",
+                        "path": node.path,
+                        "section": "actions",
+                    }
+                )
+                continue
+            for line in text.splitlines():
+                match = ACTION_LINE_RE.match(line.strip())
+                if not match:
+                    continue
+                action_id = match.group(1)
+                expected_link = f"[[tool/{action_id.replace('.', '/')}]]"
+                if expected_link not in text:
+                    self.issues.append(
+                        {
+                            "rule": "skill_uses_tool_links",
+                            "path": node.path,
+                            "action_id": action_id,
+                        }
+                    )
+
+    def _check_agent_runtime_sections(self, entities: dict[str, Any]) -> None:
+        banned_markers = ("## LLM", "## Context Policy", "provider=", "model=", "max_prompt_chars=")
+        for node in entities.values():
+            if node.kind != "agent":
+                continue
+            text = (self.project_root / node.path).read_text(encoding="utf-8")
+            violations = [marker for marker in banned_markers if marker in text]
+            if violations:
+                self.issues.append(
+                    {
+                        "rule": "agent_runtime_config_not_in_page",
+                        "path": node.path,
+                        "markers": violations,
+                    }
+                )
+
+    def _check_tool_implementation_sections(self, entities: dict[str, Any]) -> None:
+        for node in entities.values():
+            if node.kind != "tool":
+                continue
+            if "implementation" not in node.section_map:
+                continue
+            items = node.code_items.get("implementation", [])
+            if items == ["impl.py"] and "impl.py" in node.truth_ext:
+                continue
+            self.issues.append(
+                {
+                    "rule": "tool_impl_is_adjacent_impl_py",
+                    "path": node.path,
+                    "implementation_items": items,
+                    "truth_ext": node.truth_ext,
                 }
             )
 

@@ -2,6 +2,6 @@
 
 Skill page for `skill/governance/refs_bridge`.
 
-## Actions
-- `governance.load_refs`
-- `engine.inspect_skill`
+## Tools
+- [[tool/governance/load_refs]]
+- [[tool/engine/inspect_skill]]

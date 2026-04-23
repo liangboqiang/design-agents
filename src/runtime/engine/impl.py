@@ -3,12 +3,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from governance.registry import GovernanceRegistry
 from schemas.agent import AgentSpec
-from governance.protocol_index import (
-    extract_markdown_links,
-    first_paragraph,
-    split_markdown_sections,
-)
+from shared.paths import project_root
 
 from ..child_engine_factory import ChildEngineFactory
 from ..control_actions import build_control_action_specs
@@ -68,7 +65,9 @@ class Engine:
     @classmethod
     def from_agent_spec(cls, spec: AgentSpec, **overrides) -> "Engine":
         llm_overrides = dict(spec.llm)
-        llm_overrides.update({key: overrides.pop(key) for key in list(overrides.keys()) if key in {"provider", "model", "api_key", "base_url"}})
+        llm_overrides.update(
+            {key: overrides.pop(key) for key in list(overrides.keys()) if key in {"provider", "model", "api_key", "base_url"}}
+        )
         request = EngineBuildRequest(
             skill_root=overrides.pop("skill_root", spec.root_skill),
             provider=llm_overrides.get("provider"),
@@ -204,40 +203,6 @@ class Engine:
 
 
 def load_agent_spec(spec_path: Path) -> AgentSpec:
-    text = spec_path.read_text(encoding="utf-8")
-    sections = split_markdown_sections(text)
-    root_skill_links = [link for link in extract_markdown_links(sections.get("根技能", "")) if link.startswith("skill/")]
-    if not root_skill_links:
-        raise ValueError(f"Agent page is missing a root skill link: {spec_path}")
-    return AgentSpec(
-        name=spec_path.parent.name,
-        root_skill=root_skill_links[0],
-        description=first_paragraph(text),
-        toolboxes=_section_items(sections.get("工具箱", "")),
-        capabilities=_section_items(sections.get("能力", "")),
-        context_policy=_section_mapping(sections.get("上下文策略", "")),
-        llm=_section_mapping(sections.get("LLM", "")),
-        source_path=str(spec_path.as_posix()),
-    )
-
-
-def _section_items(text: str) -> list[str]:
-    rows: list[str] = []
-    for line in text.splitlines():
-        stripped = line.strip()
-        if stripped.startswith("- "):
-            value = stripped[2:].strip().strip("`")
-            if value:
-                rows.append(value)
-    return rows
-
-
-def _section_mapping(text: str) -> dict[str, int | str]:
-    rows: dict[str, int | str] = {}
-    for item in _section_items(text):
-        if "=" not in item:
-            continue
-        key, value = item.split("=", 1)
-        value = value.strip()
-        rows[key.strip()] = int(value) if value.isdigit() else value
-    return rows
+    spec_path = Path(spec_path).resolve()
+    registry = GovernanceRegistry(project_root())
+    return registry.get_agent_spec(spec_path.parent.name)

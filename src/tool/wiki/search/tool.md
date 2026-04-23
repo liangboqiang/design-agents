@@ -1,9 +1,6 @@
-# Wiki.search
+# Search Wiki
 
-Canonical tool page for `wiki.search`.
-
-## Action ID
-- `wiki.search`
+Search pages in the shared wiki store.
 
 ## Implementation
 - `impl.py`

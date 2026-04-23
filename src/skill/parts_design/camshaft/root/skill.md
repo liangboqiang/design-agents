@@ -5,7 +5,7 @@ Skill page for `skill/parts_design/camshaft/root`.
 ## Refs
 - [[skill/parts_design/common/report]]
 
-## Actions
-- `files.read_text`
-- `files.write_text`
-- `shell.run`
+## Tools
+- [[tool/files/read_text]]
+- [[tool/files/write_text]]
+- [[tool/shell/run]]

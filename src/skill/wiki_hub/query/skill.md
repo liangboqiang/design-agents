@@ -2,8 +2,8 @@
 
 Skill page for `skill/wiki_hub/query`.
 
-## Actions
-- `wiki.search`
-- `wiki.read_page`
-- `wiki.read_source`
-- `wiki.answer`
+## Tools
+- [[tool/wiki/search]]
+- [[tool/wiki/read_page]]
+- [[tool/wiki/read_source]]
+- [[tool/wiki/answer]]

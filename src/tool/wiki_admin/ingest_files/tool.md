@@ -1,9 +1,10 @@
-# Wiki Admin.ingest Files
+# Ingest Wiki Files
 
-Canonical tool page for `wiki_admin.ingest_files`.
-
-## Action ID
-- `wiki_admin.ingest_files`
+Ingest user-provided files into the shared wiki store.
 
 ## Implementation
 - `impl.py`
+
+## Related Pages
+- [[skill/wiki_hub/ingest]]
+- [[skill/wiki_hub/root]]
