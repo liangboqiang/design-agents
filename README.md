@@ -2,22 +2,24 @@
 
 This repository now follows a `src/`-first architecture built around the v6.3 single-page truth protocol:
 
-- flat resource layers under `src/skill`, `src/tool`, `src/ctx`, and `src/agent`
-- a protocol index that scans `src/` by folder and treats `<kind>.md` as the entity truth page for that folder
-- a unified `GovernanceRegistry` that assembles skill and agent specs from the protocol index read model
-- `SkillRuntime + SurfaceResolver + ContextAssembler + Harness` as the main execution spine
+- flat resource layers under `src/skill`, `src/tool`, `src/context`, and `src/agent`
+- a protocol index that scans `src/` by folder and treats `page.md` as the entity truth page for that folder
+- a unified `SpecRegistry` that assembles skill and agent specs from the protocol index read model
+- `SkillState + SurfaceResolver + PromptAssembler + TurnDriver` as the main execution spine
 - event-driven governance additions with audit trails
-- thin agent entrypoints that assemble runtime behavior from `agent.md` truth pages
+- thin agent entrypoints that assemble runtime behavior from `page.md` truth pages
 
 ## Layout
 
 ```text
 src/
   agent/
-  ctx/
+  context/
   domain/
   governance/
+  harness/
   llm/
+  prompt/
   runtime/
   schemas/
   shared/
@@ -25,7 +27,7 @@ src/
   storage/
   tool/
   wiki/
-  wiki_store/
+  wiki/store/
 tests/
 ```
 
@@ -50,7 +52,7 @@ Explicit constructor arguments or agent/test overrides still win over `.env`.
 
 ## Agent Entrypoints
 
-Agent entrypoints live in `src/agent/<name>/`, and each one is backed by an `agent.md` page in the same folder.
+Agent entrypoints live in `src/agent/<name>/`, and each one is backed by an `page.md` page in the same folder.
 
 - `src/agent/general_chat/`
 - `src/agent/parts_design_chat/`
@@ -58,7 +60,7 @@ Agent entrypoints live in `src/agent/<name>/`, and each one is backed by an `age
 - `src/agent/review_agent/`
 
 Each entrypoint uses the same `runtime.engine.Engine` and differs only by page-driven assembly.
-Runtime-only agent settings such as `provider`, `model`, and prompt budgets live in adjacent truth-extension files like `runtime.cfg`, not in `agent.md`.
+Runtime-only agent settings such as `provider`, `model`, and prompt budgets live in adjacent truth-extension files like `runtime.toml`, not in `page.md`.
 
 ## Running the Thin Test Entrypoints
 
@@ -88,11 +90,11 @@ These tests validate:
 ## Key Runtime Components
 
 - `governance/protocol_index/impl.py`: single read model for entity/page indexing, summaries, links, and lightweight section metadata
-- `governance/registry.py`: assembly layer that consumes the protocol index read model
-- `runtime/skill_runtime.py`: active skill closure and child/ref navigation
-- `governance/surface_resolver.py`: final action/tool/skill surface resolution
-- `ctx/assembler/context_assembler.py`: identity/surface/state/expansion/feedback prompt assembly
-- `runtime/harness.py`: thin loop for lifecycle, model calls, parsing, dispatching, and continuation
+- `governance/registry/spec_registry.py`: assembly layer that consumes the protocol index read model
+- `runtime/skill_state.py`: active skill closure and child/ref navigation
+- `governance/surface/surface_resolver.py`: final action/tool/skill surface resolution
+- `prompt/prompt_assembler.py`: identity/surface/state/expansion/feedback prompt assembly
+- `harness/turn_driver.py`: thin loop for lifecycle, model calls, parsing, dispatching, and continuation
 - `runtime/engine.py`: the only external runtime entrypoint
 
 ## Runtime Data
@@ -112,9 +114,9 @@ These tests validate:
 
 ## Upgrade Notes
 
-- skill truth lives in `src/skill/**/skill.md`
-- agent truth lives in `src/agent/**/agent.md`
-- context truth lives in `src/ctx/**/ctx.md`
-- tool truth lives in `src/tool/**/tool.md`
+- skill truth lives in `src/skill/**/page.md`
+- agent truth lives in `src/agent/**/page.md`
+- context truth lives in `src/context/**/page.md`
+- tool truth lives in `src/tool/**/page.md`
 - folders may also contain one non-entity page when the single markdown file is not named after its top-level kind
-- shared wiki state lives in `src/wiki_store/`
+- shared wiki state lives in `src/wiki/store/`

@@ -3,8 +3,7 @@ from __future__ import annotations
 import json
 import time
 
-from ctx.compaction.micro_compact import micro_compact
-from ctx.compaction.summary_compact import build_summary
+from prompt.history_compressor import build_summary, micro_compact
 from schemas.action import ActionSpec
 
 from .base import Capability

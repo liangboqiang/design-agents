@@ -15,7 +15,7 @@ class WikiIngestPolicy:
     SYSTEM_PREFIXES = (
         "src/skill/",
         "src/agent/",
-        "src/ctx/",
+        "src/context/",
         "src/tool/",
         "src/runtime/",
         "src/governance/",
@@ -39,7 +39,7 @@ class WikiIngestPolicy:
             return False
         if path.name.startswith(".") or "__pycache__" in path.parts:
             return False
-        if rel.startswith("src/wiki_store/") or rel.startswith(".runtime_data/"):
+        if rel.startswith("src/wiki/store/") or rel.startswith(".runtime_data/"):
             return False
         if rel.endswith("/__init__.py"):
             return False

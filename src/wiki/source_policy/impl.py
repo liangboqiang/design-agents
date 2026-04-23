@@ -15,14 +15,16 @@ class WikiSourcePolicy:
             return False, "", []
         if rel.startswith("tests/"):
             return False, "", []
-        if rel.endswith("/skill.md"):
-            return True, "skill", ["skill", "system"]
-        if rel.endswith("/agent.md") and rel.startswith("src/agent/"):
+        if rel.endswith("/page.md") and rel.startswith("src/agent/"):
             return True, "agent", ["agent", "system"]
-        if rel.endswith("/ctx.md") and rel.startswith("src/ctx/"):
+        if rel.endswith("/page.md") and rel.startswith("src/context/"):
             return True, "context_template", ["context", "system"]
-        if rel.endswith("/tool.md") and rel.startswith("src/tool/"):
+        if rel.endswith("/page.md") and rel.startswith("src/tool/"):
             return True, "tool_page", ["tool", "system"]
+        if rel.endswith("/page.md") and rel.startswith("src/skill/"):
+            return True, "skill", ["skill", "system"]
+        if rel.endswith("/page.md"):
+            return True, "page", ["system"]
         if rel.startswith("src/tool/") and path.suffix in {".py", ".md", ".json", ".yaml", ".yml", ".txt"}:
             return True, "tool_source", ["tool", "system"]
         if rel.startswith("src/runtime/") and path.suffix == ".py":

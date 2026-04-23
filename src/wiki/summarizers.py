@@ -39,10 +39,12 @@ def _safe_text(path: Path, *, limit: int) -> str:
 def summarize_file(path: Path, relpath: str, *, kind: str, config: WikiConfig) -> tuple[str, list[str], str, dict]:
     suffix = path.suffix.lower()
     text = _safe_text(path, limit=config.max_file_chars)
-    if path.name == "skill.md":
-        return _summarize_skill_page(relpath, text, config)
-    if path.name == "agent.md":
-        return _summarize_agent_page(relpath, text, config)
+    if path.name == "page.md":
+        if kind == "skill":
+            return _summarize_skill_page(relpath, text, config)
+        if kind == "agent":
+            return _summarize_agent_page(relpath, text, config)
+        return _summarize_text(path, relpath, text, config)
     if suffix == ".py":
         return _summarize_python(relpath, text, config)
     if suffix in {".yaml", ".yml", ".json", ".toml"}:

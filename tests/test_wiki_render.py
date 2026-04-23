@@ -28,4 +28,4 @@ def test_read_page_renders_inline_links_with_store_summaries() -> None:
 
     body = service.read_page("wiki/render")
 
-    assert "Wiki Service - Shared wiki adapter backed by `src/wiki_store`." in body
+    assert "Wiki Service - Shared wiki adapter backed by `src/wiki/store`." in body

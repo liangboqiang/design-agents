@@ -16,6 +16,34 @@ LEGACY_PATTERNS = (
     "wiki" + ".ingest_files",
 )
 
+FORBIDDEN_PATHS = (
+    "src/ctx",
+    "src/wiki_store",
+    "src/context/assembler",
+    "src/context/indexes",
+    "src/context/policies",
+    "src/context/compaction",
+    "src/governance/registry.py",
+    "src/governance/refs_resolver.py",
+    "src/governance/surface_resolver.py",
+    "src/runtime/engine_builder.py",
+    "src/runtime/engine_control.py",
+    "src/runtime/engine_ports.py",
+    "src/runtime/response_parser.py",
+    "src/runtime/action_compiler.py",
+    "src/runtime/session_runtime.py",
+    "src/runtime/skill_runtime.py",
+    "src/runtime/child_engine_factory.py",
+    "src/runtime/core_participants.py",
+    "src/runtime/faults.py",
+    "src/runtime/fault_boundary.py",
+    "src/runtime/failure_sink.py",
+    "src/runtime/engine",
+    "src/runtime/harness",
+    "src/runtime/dispatcher",
+    "src/runtime/lifecycle",
+)
+
 ACTION_LINE_RE = re.compile(r"^[-*]\s+`?([a-z][a-z0-9_]*\.[a-z0-9_]+)`?\s*$")
 
 
@@ -32,6 +60,7 @@ class RepositoryLint:
         self._check_single_markdown_rule()
         self._check_links(resolvable)
         self._check_legacy_paths()
+        self._check_forbidden_paths()
         self._check_forbidden_other()
         self._check_skill_tool_links(result.entities)
         self._check_agent_runtime_sections(result.entities)
@@ -103,6 +132,18 @@ class RepositoryLint:
                 {
                     "rule": "no_src_other",
                     "path": str(other_path.relative_to(self.project_root).as_posix()),
+                }
+            )
+
+    def _check_forbidden_paths(self) -> None:
+        for rel in FORBIDDEN_PATHS:
+            path = self.project_root / rel
+            if not path.exists():
+                continue
+            self.issues.append(
+                {
+                    "rule": "no_legacy_blueprint_paths",
+                    "path": rel,
                 }
             )
 

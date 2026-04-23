@@ -8,7 +8,7 @@ from typing import Any
 class WikiStore:
     def __init__(self, project_root: Path):
         self.project_root = Path(project_root).resolve()
-        self.root = self.project_root / "src" / "wiki_store"
+        self.root = self.project_root / "src" / "wiki/store"
         self.jobs_dir = self.root / "jobs"
         self.attachments_dir = self.root / "attachments"
         self.index_path = self.root / "index.json"

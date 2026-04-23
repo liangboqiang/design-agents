@@ -19,26 +19,28 @@ def test_repository_lint_flags_new_consolidation_rules(tmp_path: Path) -> None:
     agent_dir = tmp_path / "src" / "agent" / "demo"
     tool_dir = tmp_path / "src" / "tool" / "demo" / "run"
     noisy_tool_dir = tmp_path / "src" / "tool" / "demo" / "legacy"
+    legacy_runtime_dir = tmp_path / "src" / "runtime" / "harness"
 
     skill_dir.mkdir(parents=True)
     agent_dir.mkdir(parents=True)
     tool_dir.mkdir(parents=True)
     noisy_tool_dir.mkdir(parents=True)
+    legacy_runtime_dir.mkdir(parents=True)
 
-    (skill_dir / "skill.md").write_text(
+    (skill_dir / "page.md").write_text(
         "# Demo Root\n\n## Actions\n- `wiki_admin.refresh_system`\n",
         encoding="utf-8",
     )
-    (agent_dir / "agent.md").write_text(
+    (agent_dir / "page.md").write_text(
         "# Demo Agent\n\n## Root Skill\n- [[skill/demo/root]]\n\n## LLM\n- `provider=mock`\n",
         encoding="utf-8",
     )
-    (tool_dir / "tool.md").write_text(
+    (tool_dir / "page.md").write_text(
         "# Demo Run\n\n## Implementation\n- `other.py`\n",
         encoding="utf-8",
     )
     (tool_dir / "other.py").write_text("ACTION_ID = 'demo.run'\n", encoding="utf-8")
-    (noisy_tool_dir / "tool.md").write_text(
+    (noisy_tool_dir / "page.md").write_text(
         "# Demo Legacy\n\nCanonical tool page for `demo.legacy`.\n\n## Action ID\n- `demo.legacy`\n\n## Implementation\n- `impl.py`\n",
         encoding="utf-8",
     )
@@ -51,3 +53,4 @@ def test_repository_lint_flags_new_consolidation_rules(tmp_path: Path) -> None:
     assert "agent_runtime_config_not_in_page" in rules
     assert "tool_impl_is_adjacent_impl_py" in rules
     assert "tool_page_not_protocolized" in rules
+    assert "no_legacy_blueprint_paths" in rules

@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import runtime.engine_builder as engine_builder_module
+import runtime.builder as engine_builder_module
 from governance.registry import GovernanceRegistry
-from runtime.engine_builder import EngineBuildRequest, EngineBuilder
+from runtime.builder import EngineBuildRequest, EngineBuilder
 
 
 ROOT = Path(__file__).resolve().parents[1]

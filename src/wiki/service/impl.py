@@ -15,7 +15,7 @@ from ..render import WikiLinkRenderer
 from ..store import WikiStore
 
 class SharedWikiService:
-    """Shared knowledge adapter backed by ``src/wiki_store``."""
+    """Shared knowledge adapter backed by ``src/wiki/store``."""
 
     def __init__(self, *, project_root: Path, registry):  # noqa: ANN001
         self.project_root = Path(project_root).resolve()
@@ -137,7 +137,7 @@ class SharedWikiService:
     def system_brief(self) -> str:
         self.ensure_store()
         catalog = self.store.read_catalog()
-        return f"Shared wiki store: {len(catalog.get('pages') or {})} page(s) available under src/wiki_store."
+        return f"Shared wiki store: {len(catalog.get('pages') or {})} page(s) available under src/wiki/store."
 
     def _read_repo_text(self, rel_path: str) -> str:
         path = (self.project_root / rel_path).resolve()

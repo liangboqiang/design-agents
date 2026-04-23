@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import tomllib
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -45,7 +46,7 @@ SECTION_TITLE_ALIASES = {
     "能力": "capabilities",
 }
 
-SETTINGS_FILENAMES = ("runtime.cfg", "profile.env", "overrides.json")
+SETTINGS_FILENAMES = ("runtime.toml", "profile.env", "overrides.json")
 
 GENERIC_SUMMARY_PATTERNS = (
     re.compile(r"^skill page for\b", re.IGNORECASE),
@@ -308,6 +309,17 @@ def parse_truth_settings(folder: Path, truth_ext: list[str]) -> dict[str, str]:
                         continue
                     settings[str(key)] = str(value)
             continue
+        if name.endswith(".toml"):
+            try:
+                payload = tomllib.loads(text)
+            except tomllib.TOMLDecodeError:
+                continue
+            if isinstance(payload, dict):
+                for key, value in payload.items():
+                    if value is None:
+                        continue
+                    settings[str(key)] = str(value)
+            continue
         for line in text.splitlines():
             stripped = line.strip()
             if not stripped or stripped.startswith("#") or "=" not in stripped:
@@ -382,7 +394,7 @@ def build_node_summary(
         if code_items.get("capabilities"):
             parts.append(f"Capabilities: {len(code_items['capabilities'])}.")
         return clip_summary(" ".join(parts))
-    if kind == "ctx":
+    if kind == "context":
         return clip_summary(f"Context asset for {title}.")
     return clip_summary(lead or f"{kind.capitalize()} page for {title}.")
 
@@ -391,7 +403,7 @@ class ProtocolIndexer:
     def __init__(self, project_root: Path):
         self.project_root = Path(project_root).resolve()
         self.src_root = self.project_root / "src"
-        self.store_root = self.src_root / "wiki_store"
+        self.store_root = self.src_root / "wiki/store"
         self.index_path = self.store_root / "index.json"
         self.catalog_path = self.store_root / "catalog.json"
         self.graph_path = self.store_root / "graph.json"
@@ -439,8 +451,6 @@ class ProtocolIndexer:
         for folder in sorted(self.src_root.rglob("*")):
             if not folder.is_dir():
                 continue
-            if folder == self.store_root:
-                continue
             if "__pycache__" in folder.parts:
                 continue
             yield folder
@@ -448,7 +458,7 @@ class ProtocolIndexer:
     def _build_node(self, folder: Path, markdown: Path) -> ProtocolNode:
         rel_folder = folder.relative_to(self.src_root).as_posix()
         kind = rel_folder.split("/", 1)[0]
-        is_entity = markdown.name == f"{kind}.md"
+        is_entity = markdown.name == "page.md"
         node_id = rel_folder if is_entity else f"page/{rel_folder}"
         text = markdown.read_text(encoding="utf-8")
         truth_ext = sorted(
