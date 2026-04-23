@@ -4,9 +4,16 @@ import ast
 import json
 import re
 from pathlib import Path
-from typing import Iterable
 
 import yaml
+
+from governance.protocol_index import (
+    extract_markdown_links,
+    extract_markdown_title,
+    extract_section_code_items,
+    first_paragraph,
+    split_markdown_sections,
+)
 
 from .config import WikiConfig
 
@@ -32,45 +39,46 @@ def _safe_text(path: Path, *, limit: int) -> str:
 def summarize_file(path: Path, relpath: str, *, kind: str, config: WikiConfig) -> tuple[str, list[str], str, dict]:
     suffix = path.suffix.lower()
     text = _safe_text(path, limit=config.max_file_chars)
-    if path.name == "SKILL.md":
-        return _summarize_skill_markdown(path, relpath, text, config)
-    if path.name.endswith(".agent.yaml"):
-        return _summarize_agent_spec(path, relpath, text, config)
+    if path.name == "skill.md":
+        return _summarize_skill_page(relpath, text, config)
+    if path.name == "agent.md":
+        return _summarize_agent_page(relpath, text, config)
     if suffix == ".py":
-        return _summarize_python(path, relpath, text, kind, config)
+        return _summarize_python(relpath, text, config)
     if suffix in {".yaml", ".yml", ".json", ".toml"}:
-        return _summarize_structured(path, relpath, text, kind, config)
+        return _summarize_structured(relpath, text, config)
     if suffix in {".md", ".markdown", ".txt", ".csv"}:
-        return _summarize_text(path, relpath, text, kind, config)
+        return _summarize_text(path, relpath, text, config)
     return (path.stem, [f"Source file: {relpath}"], _clip(text, config.max_excerpt_chars), {})
 
 
-def _summarize_skill_markdown(path: Path, relpath: str, text: str, config: WikiConfig):
-    meta, body = _split_frontmatter(text)
-    title = str(meta.get("name") or path.parent.name)
+def _summarize_skill_page(relpath: str, text: str, config: WikiConfig):
+    sections = split_markdown_sections(text)
+    title = extract_markdown_title(text, Path(relpath).parent.name)
     summary = [
-        f"Skill id: {relpath.replace('/SKILL.md', '')}",
-        f"Description: {str(meta.get('description') or '').strip() or 'No explicit description.'}",
+        f"Skill page: {relpath}",
+        f"Lead: {first_paragraph(text) or 'No lead paragraph.'}",
     ]
-    actions = [str(item) for item in meta.get("actions") or []]
-    if actions:
-        summary.append("Primary actions: " + ", ".join(actions[:8]))
-    children = [str(item) for item in meta.get("children") or []]
+    children = [link for link in extract_markdown_links(sections.get("Child Skills", "")) if link.startswith("skill/")]
+    refs = [link for link in extract_markdown_links(sections.get("Refs", "")) if link.startswith("skill/")]
+    actions = extract_section_code_items(sections.get("Actions", ""))
     if children:
         summary.append("Child skills: " + ", ".join(children[:8]))
-    excerpt = _clip(body.strip(), config.max_excerpt_chars)
-    return title, summary[: config.max_summary_lines], excerpt, {"actions": actions, "children": children}
+    if refs:
+        summary.append("Refs: " + ", ".join(refs[:8]))
+    if actions:
+        summary.append("Actions: " + ", ".join(actions[:8]))
+    excerpt = _clip(text, config.max_excerpt_chars)
+    return title, summary[: config.max_summary_lines], excerpt, {"actions": actions, "children": children, "refs": refs}
 
 
-def _summarize_agent_spec(path: Path, relpath: str, text: str, config: WikiConfig):
-    payload = yaml.safe_load(text) or {}
-    title = str(payload.get("name") or path.stem)
-    summary = [
-        f"Agent spec: {title}",
-        f"Root skill: {str(payload.get('root_skill') or 'unknown')}",
-    ]
-    toolboxes = [str(item) for item in payload.get("toolboxes") or []]
-    capabilities = [str(item) for item in payload.get("capabilities") or []]
+def _summarize_agent_page(relpath: str, text: str, config: WikiConfig):
+    sections = split_markdown_sections(text)
+    title = extract_markdown_title(text, Path(relpath).parent.name)
+    root_skill = next((link for link in extract_markdown_links(sections.get("Root Skill", "")) if link.startswith("skill/")), "")
+    toolboxes = extract_section_code_items(sections.get("Toolboxes", ""))
+    capabilities = extract_section_code_items(sections.get("Capabilities", ""))
+    summary = [f"Agent page: {title}", f"Root skill: {root_skill or 'unknown'}"]
     if toolboxes:
         summary.append("Toolboxes: " + ", ".join(toolboxes[:8]))
     if capabilities:
@@ -79,8 +87,8 @@ def _summarize_agent_spec(path: Path, relpath: str, text: str, config: WikiConfi
     return title, summary[: config.max_summary_lines], excerpt, {"toolboxes": toolboxes, "capabilities": capabilities}
 
 
-def _summarize_python(path: Path, relpath: str, text: str, kind: str, config: WikiConfig):
-    title = path.stem.replace("_", "-")
+def _summarize_python(relpath: str, text: str, config: WikiConfig):
+    title = Path(relpath).stem.replace("_", "-")
     summary: list[str] = [f"Python module: {relpath}"]
     meta: dict[str, object] = {}
     try:
@@ -101,14 +109,14 @@ def _summarize_python(path: Path, relpath: str, text: str, kind: str, config: Wi
     return title, summary[: config.max_summary_lines], excerpt, meta
 
 
-def _summarize_structured(path: Path, relpath: str, text: str, kind: str, config: WikiConfig):
-    title = path.stem.replace("_", "-")
+def _summarize_structured(relpath: str, text: str, config: WikiConfig):
+    title = Path(relpath).stem.replace("_", "-")
     summary = [f"Structured file: {relpath}"]
     meta = {}
     try:
-        if path.suffix.lower() in {".yaml", ".yml"}:
+        if relpath.endswith((".yaml", ".yml")):
             payload = yaml.safe_load(text) or {}
-        elif path.suffix.lower() == ".json":
+        elif relpath.endswith(".json"):
             payload = json.loads(text or "{}")
         else:
             payload = {}
@@ -125,7 +133,7 @@ def _summarize_structured(path: Path, relpath: str, text: str, kind: str, config
     return title, summary[: config.max_summary_lines], excerpt, meta
 
 
-def _summarize_text(path: Path, relpath: str, text: str, kind: str, config: WikiConfig):
+def _summarize_text(path: Path, relpath: str, text: str, config: WikiConfig):
     lines = _nonempty_lines(text)
     heading = _HEADING_RE.search(text)
     bullets = [match.group(1).strip() for match in _BULLET_RE.finditer(text)]
@@ -137,15 +145,3 @@ def _summarize_text(path: Path, relpath: str, text: str, kind: str, config: Wiki
         summary.append(_clip(bullet, 180))
     excerpt = _clip(text, config.max_excerpt_chars)
     return title, summary[: config.max_summary_lines], excerpt, {"line_count": len(lines)}
-
-
-def _split_frontmatter(text: str) -> tuple[dict, str]:
-    stripped = text.strip()
-    if not stripped.startswith("---"):
-        return {}, text
-    parts = text.split("---", 2)
-    if len(parts) < 3:
-        return {}, text
-    meta = yaml.safe_load(parts[1]) or {}
-    body = parts[2].lstrip("\n")
-    return meta, body

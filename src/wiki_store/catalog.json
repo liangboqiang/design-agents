@@ -1,0 +1,348 @@
+{
+  "pages": {
+    "agent/general_chat": {
+      "title": "General Chat",
+      "path": "src/agent/general_chat/agent.md"
+    },
+    "agent/parts_design_chat": {
+      "title": "Parts Design Chat",
+      "path": "src/agent/parts_design_chat/agent.md"
+    },
+    "agent/review_agent": {
+      "title": "Review Agent",
+      "path": "src/agent/review_agent/agent.md"
+    },
+    "agent/wiki_front_chat": {
+      "title": "Wiki Front Chat",
+      "path": "src/agent/wiki_front_chat/agent.md"
+    },
+    "agent/worker_agent": {
+      "title": "Worker Agent",
+      "path": "src/agent/worker_agent/agent.md"
+    },
+    "ctx/compact_summary/default": {
+      "title": "Default Compact Summary Context",
+      "path": "src/ctx/compact_summary/default/ctx.md"
+    },
+    "ctx/system/default": {
+      "title": "Default System Context",
+      "path": "src/ctx/system/default/ctx.md"
+    },
+    "ctx/tool_result/default": {
+      "title": "Default Tool Result Context",
+      "path": "src/ctx/tool_result/default/ctx.md"
+    },
+    "domain/camshaft": {
+      "title": "Camshaft Domain",
+      "path": "src/domain/camshaft/domain.md"
+    },
+    "domain/connecting_rod": {
+      "title": "Connecting Rod Domain",
+      "path": "src/domain/connecting_rod/domain.md"
+    },
+    "domain/crankshaft": {
+      "title": "Crankshaft Domain",
+      "path": "src/domain/crankshaft/domain.md"
+    },
+    "governance/agent_build": {
+      "title": "Agent Build Governance",
+      "path": "src/governance/agent_build/governance.md"
+    },
+    "governance/protocol_index": {
+      "title": "Protocol Index",
+      "path": "src/governance/protocol_index/governance.md"
+    },
+    "governance/repo_lint": {
+      "title": "Repository Lint",
+      "path": "src/governance/repo_lint/governance.md"
+    },
+    "page/skill/parts_design/root/knowledge": {
+      "title": "Parts Design Knowledge",
+      "path": "src/skill/parts_design/root/knowledge/README.md"
+    },
+    "page/skill/wiki_hub/root/knowledge": {
+      "title": "Wiki Hub Knowledge Seed",
+      "path": "src/skill/wiki_hub/root/knowledge/README.md"
+    },
+    "runtime/dispatcher": {
+      "title": "Dispatcher Runtime",
+      "path": "src/runtime/dispatcher/runtime.md"
+    },
+    "runtime/engine": {
+      "title": "Engine Runtime",
+      "path": "src/runtime/engine/runtime.md"
+    },
+    "runtime/harness": {
+      "title": "Harness Runtime",
+      "path": "src/runtime/harness/runtime.md"
+    },
+    "runtime/lifecycle": {
+      "title": "Lifecycle Runtime",
+      "path": "src/runtime/lifecycle/runtime.md"
+    },
+    "skill/core/memory": {
+      "title": "Core Memory",
+      "path": "src/skill/core/memory/skill.md"
+    },
+    "skill/core/query": {
+      "title": "Core Query",
+      "path": "src/skill/core/query/skill.md"
+    },
+    "skill/core/report": {
+      "title": "Core Report",
+      "path": "src/skill/core/report/skill.md"
+    },
+    "skill/core/routing": {
+      "title": "Core Routing",
+      "path": "src/skill/core/routing/skill.md"
+    },
+    "skill/core/task": {
+      "title": "Core Task",
+      "path": "src/skill/core/task/skill.md"
+    },
+    "skill/general/root": {
+      "title": "General Root",
+      "path": "src/skill/general/root/skill.md"
+    },
+    "skill/governance/agent_build": {
+      "title": "Governance Agent Build",
+      "path": "src/skill/governance/agent_build/skill.md"
+    },
+    "skill/governance/compact_guard": {
+      "title": "Governance Compact Guard",
+      "path": "src/skill/governance/compact_guard/skill.md"
+    },
+    "skill/governance/protocol_governance": {
+      "title": "Governance Protocol Governance",
+      "path": "src/skill/governance/protocol_governance/skill.md"
+    },
+    "skill/governance/refs_bridge": {
+      "title": "Governance Refs Bridge",
+      "path": "src/skill/governance/refs_bridge/skill.md"
+    },
+    "skill/governance/task_governance": {
+      "title": "Governance Task Governance",
+      "path": "src/skill/governance/task_governance/skill.md"
+    },
+    "skill/governance/tool_surface": {
+      "title": "Governance Tool Surface",
+      "path": "src/skill/governance/tool_surface/skill.md"
+    },
+    "skill/governance/workspace_governance": {
+      "title": "Governance Workspace Governance",
+      "path": "src/skill/governance/workspace_governance/skill.md"
+    },
+    "skill/parts_design/camshaft/root": {
+      "title": "Parts Design Camshaft Root",
+      "path": "src/skill/parts_design/camshaft/root/skill.md"
+    },
+    "skill/parts_design/common/report": {
+      "title": "Parts Design Common Report",
+      "path": "src/skill/parts_design/common/report/skill.md"
+    },
+    "skill/parts_design/common/requirement_parse": {
+      "title": "Parts Design Common Requirement Parse",
+      "path": "src/skill/parts_design/common/requirement_parse/skill.md"
+    },
+    "skill/parts_design/conrod/root": {
+      "title": "Parts Design Conrod Root",
+      "path": "src/skill/parts_design/conrod/root/skill.md"
+    },
+    "skill/parts_design/crankshaft/root": {
+      "title": "Parts Design Crankshaft Root",
+      "path": "src/skill/parts_design/crankshaft/root/skill.md"
+    },
+    "skill/parts_design/root": {
+      "title": "Parts Design Root",
+      "path": "src/skill/parts_design/root/skill.md"
+    },
+    "skill/wiki_hub/ingest": {
+      "title": "Wiki Hub Ingest",
+      "path": "src/skill/wiki_hub/ingest/skill.md"
+    },
+    "skill/wiki_hub/lint": {
+      "title": "Wiki Hub Lint",
+      "path": "src/skill/wiki_hub/lint/skill.md"
+    },
+    "skill/wiki_hub/query": {
+      "title": "Wiki Hub Query",
+      "path": "src/skill/wiki_hub/query/skill.md"
+    },
+    "skill/wiki_hub/root": {
+      "title": "Wiki Hub Root",
+      "path": "src/skill/wiki_hub/root/skill.md"
+    },
+    "tool/compact/now": {
+      "title": "Compact.now",
+      "path": "src/tool/compact/now/tool.md"
+    },
+    "tool/engine/enter_skill": {
+      "title": "Engine.enter Skill",
+      "path": "src/tool/engine/enter_skill/tool.md"
+    },
+    "tool/engine/inspect_action": {
+      "title": "Engine.inspect Action",
+      "path": "src/tool/engine/inspect_action/tool.md"
+    },
+    "tool/engine/inspect_skill": {
+      "title": "Engine.inspect Skill",
+      "path": "src/tool/engine/inspect_skill/tool.md"
+    },
+    "tool/engine/list_child_skills": {
+      "title": "Engine.list Child Skills",
+      "path": "src/tool/engine/list_child_skills/tool.md"
+    },
+    "tool/files/edit_text": {
+      "title": "Files.edit Text",
+      "path": "src/tool/files/edit_text/tool.md"
+    },
+    "tool/files/list_dir": {
+      "title": "Files.list Dir",
+      "path": "src/tool/files/list_dir/tool.md"
+    },
+    "tool/files/read_text": {
+      "title": "Files.read Text",
+      "path": "src/tool/files/read_text/tool.md"
+    },
+    "tool/files/write_text": {
+      "title": "Files.write Text",
+      "path": "src/tool/files/write_text/tool.md"
+    },
+    "tool/governance/inspect_tool_surface": {
+      "title": "Governance.inspect Tool Surface",
+      "path": "src/tool/governance/inspect_tool_surface/tool.md"
+    },
+    "tool/governance/load_refs": {
+      "title": "Governance.load Refs",
+      "path": "src/tool/governance/load_refs/tool.md"
+    },
+    "tool/governance/normalize_tool_result": {
+      "title": "Governance.normalize Tool Result",
+      "path": "src/tool/governance/normalize_tool_result/tool.md"
+    },
+    "tool/protocol/request_shutdown": {
+      "title": "Protocol.request Shutdown",
+      "path": "src/tool/protocol/request_shutdown/tool.md"
+    },
+    "tool/protocol/respond_shutdown": {
+      "title": "Protocol.respond Shutdown",
+      "path": "src/tool/protocol/respond_shutdown/tool.md"
+    },
+    "tool/protocol/review_plan": {
+      "title": "Protocol.review Plan",
+      "path": "src/tool/protocol/review_plan/tool.md"
+    },
+    "tool/protocol/submit_plan": {
+      "title": "Protocol.submit Plan",
+      "path": "src/tool/protocol/submit_plan/tool.md"
+    },
+    "tool/shell/run": {
+      "title": "Shell.run",
+      "path": "src/tool/shell/run/tool.md"
+    },
+    "tool/subagent/ask": {
+      "title": "Subagent.ask",
+      "path": "src/tool/subagent/ask/tool.md"
+    },
+    "tool/subagent/batch_run": {
+      "title": "Subagent.batch Run",
+      "path": "src/tool/subagent/batch_run/tool.md"
+    },
+    "tool/task/claim": {
+      "title": "Task.claim",
+      "path": "src/tool/task/claim/tool.md"
+    },
+    "tool/task/create": {
+      "title": "Task.create",
+      "path": "src/tool/task/create/tool.md"
+    },
+    "tool/task/get": {
+      "title": "Task.get",
+      "path": "src/tool/task/get/tool.md"
+    },
+    "tool/task/list": {
+      "title": "Task.list",
+      "path": "src/tool/task/list/tool.md"
+    },
+    "tool/task/update": {
+      "title": "Task.update",
+      "path": "src/tool/task/update/tool.md"
+    },
+    "tool/team/read_inbox": {
+      "title": "Team.read Inbox",
+      "path": "src/tool/team/read_inbox/tool.md"
+    },
+    "tool/todo/update": {
+      "title": "Todo.update",
+      "path": "src/tool/todo/update/tool.md"
+    },
+    "tool/todo/view": {
+      "title": "Todo.view",
+      "path": "src/tool/todo/view/tool.md"
+    },
+    "tool/wiki/answer": {
+      "title": "Wiki.answer",
+      "path": "src/tool/wiki/answer/tool.md"
+    },
+    "tool/wiki/read_page": {
+      "title": "Wiki.read Page",
+      "path": "src/tool/wiki/read_page/tool.md"
+    },
+    "tool/wiki/read_source": {
+      "title": "Wiki.read Source",
+      "path": "src/tool/wiki/read_source/tool.md"
+    },
+    "tool/wiki/search": {
+      "title": "Wiki.search",
+      "path": "src/tool/wiki/search/tool.md"
+    },
+    "tool/wiki_admin/ingest_files": {
+      "title": "Wiki Admin.ingest Files",
+      "path": "src/tool/wiki_admin/ingest_files/tool.md"
+    },
+    "tool/wiki_admin/lint": {
+      "title": "Wiki Admin.lint",
+      "path": "src/tool/wiki_admin/lint/tool.md"
+    },
+    "tool/wiki_admin/refresh_system": {
+      "title": "Wiki Admin.refresh System",
+      "path": "src/tool/wiki_admin/refresh_system/tool.md"
+    },
+    "tool/workspace/create": {
+      "title": "Workspace.create",
+      "path": "src/tool/workspace/create/tool.md"
+    },
+    "tool/workspace/keep": {
+      "title": "Workspace.keep",
+      "path": "src/tool/workspace/keep/tool.md"
+    },
+    "tool/workspace/list": {
+      "title": "Workspace.list",
+      "path": "src/tool/workspace/list/tool.md"
+    },
+    "tool/workspace/remove": {
+      "title": "Workspace.remove",
+      "path": "src/tool/workspace/remove/tool.md"
+    },
+    "tool/workspace/run": {
+      "title": "Workspace.run",
+      "path": "src/tool/workspace/run/tool.md"
+    },
+    "wiki/planner": {
+      "title": "Wiki Planner",
+      "path": "src/wiki/planner/wiki.md"
+    },
+    "wiki/service": {
+      "title": "Wiki Service",
+      "path": "src/wiki/service/wiki.md"
+    },
+    "wiki/source_policy": {
+      "title": "Wiki Source Policy",
+      "path": "src/wiki/source_policy/wiki.md"
+    },
+    "wiki/store": {
+      "title": "Wiki Store",
+      "path": "src/wiki/store/wiki.md"
+    }
+  }
+}

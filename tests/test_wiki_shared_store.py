@@ -10,7 +10,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from runtime.engine import Engine
 from shared.paths import project_root
 from wiki.store import WikiStore
-from agents.wiki_front_chat import build_engine as build_wiki_front_engine
+from agent.wiki_front_chat import build_engine as build_wiki_front_engine
 
 
 def build_engine() -> Engine:
@@ -37,7 +37,7 @@ def test_wiki_toolboxes_partitioned() -> None:
 def test_wiki_store_path_shared() -> None:
     store = WikiStore(project_root())
     store.ensure()
-    assert store.root == project_root() / "data" / "wiki"
+    assert store.root == project_root() / "src" / "wiki_store"
 
 
 def test_refresh_returns_status_json() -> None:

@@ -1,27 +1,30 @@
 # Design Agents VNext
 
-This repository now follows a `src/`-first architecture built around:
+This repository now follows a `src/`-first architecture built around the v6.3 single-page truth protocol:
 
-- flat resource layers under `src/skills`, `src/tools`, `src/context`, and `src/agents`
-- a unified `GovernanceRegistry` that scans skills, tools, agent specs, and context assets
+- flat resource layers under `src/skill`, `src/tool`, `src/ctx`, and `src/agent`
+- a unified `GovernanceRegistry` that scans skill, tool, agent, and context truth pages
 - `SkillRuntime + SurfaceResolver + ContextAssembler + Harness` as the main execution spine
 - event-driven governance additions with audit trails
-- thin agent entrypoints that assemble runtime behavior from `.agent.yaml` specs
+- thin agent entrypoints that assemble runtime behavior from `agent.md` truth pages
 
 ## Layout
 
 ```text
 src/
-  agents/
-  context/
+  agent/
+  ctx/
+  domain/
   governance/
   llm/
   runtime/
   schemas/
   shared/
-  skills/
+  skill/
   storage/
-  tools/
+  tool/
+  wiki/
+  wiki_store/
 tests/
 ```
 
@@ -46,14 +49,14 @@ Explicit constructor arguments or agent/test overrides still win over `.env`.
 
 ## Agent Entrypoints
 
-Agent entrypoints live in `src/agents/`, and each one is backed by a YAML spec in `src/agents/specs/`.
+Agent entrypoints live in `src/agent/<name>/`, and each one is backed by an `agent.md` page in the same folder.
 
-- `src/agents/general_chat.py`
-- `src/agents/parts_design_chat.py`
-- `src/agents/worker_agent.py`
-- `src/agents/review_agent.py`
+- `src/agent/general_chat/`
+- `src/agent/parts_design_chat/`
+- `src/agent/worker_agent/`
+- `src/agent/review_agent/`
 
-Each entrypoint uses the same `runtime.engine.Engine` and differs only by spec-driven assembly.
+Each entrypoint uses the same `runtime.engine.Engine` and differs only by page-driven assembly.
 
 ## Running the Thin Test Entrypoints
 
@@ -75,17 +78,17 @@ pytest tests/test_registry.py tests/test_context_assembler.py tests/test_action_
 
 These tests validate:
 
-- registry scanning across skills/tools/agents/context assets
+- registry scanning across skill/tool/agent/context truth pages
 - layered prompt assembly
 - deduped action surface compilation
 - event-driven governance activation for refs/task/workspace expansion
 
 ## Key Runtime Components
 
-- `governance/registry.py`: unified scanning and indexing of skills, tools, agent specs, and context assets
+- `governance/registry.py`: unified scanning and indexing of skill, tool, agent, and context truth pages
 - `runtime/skill_runtime.py`: active skill closure and child/ref navigation
 - `governance/surface_resolver.py`: final action/tool/skill surface resolution
-- `context/assembler/context_assembler.py`: identity/surface/state/expansion/feedback prompt assembly
+- `ctx/assembler/context_assembler.py`: identity/surface/state/expansion/feedback prompt assembly
 - `runtime/harness.py`: thin loop for lifecycle, model calls, parsing, dispatching, and continuation
 - `runtime/engine.py`: the only external runtime entrypoint
 
@@ -106,6 +109,7 @@ These tests validate:
 
 ## Upgrade Notes
 
-- legacy top-level `skills/` resources have moved to `src/skills/`
-- tests and agent launchers no longer carry a parallel configuration system
-- refs activation, tool surface governance, context layering, and runtime audit are now explicit subsystems rather than implicit engine logic
+- skill truth lives in `src/skill/**/skill.md`
+- agent truth lives in `src/agent/**/agent.md`
+- context truth lives in `src/ctx/**/ctx.md`
+- shared wiki state lives in `src/wiki_store/`

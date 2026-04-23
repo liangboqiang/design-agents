@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from runtime.engine import Engine
-from agents.wiki_front_chat import build_engine as build_wiki_front_engine
+from agent.wiki_front_chat import build_engine as build_wiki_front_engine
 
 
 CONFIG = {

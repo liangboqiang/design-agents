@@ -8,7 +8,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from runtime.engine import Engine
 
-from agents.parts_design_chat import build_engine as build_parts_design_engine
+from agent.parts_design_chat import build_engine as build_parts_design_engine
 
 
 CONFIG = {

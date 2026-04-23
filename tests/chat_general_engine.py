@@ -8,7 +8,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from runtime.engine import Engine
 
-from agents.general_chat import build_engine as build_general_engine
+from agent.general_chat import build_engine as build_general_engine
 
 
 CONFIG = {

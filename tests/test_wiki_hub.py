@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from runtime.engine import Engine
-from agents.wiki_front_chat import build_engine as build_wiki_front_engine
+from agent.wiki_front_chat import build_engine as build_wiki_front_engine
 
 
 def build_engine() -> Engine:
@@ -32,7 +32,7 @@ def test_wiki_refresh_builds_shared_store() -> None:
     engine = build_engine()
     payload = json.loads(engine.refresh_wiki())
     assert payload["status"] == "ok"
-    assert payload["root"].endswith("data/wiki")
+    assert payload["root"].endswith("src\\wiki_store") or payload["root"].endswith("src/wiki_store")
     assert Path(payload["catalog_path"]).exists()
 
 

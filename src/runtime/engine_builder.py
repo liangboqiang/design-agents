@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Iterable
 
-from context.assembler.context_assembler import ContextAssembler
+from ctx.assembler.context_assembler import ContextAssembler
 from governance.activation import ActivationPolicy
 from governance.audit import GovernanceAudit
 from governance.events import EventBus
@@ -18,8 +18,8 @@ from schemas.agent import AgentSpec
 from schemas.runtime import EngineContext, EngineSettings
 from shared.ids import new_id
 from shared.paths import project_root
-from tools.indexes.tool_index import ToolIndex
-from tools.indexes.toolbox_registry import Toolbox
+from tool.indexes.tool_index import ToolIndex
+from tool.indexes.toolbox_registry import Toolbox
 
 from .capabilities.base import Capability
 from .capabilities.registry import create_capability
@@ -122,7 +122,6 @@ class EngineBuilder:
         llm = LLMFactory.create(llm_config.provider, llm_config.model, llm_config.api_key, llm_config.base_url)
         knowledge_hub = KnowledgeHubService(project_root=project_root(), registry=registry, session=session)
         knowledge_hub.ensure_bootstrap()
-        knowledge_hub.refresh_from_registry()
         failure_sink = FailureSink(session=session, audit=audit, events=events, runtime_state=runtime_state)
         fault_boundary = FaultBoundary(failure_sink)
         events.set_fault_reporter(fault_boundary.report)
@@ -137,7 +136,7 @@ class EngineBuilder:
             skill_runtime=skill_runtime,
             tool_index=ToolIndex(),
             surface_resolver=SurfaceResolver(registry, ActivationPolicy(), audit),
-            context_assembler=ContextAssembler(registry.context_root / "templates", max_prompt_chars=max_prompt_chars),
+            context_assembler=ContextAssembler(registry.ctx_root, max_prompt_chars=max_prompt_chars),
             response_parser=ResponseParser(),
             normalizer=normalizer,
             audit=audit,
@@ -205,17 +204,20 @@ class EngineBuilder:
         if skill_text in registry.skills:
             return skill_text
         if candidate.is_absolute() and candidate.is_dir():
-            return str(candidate.resolve().relative_to(registry.skills_root.resolve())).replace("\\", "/")
+            rel = str(candidate.resolve().relative_to(registry.skills_root.resolve())).replace("\\", "/")
+            return f"skill/{rel}"
         relative_candidates = [
             registry.skills_root / candidate,
             project_root() / candidate,
         ]
         for option in relative_candidates:
-            if option.is_dir() and (option / "SKILL.md").exists():
-                return str(option.resolve().relative_to(registry.skills_root.resolve())).replace("\\", "/")
-        if skill_text.endswith("/SKILL.md"):
+            if option.is_dir() and (option / "skill.md").exists():
+                rel = str(option.resolve().relative_to(registry.skills_root.resolve())).replace("\\", "/")
+                return f"skill/{rel}"
+        if skill_text.endswith("/skill.md"):
             option = Path(skill_text).parent.resolve()
-            return str(option.relative_to(registry.skills_root.resolve())).replace("\\", "/")
+            rel = str(option.relative_to(registry.skills_root.resolve())).replace("\\", "/")
+            return f"skill/{rel}"
         raise ValueError(f"Unknown skill root: {skill_root}")
 
     @staticmethod

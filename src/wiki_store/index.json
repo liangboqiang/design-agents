@@ -1,0 +1,953 @@
+{
+  "entities": {
+    "agent/general_chat": {
+      "kind": "agent",
+      "title": "General Chat",
+      "path": "src/agent/general_chat/agent.md",
+      "folder": "src/agent/general_chat",
+      "truth_ext": [
+        "__init__.py",
+        "impl.py"
+      ],
+      "links": [
+        "ctx/system/default",
+        "skill/general/root"
+      ],
+      "content_hash": "23893bb98bb97c420d30c440233e614327f2d0bf"
+    },
+    "agent/parts_design_chat": {
+      "kind": "agent",
+      "title": "Parts Design Chat",
+      "path": "src/agent/parts_design_chat/agent.md",
+      "folder": "src/agent/parts_design_chat",
+      "truth_ext": [
+        "__init__.py",
+        "impl.py"
+      ],
+      "links": [
+        "ctx/system/default",
+        "skill/parts_design/root"
+      ],
+      "content_hash": "ae0c741b389e272f25c022a7a67c4690853e84ca"
+    },
+    "agent/review_agent": {
+      "kind": "agent",
+      "title": "Review Agent",
+      "path": "src/agent/review_agent/agent.md",
+      "folder": "src/agent/review_agent",
+      "truth_ext": [
+        "__init__.py",
+        "impl.py"
+      ],
+      "links": [
+        "ctx/system/default",
+        "skill/general/root"
+      ],
+      "content_hash": "3f07a6ddb873762d52e31c38bd49442e6b98c54b"
+    },
+    "agent/wiki_front_chat": {
+      "kind": "agent",
+      "title": "Wiki Front Chat",
+      "path": "src/agent/wiki_front_chat/agent.md",
+      "folder": "src/agent/wiki_front_chat",
+      "truth_ext": [
+        "__init__.py",
+        "impl.py"
+      ],
+      "links": [
+        "ctx/system/default",
+        "skill/wiki_hub/root"
+      ],
+      "content_hash": "b3c0e2c91da765fe73347f3c159f1ca97c2fa673"
+    },
+    "agent/worker_agent": {
+      "kind": "agent",
+      "title": "Worker Agent",
+      "path": "src/agent/worker_agent/agent.md",
+      "folder": "src/agent/worker_agent",
+      "truth_ext": [
+        "__init__.py",
+        "impl.py"
+      ],
+      "links": [
+        "ctx/system/default",
+        "skill/general/root"
+      ],
+      "content_hash": "f44c746b4615adc7f9046321c3ee531e95afd00c"
+    },
+    "ctx/compact_summary/default": {
+      "kind": "ctx",
+      "title": "Default Compact Summary Context",
+      "path": "src/ctx/compact_summary/default/ctx.md",
+      "folder": "src/ctx/compact_summary/default",
+      "truth_ext": [
+        "template.txt"
+      ],
+      "links": [],
+      "content_hash": "0969a0447bc9fdadea3ebd9635c96b9a11dedfe2"
+    },
+    "ctx/system/default": {
+      "kind": "ctx",
+      "title": "Default System Context",
+      "path": "src/ctx/system/default/ctx.md",
+      "folder": "src/ctx/system/default",
+      "truth_ext": [
+        "template.txt"
+      ],
+      "links": [
+        "agent/general_chat",
+        "agent/wiki_front_chat"
+      ],
+      "content_hash": "9581a21c3a06deaca22d372fb48a406a004bb5e4"
+    },
+    "ctx/tool_result/default": {
+      "kind": "ctx",
+      "title": "Default Tool Result Context",
+      "path": "src/ctx/tool_result/default/ctx.md",
+      "folder": "src/ctx/tool_result/default",
+      "truth_ext": [
+        "template.txt"
+      ],
+      "links": [],
+      "content_hash": "c76001345b03061290f160dede6f7de4b98759b3"
+    },
+    "domain/camshaft": {
+      "kind": "domain",
+      "title": "Camshaft Domain",
+      "path": "src/domain/camshaft/domain.md",
+      "folder": "src/domain/camshaft",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "ab9c41a7986e62322b9f10b4adce5251dc15d8e4"
+    },
+    "domain/connecting_rod": {
+      "kind": "domain",
+      "title": "Connecting Rod Domain",
+      "path": "src/domain/connecting_rod/domain.md",
+      "folder": "src/domain/connecting_rod",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "50d6b41bed3dced2efd200f7f21c7d53e8cfb7ec"
+    },
+    "domain/crankshaft": {
+      "kind": "domain",
+      "title": "Crankshaft Domain",
+      "path": "src/domain/crankshaft/domain.md",
+      "folder": "src/domain/crankshaft",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "5303d8bec91a6ae6bd7a0a4cba5c0ea25010c57c"
+    },
+    "governance/agent_build": {
+      "kind": "governance",
+      "title": "Agent Build Governance",
+      "path": "src/governance/agent_build/governance.md",
+      "folder": "src/governance/agent_build",
+      "truth_ext": [],
+      "links": [
+        "skill/governance/agent_build",
+        "tool/subagent/ask",
+        "tool/subagent/batch_run"
+      ],
+      "content_hash": "eab701c904a11e9f53a71d4b241e968849a74a48"
+    },
+    "governance/protocol_index": {
+      "kind": "governance",
+      "title": "Protocol Index",
+      "path": "src/governance/protocol_index/governance.md",
+      "folder": "src/governance/protocol_index",
+      "truth_ext": [
+        "__init__.py",
+        "impl.py"
+      ],
+      "links": [
+        "governance/repo_lint",
+        "runtime/engine"
+      ],
+      "content_hash": "fbc0683744fc032ce62c6834f80254d08d7860a7"
+    },
+    "governance/repo_lint": {
+      "kind": "governance",
+      "title": "Repository Lint",
+      "path": "src/governance/repo_lint/governance.md",
+      "folder": "src/governance/repo_lint",
+      "truth_ext": [
+        "__init__.py",
+        "impl.py"
+      ],
+      "links": [
+        "...",
+        "governance/protocol_index"
+      ],
+      "content_hash": "e47da9d464578b090b4800dcc697044a4da7b427"
+    },
+    "runtime/dispatcher": {
+      "kind": "runtime",
+      "title": "Dispatcher Runtime",
+      "path": "src/runtime/dispatcher/runtime.md",
+      "folder": "src/runtime/dispatcher",
+      "truth_ext": [
+        "__init__.py",
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "ae8ceebf6db5aaba0c4c4354480be199d2cb0583"
+    },
+    "runtime/engine": {
+      "kind": "runtime",
+      "title": "Engine Runtime",
+      "path": "src/runtime/engine/runtime.md",
+      "folder": "src/runtime/engine",
+      "truth_ext": [
+        "__init__.py",
+        "impl.py"
+      ],
+      "links": [
+        "governance/protocol_index",
+        "runtime/dispatcher",
+        "runtime/harness",
+        "runtime/lifecycle"
+      ],
+      "content_hash": "11f48662f87f7c946a200dfe34322299dee7b829"
+    },
+    "runtime/harness": {
+      "kind": "runtime",
+      "title": "Harness Runtime",
+      "path": "src/runtime/harness/runtime.md",
+      "folder": "src/runtime/harness",
+      "truth_ext": [
+        "__init__.py",
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "7b906acbe2ef0053c5f871eaaddeed44ccdd7635"
+    },
+    "runtime/lifecycle": {
+      "kind": "runtime",
+      "title": "Lifecycle Runtime",
+      "path": "src/runtime/lifecycle/runtime.md",
+      "folder": "src/runtime/lifecycle",
+      "truth_ext": [
+        "__init__.py",
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "19dd1aec09999c8b92afd8f8c1f0fb0e65263bfa"
+    },
+    "skill/core/memory": {
+      "kind": "skill",
+      "title": "Core Memory",
+      "path": "src/skill/core/memory/skill.md",
+      "folder": "src/skill/core/memory",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "fd8822ec53b659df84781fb72c918665a86d35ec"
+    },
+    "skill/core/query": {
+      "kind": "skill",
+      "title": "Core Query",
+      "path": "src/skill/core/query/skill.md",
+      "folder": "src/skill/core/query",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "2dda1d3c7326fac54e8b63d5198a6c39aa9b5e8c"
+    },
+    "skill/core/report": {
+      "kind": "skill",
+      "title": "Core Report",
+      "path": "src/skill/core/report/skill.md",
+      "folder": "src/skill/core/report",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "0f0ead56ca027d0a22fc02c4d133404c5259627e"
+    },
+    "skill/core/routing": {
+      "kind": "skill",
+      "title": "Core Routing",
+      "path": "src/skill/core/routing/skill.md",
+      "folder": "src/skill/core/routing",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "8f804d18167e419d3ec7b5dea96474e71706d970"
+    },
+    "skill/core/task": {
+      "kind": "skill",
+      "title": "Core Task",
+      "path": "src/skill/core/task/skill.md",
+      "folder": "src/skill/core/task",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "a4fe5b18ff600ad5f2c2b23044406a9cfa8c01c8"
+    },
+    "skill/general/root": {
+      "kind": "skill",
+      "title": "General Root",
+      "path": "src/skill/general/root/skill.md",
+      "folder": "src/skill/general/root",
+      "truth_ext": [],
+      "links": [
+        "skill/core/query",
+        "skill/core/report",
+        "skill/core/task"
+      ],
+      "content_hash": "e146b8f82682c777aeb09b3bc98ac3f82b3faff5"
+    },
+    "skill/governance/agent_build": {
+      "kind": "skill",
+      "title": "Governance Agent Build",
+      "path": "src/skill/governance/agent_build/skill.md",
+      "folder": "src/skill/governance/agent_build",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "cf1ac51f0b5e5df910b879962aa0bbd9c4c1a862"
+    },
+    "skill/governance/compact_guard": {
+      "kind": "skill",
+      "title": "Governance Compact Guard",
+      "path": "src/skill/governance/compact_guard/skill.md",
+      "folder": "src/skill/governance/compact_guard",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "7032f3ccf72045b7e715bf73dbdfec104f5d708d"
+    },
+    "skill/governance/protocol_governance": {
+      "kind": "skill",
+      "title": "Governance Protocol Governance",
+      "path": "src/skill/governance/protocol_governance/skill.md",
+      "folder": "src/skill/governance/protocol_governance",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "20160430e6c366aa5e2246f97f397e7dfdb7b961"
+    },
+    "skill/governance/refs_bridge": {
+      "kind": "skill",
+      "title": "Governance Refs Bridge",
+      "path": "src/skill/governance/refs_bridge/skill.md",
+      "folder": "src/skill/governance/refs_bridge",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "65ce4bbdd413c4aed7e3744686dd6c9cced009e8"
+    },
+    "skill/governance/task_governance": {
+      "kind": "skill",
+      "title": "Governance Task Governance",
+      "path": "src/skill/governance/task_governance/skill.md",
+      "folder": "src/skill/governance/task_governance",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "9494afd1a63adf32461c4a3d5381f800f4eab7e5"
+    },
+    "skill/governance/tool_surface": {
+      "kind": "skill",
+      "title": "Governance Tool Surface",
+      "path": "src/skill/governance/tool_surface/skill.md",
+      "folder": "src/skill/governance/tool_surface",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "94d2c0799c9df5a6fc0c64a1d93508fdb7ec2e32"
+    },
+    "skill/governance/workspace_governance": {
+      "kind": "skill",
+      "title": "Governance Workspace Governance",
+      "path": "src/skill/governance/workspace_governance/skill.md",
+      "folder": "src/skill/governance/workspace_governance",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "17785f5af4374e009c1c8b7ad8ff2ea0b2193595"
+    },
+    "skill/parts_design/camshaft/root": {
+      "kind": "skill",
+      "title": "Parts Design Camshaft Root",
+      "path": "src/skill/parts_design/camshaft/root/skill.md",
+      "folder": "src/skill/parts_design/camshaft/root",
+      "truth_ext": [],
+      "links": [
+        "skill/parts_design/common/report"
+      ],
+      "content_hash": "d1e68371c27ca17bdcf28ff75346bc57b715241f"
+    },
+    "skill/parts_design/common/report": {
+      "kind": "skill",
+      "title": "Parts Design Common Report",
+      "path": "src/skill/parts_design/common/report/skill.md",
+      "folder": "src/skill/parts_design/common/report",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "188a8221a785de6b0109f2b8ede75af4637656e3"
+    },
+    "skill/parts_design/common/requirement_parse": {
+      "kind": "skill",
+      "title": "Parts Design Common Requirement Parse",
+      "path": "src/skill/parts_design/common/requirement_parse/skill.md",
+      "folder": "src/skill/parts_design/common/requirement_parse",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "9e39f6f3b64b63ed2b0987b4d891c258bf1f9444"
+    },
+    "skill/parts_design/conrod/root": {
+      "kind": "skill",
+      "title": "Parts Design Conrod Root",
+      "path": "src/skill/parts_design/conrod/root/skill.md",
+      "folder": "src/skill/parts_design/conrod/root",
+      "truth_ext": [],
+      "links": [
+        "skill/parts_design/common/report",
+        "skill/parts_design/common/requirement_parse"
+      ],
+      "content_hash": "57d7cff571f5c301ad7d1e9891e37f00c8d68d8e"
+    },
+    "skill/parts_design/crankshaft/root": {
+      "kind": "skill",
+      "title": "Parts Design Crankshaft Root",
+      "path": "src/skill/parts_design/crankshaft/root/skill.md",
+      "folder": "src/skill/parts_design/crankshaft/root",
+      "truth_ext": [],
+      "links": [
+        "skill/parts_design/common/report",
+        "skill/parts_design/common/requirement_parse"
+      ],
+      "content_hash": "ed62dd868dda3dbb8c615448be7b7bd3ecf28843"
+    },
+    "skill/parts_design/root": {
+      "kind": "skill",
+      "title": "Parts Design Root",
+      "path": "src/skill/parts_design/root/skill.md",
+      "folder": "src/skill/parts_design/root",
+      "truth_ext": [],
+      "links": [
+        "skill/core/query",
+        "skill/core/report",
+        "skill/core/task",
+        "skill/parts_design/camshaft/root",
+        "skill/parts_design/common/report",
+        "skill/parts_design/common/requirement_parse",
+        "skill/parts_design/conrod/root",
+        "skill/parts_design/crankshaft/root"
+      ],
+      "content_hash": "e134a5ae5c47ba11e404e6a7a5a7ce4015bda6a2"
+    },
+    "skill/wiki_hub/ingest": {
+      "kind": "skill",
+      "title": "Wiki Hub Ingest",
+      "path": "src/skill/wiki_hub/ingest/skill.md",
+      "folder": "src/skill/wiki_hub/ingest",
+      "truth_ext": [],
+      "links": [
+        "skill/governance/agent_build"
+      ],
+      "content_hash": "7dd401f4d11da8b6523a75b6b906465e2a68bb31"
+    },
+    "skill/wiki_hub/lint": {
+      "kind": "skill",
+      "title": "Wiki Hub Lint",
+      "path": "src/skill/wiki_hub/lint/skill.md",
+      "folder": "src/skill/wiki_hub/lint",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "a21665ba3cf455b72b02aa824dc6ba4e6c97b420"
+    },
+    "skill/wiki_hub/query": {
+      "kind": "skill",
+      "title": "Wiki Hub Query",
+      "path": "src/skill/wiki_hub/query/skill.md",
+      "folder": "src/skill/wiki_hub/query",
+      "truth_ext": [],
+      "links": [],
+      "content_hash": "4d7a840490bd0757946bfbc49b33f8ae23c5be3d"
+    },
+    "skill/wiki_hub/root": {
+      "kind": "skill",
+      "title": "Wiki Hub Root",
+      "path": "src/skill/wiki_hub/root/skill.md",
+      "folder": "src/skill/wiki_hub/root",
+      "truth_ext": [],
+      "links": [
+        "skill/governance/agent_build",
+        "skill/wiki_hub/ingest",
+        "skill/wiki_hub/lint",
+        "skill/wiki_hub/query"
+      ],
+      "content_hash": "aaff2a7fffc27b01f915dbc2ffe2eb2f8b8fcd94"
+    },
+    "tool/compact/now": {
+      "kind": "tool",
+      "title": "Compact.now",
+      "path": "src/tool/compact/now/tool.md",
+      "folder": "src/tool/compact/now",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "0cfa5a88dccf64cc2ef2ec0020f35482455fc993"
+    },
+    "tool/engine/enter_skill": {
+      "kind": "tool",
+      "title": "Engine.enter Skill",
+      "path": "src/tool/engine/enter_skill/tool.md",
+      "folder": "src/tool/engine/enter_skill",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "54fd1451d9a3e05fb4e5ef340ee83c1c9295f000"
+    },
+    "tool/engine/inspect_action": {
+      "kind": "tool",
+      "title": "Engine.inspect Action",
+      "path": "src/tool/engine/inspect_action/tool.md",
+      "folder": "src/tool/engine/inspect_action",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "f9e1c767b786a4e4356ea80e34f0a66f4d99bd25"
+    },
+    "tool/engine/inspect_skill": {
+      "kind": "tool",
+      "title": "Engine.inspect Skill",
+      "path": "src/tool/engine/inspect_skill/tool.md",
+      "folder": "src/tool/engine/inspect_skill",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "4a5abec63b6a4eb82cb0cc459da4a52b425cb44c"
+    },
+    "tool/engine/list_child_skills": {
+      "kind": "tool",
+      "title": "Engine.list Child Skills",
+      "path": "src/tool/engine/list_child_skills/tool.md",
+      "folder": "src/tool/engine/list_child_skills",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "3bab80cb9d719ed4b4ea20dd1dfc9089a880df4a"
+    },
+    "tool/files/edit_text": {
+      "kind": "tool",
+      "title": "Files.edit Text",
+      "path": "src/tool/files/edit_text/tool.md",
+      "folder": "src/tool/files/edit_text",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "427b05078a7d0f662ca107b16940c5fc1302fc29"
+    },
+    "tool/files/list_dir": {
+      "kind": "tool",
+      "title": "Files.list Dir",
+      "path": "src/tool/files/list_dir/tool.md",
+      "folder": "src/tool/files/list_dir",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "d95c0c3f2151d03fbcb3f53ebca012cf2db15926"
+    },
+    "tool/files/read_text": {
+      "kind": "tool",
+      "title": "Files.read Text",
+      "path": "src/tool/files/read_text/tool.md",
+      "folder": "src/tool/files/read_text",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "6535f461db135eafc96e69504ca024256a8a91f2"
+    },
+    "tool/files/write_text": {
+      "kind": "tool",
+      "title": "Files.write Text",
+      "path": "src/tool/files/write_text/tool.md",
+      "folder": "src/tool/files/write_text",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "da1292c852dbe722521fa127422d9de2942c6d83"
+    },
+    "tool/governance/inspect_tool_surface": {
+      "kind": "tool",
+      "title": "Governance.inspect Tool Surface",
+      "path": "src/tool/governance/inspect_tool_surface/tool.md",
+      "folder": "src/tool/governance/inspect_tool_surface",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "edb88fee1045f0b2814e5e626f6882e0daaf05b7"
+    },
+    "tool/governance/load_refs": {
+      "kind": "tool",
+      "title": "Governance.load Refs",
+      "path": "src/tool/governance/load_refs/tool.md",
+      "folder": "src/tool/governance/load_refs",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "70060adc6c122463cd186808540b9956ab17eec0"
+    },
+    "tool/governance/normalize_tool_result": {
+      "kind": "tool",
+      "title": "Governance.normalize Tool Result",
+      "path": "src/tool/governance/normalize_tool_result/tool.md",
+      "folder": "src/tool/governance/normalize_tool_result",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "1c2cc07d2beaaa15cf832ce2109be1d6c81d92aa"
+    },
+    "tool/protocol/request_shutdown": {
+      "kind": "tool",
+      "title": "Protocol.request Shutdown",
+      "path": "src/tool/protocol/request_shutdown/tool.md",
+      "folder": "src/tool/protocol/request_shutdown",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "2c29dc8156809395e4e91d387e563a16e7408c99"
+    },
+    "tool/protocol/respond_shutdown": {
+      "kind": "tool",
+      "title": "Protocol.respond Shutdown",
+      "path": "src/tool/protocol/respond_shutdown/tool.md",
+      "folder": "src/tool/protocol/respond_shutdown",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "346b7696f9279c2c42e67e387341d1a590c275ec"
+    },
+    "tool/protocol/review_plan": {
+      "kind": "tool",
+      "title": "Protocol.review Plan",
+      "path": "src/tool/protocol/review_plan/tool.md",
+      "folder": "src/tool/protocol/review_plan",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "f17e2c11bea9da4d2b3c52e13fadf28a9c514c64"
+    },
+    "tool/protocol/submit_plan": {
+      "kind": "tool",
+      "title": "Protocol.submit Plan",
+      "path": "src/tool/protocol/submit_plan/tool.md",
+      "folder": "src/tool/protocol/submit_plan",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "22bfb74bc78590c013a396616a39b920827d63e8"
+    },
+    "tool/shell/run": {
+      "kind": "tool",
+      "title": "Shell.run",
+      "path": "src/tool/shell/run/tool.md",
+      "folder": "src/tool/shell/run",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "5941ad38b67a4097ddb49f58ea8ac58758a42a44"
+    },
+    "tool/subagent/ask": {
+      "kind": "tool",
+      "title": "Subagent.ask",
+      "path": "src/tool/subagent/ask/tool.md",
+      "folder": "src/tool/subagent/ask",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "d2aea1dcb8e9d7d68a771dc120bed6834e64167f"
+    },
+    "tool/subagent/batch_run": {
+      "kind": "tool",
+      "title": "Subagent.batch Run",
+      "path": "src/tool/subagent/batch_run/tool.md",
+      "folder": "src/tool/subagent/batch_run",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "4fd3cb76fdd016c5b0302b31dd71c3e18068c1db"
+    },
+    "tool/task/claim": {
+      "kind": "tool",
+      "title": "Task.claim",
+      "path": "src/tool/task/claim/tool.md",
+      "folder": "src/tool/task/claim",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "43c90d127e8c216864e410166ac5cb7d3fd999e1"
+    },
+    "tool/task/create": {
+      "kind": "tool",
+      "title": "Task.create",
+      "path": "src/tool/task/create/tool.md",
+      "folder": "src/tool/task/create",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "3746c1e5123a6e80efbed5053680d650f7f23063"
+    },
+    "tool/task/get": {
+      "kind": "tool",
+      "title": "Task.get",
+      "path": "src/tool/task/get/tool.md",
+      "folder": "src/tool/task/get",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "470aa08d37bdaf74d7c134879dbbaf0262aa6b79"
+    },
+    "tool/task/list": {
+      "kind": "tool",
+      "title": "Task.list",
+      "path": "src/tool/task/list/tool.md",
+      "folder": "src/tool/task/list",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "a92baf325d07fe137a1f5b3c6ae0a10d76fb2a78"
+    },
+    "tool/task/update": {
+      "kind": "tool",
+      "title": "Task.update",
+      "path": "src/tool/task/update/tool.md",
+      "folder": "src/tool/task/update",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "c9fd23bd3cdd002d4860023c8b9641f62f4cc34b"
+    },
+    "tool/team/read_inbox": {
+      "kind": "tool",
+      "title": "Team.read Inbox",
+      "path": "src/tool/team/read_inbox/tool.md",
+      "folder": "src/tool/team/read_inbox",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "f0b89c0100609fc7d2c02059f310952c69f01379"
+    },
+    "tool/todo/update": {
+      "kind": "tool",
+      "title": "Todo.update",
+      "path": "src/tool/todo/update/tool.md",
+      "folder": "src/tool/todo/update",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "3c3ba537aa22f3a27d914a37b9462c1d0fec37d0"
+    },
+    "tool/todo/view": {
+      "kind": "tool",
+      "title": "Todo.view",
+      "path": "src/tool/todo/view/tool.md",
+      "folder": "src/tool/todo/view",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "c5246163f9c240e6d30e13a942f0f180b4cbdb26"
+    },
+    "tool/wiki/answer": {
+      "kind": "tool",
+      "title": "Wiki.answer",
+      "path": "src/tool/wiki/answer/tool.md",
+      "folder": "src/tool/wiki/answer",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "4d31eb4bfca349cd4ed45b7918527dd4bba15dfe"
+    },
+    "tool/wiki/read_page": {
+      "kind": "tool",
+      "title": "Wiki.read Page",
+      "path": "src/tool/wiki/read_page/tool.md",
+      "folder": "src/tool/wiki/read_page",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "184d2b58e7b8c9ae30632d8babfabc79d84ebe47"
+    },
+    "tool/wiki/read_source": {
+      "kind": "tool",
+      "title": "Wiki.read Source",
+      "path": "src/tool/wiki/read_source/tool.md",
+      "folder": "src/tool/wiki/read_source",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "89b9212399ccc5e11bef4fde0585f6f2f5688180"
+    },
+    "tool/wiki/search": {
+      "kind": "tool",
+      "title": "Wiki.search",
+      "path": "src/tool/wiki/search/tool.md",
+      "folder": "src/tool/wiki/search",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "c10cfabaa59a919e7acf424caada0aab230158cb"
+    },
+    "tool/wiki_admin/ingest_files": {
+      "kind": "tool",
+      "title": "Wiki Admin.ingest Files",
+      "path": "src/tool/wiki_admin/ingest_files/tool.md",
+      "folder": "src/tool/wiki_admin/ingest_files",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "7e7d571b6ee242bd8d36371b7efc934005b65ce8"
+    },
+    "tool/wiki_admin/lint": {
+      "kind": "tool",
+      "title": "Wiki Admin.lint",
+      "path": "src/tool/wiki_admin/lint/tool.md",
+      "folder": "src/tool/wiki_admin/lint",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "ba18c533bd78096467805f27990ecb2abc828036"
+    },
+    "tool/wiki_admin/refresh_system": {
+      "kind": "tool",
+      "title": "Wiki Admin.refresh System",
+      "path": "src/tool/wiki_admin/refresh_system/tool.md",
+      "folder": "src/tool/wiki_admin/refresh_system",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "fdec21348ac3c213e91e3f73f33914b75f226a64"
+    },
+    "tool/workspace/create": {
+      "kind": "tool",
+      "title": "Workspace.create",
+      "path": "src/tool/workspace/create/tool.md",
+      "folder": "src/tool/workspace/create",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "7f303074c00d81645277b8940fa675fe6e928e3c"
+    },
+    "tool/workspace/keep": {
+      "kind": "tool",
+      "title": "Workspace.keep",
+      "path": "src/tool/workspace/keep/tool.md",
+      "folder": "src/tool/workspace/keep",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "d874c74983f29de8acf65dd1ddc541ef34deaa5e"
+    },
+    "tool/workspace/list": {
+      "kind": "tool",
+      "title": "Workspace.list",
+      "path": "src/tool/workspace/list/tool.md",
+      "folder": "src/tool/workspace/list",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "adacf4b5f2114d087756668c5efc4a276f2bd4cf"
+    },
+    "tool/workspace/remove": {
+      "kind": "tool",
+      "title": "Workspace.remove",
+      "path": "src/tool/workspace/remove/tool.md",
+      "folder": "src/tool/workspace/remove",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "e09d23e28ffbad43429e28b09b7823e59b056a88"
+    },
+    "tool/workspace/run": {
+      "kind": "tool",
+      "title": "Workspace.run",
+      "path": "src/tool/workspace/run/tool.md",
+      "folder": "src/tool/workspace/run",
+      "truth_ext": [
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "83f65281e0dc75c8913096a189e7c69aa27390f5"
+    },
+    "wiki/planner": {
+      "kind": "wiki",
+      "title": "Wiki Planner",
+      "path": "src/wiki/planner/wiki.md",
+      "folder": "src/wiki/planner",
+      "truth_ext": [
+        "__init__.py",
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "60b7a63fd53aa7c7ed3a6f269a84ba6078cd8ab6"
+    },
+    "wiki/service": {
+      "kind": "wiki",
+      "title": "Wiki Service",
+      "path": "src/wiki/service/wiki.md",
+      "folder": "src/wiki/service",
+      "truth_ext": [
+        "__init__.py",
+        "impl.py"
+      ],
+      "links": [
+        "governance/protocol_index",
+        "wiki/store"
+      ],
+      "content_hash": "7f06dc0bb3aae7bb08ba83c3065991c2461107db"
+    },
+    "wiki/source_policy": {
+      "kind": "wiki",
+      "title": "Wiki Source Policy",
+      "path": "src/wiki/source_policy/wiki.md",
+      "folder": "src/wiki/source_policy",
+      "truth_ext": [
+        "__init__.py",
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "aa479090c59145d0e1bfe7f9f0924b95bd594197"
+    },
+    "wiki/store": {
+      "kind": "wiki",
+      "title": "Wiki Store",
+      "path": "src/wiki/store/wiki.md",
+      "folder": "src/wiki/store",
+      "truth_ext": [
+        "__init__.py",
+        "impl.py"
+      ],
+      "links": [],
+      "content_hash": "6a32c32762e49e9d22ffd1d031f90f8ba08c6989"
+    }
+  }
+}

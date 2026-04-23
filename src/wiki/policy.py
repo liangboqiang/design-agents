@@ -13,12 +13,14 @@ class WikiIngestPolicy:
     """
 
     SYSTEM_PREFIXES = (
-        "src/skills/",
-        "src/agents/specs/",
-        "src/context/templates/",
-        "src/tools/",
+        "src/skill/",
+        "src/agent/",
+        "src/ctx/",
+        "src/tool/",
         "src/runtime/",
         "src/governance/",
+        "src/wiki/",
+        "src/domain/",
         "src/schemas/",
     )
 
@@ -37,16 +39,12 @@ class WikiIngestPolicy:
             return False
         if path.name.startswith(".") or "__pycache__" in path.parts:
             return False
-        if rel.startswith("data/wiki/") or rel.startswith(".runtime_data/"):
+        if rel.startswith("src/wiki_store/") or rel.startswith(".runtime_data/"):
             return False
         if rel.endswith("/__init__.py"):
             return False
         if rel.startswith("tests/"):
             return False
-        if rel.endswith(".agent.yaml"):
-            return rel.startswith("src/agents/specs/")
-        if rel.endswith("SKILL.md"):
-            return rel.startswith("src/skills/")
         return rel.startswith(self.SYSTEM_PREFIXES)
 
     def include_business_file(self, path: Path) -> bool:

@@ -1,0 +1,229 @@
+{
+  "edges": [
+    {
+      "from": "agent/general_chat",
+      "to": "ctx/system/default",
+      "kind": "link"
+    },
+    {
+      "from": "agent/general_chat",
+      "to": "skill/general/root",
+      "kind": "link"
+    },
+    {
+      "from": "agent/parts_design_chat",
+      "to": "ctx/system/default",
+      "kind": "link"
+    },
+    {
+      "from": "agent/parts_design_chat",
+      "to": "skill/parts_design/root",
+      "kind": "link"
+    },
+    {
+      "from": "agent/review_agent",
+      "to": "ctx/system/default",
+      "kind": "link"
+    },
+    {
+      "from": "agent/review_agent",
+      "to": "skill/general/root",
+      "kind": "link"
+    },
+    {
+      "from": "agent/wiki_front_chat",
+      "to": "ctx/system/default",
+      "kind": "link"
+    },
+    {
+      "from": "agent/wiki_front_chat",
+      "to": "skill/wiki_hub/root",
+      "kind": "link"
+    },
+    {
+      "from": "agent/worker_agent",
+      "to": "ctx/system/default",
+      "kind": "link"
+    },
+    {
+      "from": "agent/worker_agent",
+      "to": "skill/general/root",
+      "kind": "link"
+    },
+    {
+      "from": "ctx/system/default",
+      "to": "agent/general_chat",
+      "kind": "link"
+    },
+    {
+      "from": "ctx/system/default",
+      "to": "agent/wiki_front_chat",
+      "kind": "link"
+    },
+    {
+      "from": "governance/agent_build",
+      "to": "skill/governance/agent_build",
+      "kind": "link"
+    },
+    {
+      "from": "governance/agent_build",
+      "to": "tool/subagent/ask",
+      "kind": "link"
+    },
+    {
+      "from": "governance/agent_build",
+      "to": "tool/subagent/batch_run",
+      "kind": "link"
+    },
+    {
+      "from": "governance/protocol_index",
+      "to": "governance/repo_lint",
+      "kind": "link"
+    },
+    {
+      "from": "governance/protocol_index",
+      "to": "runtime/engine",
+      "kind": "link"
+    },
+    {
+      "from": "governance/repo_lint",
+      "to": "governance/protocol_index",
+      "kind": "link"
+    },
+    {
+      "from": "runtime/engine",
+      "to": "governance/protocol_index",
+      "kind": "link"
+    },
+    {
+      "from": "runtime/engine",
+      "to": "runtime/dispatcher",
+      "kind": "link"
+    },
+    {
+      "from": "runtime/engine",
+      "to": "runtime/harness",
+      "kind": "link"
+    },
+    {
+      "from": "runtime/engine",
+      "to": "runtime/lifecycle",
+      "kind": "link"
+    },
+    {
+      "from": "skill/general/root",
+      "to": "skill/core/query",
+      "kind": "link"
+    },
+    {
+      "from": "skill/general/root",
+      "to": "skill/core/report",
+      "kind": "link"
+    },
+    {
+      "from": "skill/general/root",
+      "to": "skill/core/task",
+      "kind": "link"
+    },
+    {
+      "from": "skill/parts_design/camshaft/root",
+      "to": "skill/parts_design/common/report",
+      "kind": "link"
+    },
+    {
+      "from": "skill/parts_design/conrod/root",
+      "to": "skill/parts_design/common/report",
+      "kind": "link"
+    },
+    {
+      "from": "skill/parts_design/conrod/root",
+      "to": "skill/parts_design/common/requirement_parse",
+      "kind": "link"
+    },
+    {
+      "from": "skill/parts_design/crankshaft/root",
+      "to": "skill/parts_design/common/report",
+      "kind": "link"
+    },
+    {
+      "from": "skill/parts_design/crankshaft/root",
+      "to": "skill/parts_design/common/requirement_parse",
+      "kind": "link"
+    },
+    {
+      "from": "skill/parts_design/root",
+      "to": "skill/core/query",
+      "kind": "link"
+    },
+    {
+      "from": "skill/parts_design/root",
+      "to": "skill/core/report",
+      "kind": "link"
+    },
+    {
+      "from": "skill/parts_design/root",
+      "to": "skill/core/task",
+      "kind": "link"
+    },
+    {
+      "from": "skill/parts_design/root",
+      "to": "skill/parts_design/camshaft/root",
+      "kind": "link"
+    },
+    {
+      "from": "skill/parts_design/root",
+      "to": "skill/parts_design/common/report",
+      "kind": "link"
+    },
+    {
+      "from": "skill/parts_design/root",
+      "to": "skill/parts_design/common/requirement_parse",
+      "kind": "link"
+    },
+    {
+      "from": "skill/parts_design/root",
+      "to": "skill/parts_design/conrod/root",
+      "kind": "link"
+    },
+    {
+      "from": "skill/parts_design/root",
+      "to": "skill/parts_design/crankshaft/root",
+      "kind": "link"
+    },
+    {
+      "from": "skill/wiki_hub/ingest",
+      "to": "skill/governance/agent_build",
+      "kind": "link"
+    },
+    {
+      "from": "skill/wiki_hub/root",
+      "to": "skill/governance/agent_build",
+      "kind": "link"
+    },
+    {
+      "from": "skill/wiki_hub/root",
+      "to": "skill/wiki_hub/ingest",
+      "kind": "link"
+    },
+    {
+      "from": "skill/wiki_hub/root",
+      "to": "skill/wiki_hub/lint",
+      "kind": "link"
+    },
+    {
+      "from": "skill/wiki_hub/root",
+      "to": "skill/wiki_hub/query",
+      "kind": "link"
+    },
+    {
+      "from": "wiki/service",
+      "to": "governance/protocol_index",
+      "kind": "link"
+    },
+    {
+      "from": "wiki/service",
+      "to": "wiki/store",
+      "kind": "link"
+    }
+  ]
+}

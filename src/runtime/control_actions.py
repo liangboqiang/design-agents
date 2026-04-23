@@ -8,7 +8,7 @@ def build_control_action_specs(control) -> list[ActionSpec]:  # noqa: ANN001
         ActionSpec(
             "engine.inspect_skill",
             "Inspect skill",
-            "Load the full SKILL.md for a reachable skill.",
+            "Load the full skill page for a reachable skill.",
             {"type": "object", "properties": {"skill": {"type": "string"}}, "required": ["skill"]},
             lambda args: control.inspect_skill(args["skill"]),
             "runtime.engine",

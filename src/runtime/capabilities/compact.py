@@ -3,8 +3,8 @@ from __future__ import annotations
 import json
 import time
 
-from context.compaction.micro_compact import micro_compact
-from context.compaction.summary_compact import build_summary
+from ctx.compaction.micro_compact import micro_compact
+from ctx.compaction.summary_compact import build_summary
 from schemas.action import ActionSpec
 
 from .base import Capability
@@ -51,4 +51,3 @@ class CompactCapability(Capability):
         self.engine.replace_history([{"role": "system", "content": f"[COMPACTED SUMMARY]\n{summary}"}])
         self.engine.events.emit("compact.performed", summary=summary)
         return "Context compacted."
-
