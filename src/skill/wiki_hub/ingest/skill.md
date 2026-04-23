@@ -1,8 +1,8 @@
 # Wiki Hub Ingest
 
-Skill page for `skill/wiki_hub/ingest`.
+Refresh the shared wiki store and bring new source files into it.
 
-## Refs
+## Related
 - [[skill/governance/agent_build]]
 
 ## Tools

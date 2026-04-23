@@ -21,7 +21,7 @@
     "agent/wiki_front_chat": {
       "kind": "agent",
       "title": "Wiki Front Chat",
-      "summary": "Shared wiki admin/query agent driven by the project wiki store.",
+      "summary": "Front-line chat agent for reading from the shared wiki store and triggering wiki maintenance when needed.",
       "path": "src/agent/wiki_front_chat/agent.md"
     },
     "agent/worker_agent": {
@@ -219,25 +219,25 @@
     "skill/wiki_hub/ingest": {
       "kind": "skill",
       "title": "Wiki Hub Ingest",
-      "summary": "Uses 2 tool(s). References 1 related skill(s).",
+      "summary": "Refresh the shared wiki store and bring new source files into it.",
       "path": "src/skill/wiki_hub/ingest/skill.md"
     },
     "skill/wiki_hub/lint": {
       "kind": "skill",
       "title": "Wiki Hub Lint",
-      "summary": "Uses 1 tool(s).",
+      "summary": "Check the shared wiki store for indexing and link issues.",
       "path": "src/skill/wiki_hub/lint/skill.md"
     },
     "skill/wiki_hub/query": {
       "kind": "skill",
       "title": "Wiki Hub Query",
-      "summary": "Uses 4 tool(s).",
+      "summary": "Search, read, and answer from the shared wiki store.",
       "path": "src/skill/wiki_hub/query/skill.md"
     },
     "skill/wiki_hub/root": {
       "kind": "skill",
       "title": "Wiki Hub Root",
-      "summary": "Uses 7 tool(s). Exposes 3 child skill(s). References 1 related skill(s).",
+      "summary": "Coordinate shared wiki lookup, refresh, and maintenance work.",
       "path": "src/skill/wiki_hub/root/skill.md"
     },
     "tool/compact/now": {

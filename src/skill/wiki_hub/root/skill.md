@@ -1,13 +1,13 @@
 # Wiki Hub Root
 
-Skill page for `skill/wiki_hub/root`.
+Coordinate shared wiki lookup, refresh, and maintenance work.
 
 ## Child Skills
 - [[skill/wiki_hub/ingest]]
 - [[skill/wiki_hub/query]]
 - [[skill/wiki_hub/lint]]
 
-## Refs
+## Related
 - [[skill/governance/agent_build]]
 
 ## Tools

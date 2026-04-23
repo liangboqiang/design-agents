@@ -188,7 +188,7 @@
     "agent/wiki_front_chat": {
       "kind": "agent",
       "title": "Wiki Front Chat",
-      "summary": "Shared wiki admin/query agent driven by the project wiki store.",
+      "summary": "Front-line chat agent for reading from the shared wiki store and triggering wiki maintenance when needed.",
       "path": "src/agent/wiki_front_chat/agent.md",
       "folder": "src/agent/wiki_front_chat",
       "truth_ext": [
@@ -200,7 +200,7 @@
         "ctx/system/default",
         "skill/wiki_hub/root"
       ],
-      "content_hash": "ea6c3b32c80c65202de9a5f3d8889ff5b72a3b12",
+      "content_hash": "aa23a8f7b146b53a3cd5d2ff2368923bbef70fbd",
       "runtime_action": null,
       "section_map": {
         "root skill": "- [[skill/wiki_hub/root]]",
@@ -1450,7 +1450,7 @@
     "skill/wiki_hub/ingest": {
       "kind": "skill",
       "title": "Wiki Hub Ingest",
-      "summary": "Uses 2 tool(s). References 1 related skill(s).",
+      "summary": "Refresh the shared wiki store and bring new source files into it.",
       "path": "src/skill/wiki_hub/ingest/skill.md",
       "folder": "src/skill/wiki_hub/ingest",
       "truth_ext": [],
@@ -1459,7 +1459,7 @@
         "tool/wiki_admin/ingest_files",
         "tool/wiki_admin/refresh_system"
       ],
-      "content_hash": "6ec23f0365ac410018315ab7c96d181c15690420",
+      "content_hash": "13e7005478e0b9e76dcf1f856a1523d230dbeca1",
       "runtime_action": null,
       "section_map": {
         "refs": "- [[skill/governance/agent_build]]",
@@ -1488,14 +1488,14 @@
     "skill/wiki_hub/lint": {
       "kind": "skill",
       "title": "Wiki Hub Lint",
-      "summary": "Uses 1 tool(s).",
+      "summary": "Check the shared wiki store for indexing and link issues.",
       "path": "src/skill/wiki_hub/lint/skill.md",
       "folder": "src/skill/wiki_hub/lint",
       "truth_ext": [],
       "links": [
         "tool/wiki_admin/lint"
       ],
-      "content_hash": "d5fdedaa29e6eb0b4dd55ebaf352e58b5a04215c",
+      "content_hash": "a8b1436fcf401d3e9772104cb2016fcd8cdc653a",
       "runtime_action": null,
       "section_map": {
         "tools": "- [[tool/wiki_admin/lint]]"
@@ -1515,7 +1515,7 @@
     "skill/wiki_hub/query": {
       "kind": "skill",
       "title": "Wiki Hub Query",
-      "summary": "Uses 4 tool(s).",
+      "summary": "Search, read, and answer from the shared wiki store.",
       "path": "src/skill/wiki_hub/query/skill.md",
       "folder": "src/skill/wiki_hub/query",
       "truth_ext": [],
@@ -1525,7 +1525,7 @@
         "tool/wiki/read_source",
         "tool/wiki/search"
       ],
-      "content_hash": "2884b4279c90891ea35b1bd87f33780b99216840",
+      "content_hash": "9d38af615959f6ea4a17c1197cb1c8def00753f6",
       "runtime_action": null,
       "section_map": {
         "tools": "- [[tool/wiki/search]]\n- [[tool/wiki/read_page]]\n- [[tool/wiki/read_source]]\n- [[tool/wiki/answer]]"
@@ -1551,7 +1551,7 @@
     "skill/wiki_hub/root": {
       "kind": "skill",
       "title": "Wiki Hub Root",
-      "summary": "Uses 7 tool(s). Exposes 3 child skill(s). References 1 related skill(s).",
+      "summary": "Coordinate shared wiki lookup, refresh, and maintenance work.",
       "path": "src/skill/wiki_hub/root/skill.md",
       "folder": "src/skill/wiki_hub/root",
       "truth_ext": [],
@@ -1568,7 +1568,7 @@
         "tool/wiki_admin/lint",
         "tool/wiki_admin/refresh_system"
       ],
-      "content_hash": "dd7288c8d8a59c2ba2850e87417e25e87a676d18",
+      "content_hash": "ffdb17af4a21413822ddb032856a75529d2d854b",
       "runtime_action": null,
       "section_map": {
         "child skills": "- [[skill/wiki_hub/ingest]]\n- [[skill/wiki_hub/query]]\n- [[skill/wiki_hub/lint]]",
@@ -2665,7 +2665,7 @@
       "links": [
         "wiki/service"
       ],
-      "content_hash": "2c60e8d2ee7e1e852ec4f510b34779b59bc97262",
+      "content_hash": "9498bfd09c68cc5076ae42dd3f35b1c34d77c5f3",
       "runtime_action": null,
       "section_map": {
         "refs": "- [[wiki/service]]"

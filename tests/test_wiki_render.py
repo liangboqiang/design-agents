@@ -20,3 +20,12 @@ def test_read_page_renders_link_cards_with_store_summaries() -> None:
     assert "Refresh the shared wiki index and system summaries." in body
     assert "- **Ingest Wiki Files**" in body
     assert "Ingest user-provided files into the shared wiki store." in body
+
+
+def test_read_page_renders_inline_links_with_store_summaries() -> None:
+    ProtocolIndexer(ROOT).refresh_store()
+    service = SharedWikiService(project_root=ROOT, registry=GovernanceRegistry(ROOT))
+
+    body = service.read_page("wiki/render")
+
+    assert "Wiki Service - Shared wiki adapter backed by `src/wiki_store`." in body

@@ -1,6 +1,6 @@
 # Wiki Hub Query
 
-Skill page for `skill/wiki_hub/query`.
+Search, read, and answer from the shared wiki store.
 
 ## Tools
 - [[tool/wiki/search]]

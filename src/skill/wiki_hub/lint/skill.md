@@ -1,6 +1,6 @@
 # Wiki Hub Lint
 
-Skill page for `skill/wiki_hub/lint`.
+Check the shared wiki store for indexing and link issues.
 
 ## Tools
 - [[tool/wiki_admin/lint]]

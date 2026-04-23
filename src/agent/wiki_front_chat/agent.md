@@ -1,6 +1,6 @@
 # Wiki Front Chat
 
-Shared wiki admin/query agent driven by the project wiki store.
+Front-line chat agent for reading from the shared wiki store and triggering wiki maintenance when needed.
 
 ## Root Skill
 - [[skill/wiki_hub/root]]
