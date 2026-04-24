@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import json
 
+from schemas.action import ActionSpec
+
 
 class TurnPolicy:
     def __init__(self, *, registry, skill_state, context, events, action_registry):  # noqa: ANN001
@@ -43,3 +45,40 @@ class TurnPolicy:
         self.context.active_skill_id = self.skill_state.active_skill_id
         self.events.emit("skill.entered", skill=self.skill_state.active_skill_id)
         return result
+
+
+def build_control_action_specs(control) -> list[ActionSpec]:  # noqa: ANN001
+    return [
+        ActionSpec(
+            "engine.inspect_skill",
+            "Inspect skill",
+            "Load the full skill page for a reachable skill.",
+            {"type": "object", "properties": {"skill": {"type": "string"}}, "required": ["skill"]},
+            lambda args: control.inspect_skill(args["skill"]),
+            "harness.turn_policy",
+        ),
+        ActionSpec(
+            "engine.inspect_action",
+            "Inspect action",
+            "Inspect an action description and input schema.",
+            {"type": "object", "properties": {"action": {"type": "string"}}, "required": ["action"]},
+            lambda args: control.inspect_action(args["action"]),
+            "harness.turn_policy",
+        ),
+        ActionSpec(
+            "engine.enter_skill",
+            "Enter skill",
+            "Switch the active skill.",
+            {"type": "object", "properties": {"skill": {"type": "string"}}, "required": ["skill"]},
+            lambda args: control.enter_skill(args["skill"]),
+            "harness.turn_policy",
+        ),
+        ActionSpec(
+            "engine.list_child_skills",
+            "List child skills",
+            "List direct child skills for the active skill.",
+            {"type": "object", "properties": {}},
+            lambda args: control.list_child_skills(),
+            "harness.turn_policy",
+        ),
+    ]

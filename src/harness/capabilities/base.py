@@ -12,6 +12,12 @@ class Capability(ABC):
     def bind(self, engine) -> None:  # noqa: ANN001
         self.engine = engine
 
+    def capability(self, name: str):
+        return next(
+            (capability for capability in self.engine.capabilities if capability.capability_name == name),
+            None,
+        )
+
     def action_specs(self) -> Iterable[ActionSpec]:
         return []
 

@@ -781,6 +781,26 @@
       "kind": "link"
     },
     {
+      "from": "wiki/index",
+      "to": "governance/protocol_index",
+      "kind": "link"
+    },
+    {
+      "from": "wiki/index",
+      "to": "wiki/store",
+      "kind": "link"
+    },
+    {
+      "from": "wiki/link",
+      "to": "wiki/render",
+      "kind": "link"
+    },
+    {
+      "from": "wiki/link",
+      "to": "wiki/store",
+      "kind": "link"
+    },
+    {
       "from": "wiki/render",
       "to": "wiki/service",
       "kind": "link"
@@ -803,6 +823,11 @@
     {
       "from": "wiki/runtime_engine",
       "to": "wiki/runtime_lifecycle",
+      "kind": "link"
+    },
+    {
+      "from": "wiki/search",
+      "to": "wiki/store",
       "kind": "link"
     },
     {

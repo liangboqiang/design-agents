@@ -20,7 +20,7 @@ These names are mandatory for new code and documentation.
 - Use `SessionState` and `SkillState`, not `SessionRuntime` or `SkillRuntime`.
 - Use `PromptAssembler`, `SurfaceAssembler`, and `ReplyParser`, not `ContextAssembler`, `ActionCompiler`, or `ResponseParser`.
 - Use `TurnDriver`, `TurnLifecycle`, `TurnPolicy`, `ActionDispatcher`, and `TurnGuard` for harness-layer concepts.
-- Use `RuntimeBuilder` as the architectural role name even when the concrete class remains `EngineBuilder` for compatibility.
+- Use `RuntimeBuilder` as the concrete builder class. Do not reintroduce `EngineBuilder`.
 
 ## Forbidden Legacy Names
 
@@ -37,6 +37,7 @@ The following names are retired and must not be introduced in new code, docs, or
 - `engine_builder`
 - `engine_control`
 - `engine_ports`
+- `control_actions`
 - `child_engine_factory`
 - `core_participants`
 

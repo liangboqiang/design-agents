@@ -1,6 +1,6 @@
 """Runtime layer for Engine and builder-facing orchestration."""
 
-from .builder import EngineBuildRequest, EngineBuilder, EngineRuntimeBundle, RuntimeBuilder
+from .builder import EngineBuildRequest, EngineRuntimeBundle, RuntimeBuilder, build_engine, request_from_agent_spec
 from .child_factory import ChildFactory
 from .engine import Engine
 from .participant_set import AttachmentIngressParticipant, ParticipantSet
@@ -14,7 +14,6 @@ __all__ = [
     "ChildFactory",
     "Engine",
     "EngineBuildRequest",
-    "EngineBuilder",
     "EngineRuntimeBundle",
     "ParticipantSet",
     "RuntimeBuilder",
@@ -22,4 +21,6 @@ __all__ = [
     "SessionState",
     "SkillState",
     "ToolboxHub",
+    "build_engine",
+    "request_from_agent_spec",
 ]

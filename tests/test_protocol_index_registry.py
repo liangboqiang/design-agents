@@ -8,9 +8,30 @@ from governance.registry import GovernanceRegistry
 
 ROOT = Path(__file__).resolve().parents[1]
 
+RUNTIME_HOST_FILES = {
+    "__init__.py",
+    "builder.py",
+    "child_factory.py",
+    "engine.py",
+    "participant_set.py",
+    "service_hub.py",
+    "session_state.py",
+    "skill_state.py",
+    "toolbox_hub.py",
+}
+
 
 def test_protocol_index_emits_structured_nodes() -> None:
     result = ProtocolIndexer(ROOT).scan()
+
+    assert not (ROOT / "src" / "ctx").exists()
+    assert not (ROOT / "src" / "wiki_store").exists()
+    assert result.entities["context/system/default"].path == "src/context/system/default/page.md"
+    runtime_root = ROOT / "src" / "runtime"
+    runtime_files = {path.name for path in runtime_root.iterdir() if path.is_file()}
+    runtime_dirs = {path.name for path in runtime_root.iterdir() if path.is_dir() and path.name != "__pycache__"}
+    assert runtime_files == RUNTIME_HOST_FILES
+    assert runtime_dirs == set()
 
     tool_node = result.entities["tool/wiki_admin/refresh_system"]
     assert tool_node.title == "Refresh Wiki System"

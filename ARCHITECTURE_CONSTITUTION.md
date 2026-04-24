@@ -36,7 +36,9 @@ The intended flow is:
 ## Engine Boundary
 
 - `runtime/engine.py` is the only external runtime facade.
+- `Engine` exposes only construction state plus `chat`, `tick`, and `spawn_child`.
 - `Engine` may hold assembled runtime objects, but construction ownership belongs to `RuntimeBuilder`.
+- `src/runtime/` must contain only host files: builder, engine, session/skill state, hubs, participant set, and child factory.
 - New prompt or harness implementation details must not be instantiated directly from ad hoc call sites outside the builder.
 
 ## Migration Guard

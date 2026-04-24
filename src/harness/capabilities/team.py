@@ -15,8 +15,8 @@ class TeamCapability(Capability):
 
     def bind(self, engine) -> None:
         super().bind(engine)
-        if self.engine.read_state_json(self.roster_file, None) is None:
-            self.engine.write_state_json(self.roster_file, {"members": []})
+        if self.engine.session.read_state_json(self.roster_file, None) is None:
+            self.engine.session.write_state_json(self.roster_file, {"members": []})
         self.threads: dict[str, threading.Thread] = {}
 
     def action_specs(self):
@@ -77,10 +77,10 @@ class TeamCapability(Capability):
         ]
 
     def _roster(self) -> list[dict]:
-        return list(self.engine.read_state_json(self.roster_file, {"members": []})["members"])
+        return list(self.engine.session.read_state_json(self.roster_file, {"members": []})["members"])
 
     def _save_roster(self, rows: list[dict]) -> None:
-        self.engine.write_state_json(self.roster_file, {"members": rows})
+        self.engine.session.write_state_json(self.roster_file, {"members": rows})
 
     def send_message(self, to: str, content: str, message_type: str = "message", extra: dict | None = None) -> str:
         payload = {"type": message_type, "from": self.engine.engine_id, "content": content, "ts": time.time()}
@@ -128,7 +128,9 @@ class TeamCapability(Capability):
     def before_user_turn(self, message: str) -> None:
         lead_messages = self.engine.session.inbox.read_all("lead")
         if lead_messages:
-            self.engine.append_system_note(f"<team_inbox>\n{json.dumps(lead_messages, ensure_ascii=False, indent=2)}\n</team_inbox>")
+            self.engine.session.history.append_system(
+                f"<team_inbox>\n{json.dumps(lead_messages, ensure_ascii=False, indent=2)}\n</team_inbox>"
+            )
             self.engine.session.inbox.drain("lead")
 
     def state_fragments(self) -> list[str]:

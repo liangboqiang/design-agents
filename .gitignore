@@ -32,6 +32,8 @@ htmlcov/
 
 # Project runtime data
 .runtime_data/
+src/wiki/store/jobs/*.json
+src/wiki/store/attachments/*
 
 # Editor and OS noise
 .idea/

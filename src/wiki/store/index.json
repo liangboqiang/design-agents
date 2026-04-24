@@ -432,7 +432,7 @@
         "governance/repo_lint",
         "wiki/runtime_engine"
       ],
-      "content_hash": "d044b1d1eb4a5fe4871372b81f3a203772831611",
+      "content_hash": "b87908eef7ec475e0c96b1b2ab7f0f49a1f7538e",
       "runtime_action": null,
       "section_map": {
         "输出": "- `src/wiki/store/index.json`\n- `src/wiki/store/catalog.json`\n- `src/wiki/store/graph.json`",
@@ -471,7 +471,7 @@
       "links": [
         "governance/protocol_index"
       ],
-      "content_hash": "73df4e3d8cfd2a812da5eadd040bfe6371fae644",
+      "content_hash": "ca8d1c30c131792b4a4638bc6c5751efa0719823",
       "runtime_action": null,
       "section_map": {
         "核心规则": "- 单文件夹最多一个 `.md`\n- `[[...]]` 链接必须可解析\n- 仓库中不得残留旧知识库路径和旧动作名",
@@ -2504,6 +2504,82 @@
       },
       "settings": {}
     },
+    "wiki/index": {
+      "kind": "wiki",
+      "title": "Wiki Index",
+      "summary": "Wiki index persistence copies the governance registry read model into [[wiki/store]].",
+      "path": "src/wiki/index/page.md",
+      "folder": "src/wiki/index",
+      "truth_ext": [
+        "__init__.py",
+        "impl.py"
+      ],
+      "links": [
+        "governance/protocol_index",
+        "wiki/store"
+      ],
+      "content_hash": "554ea657cf9908f9399cffa43ed60cf76bac6aff",
+      "runtime_action": null,
+      "section_map": {
+        "implementation": "- `impl.py`",
+        "refs": "- [[wiki/store]]\n- [[governance/protocol_index]]"
+      },
+      "section_links": {
+        "implementation": [],
+        "refs": [
+          "wiki/store",
+          "governance/protocol_index"
+        ]
+      },
+      "code_items": {
+        "implementation": [
+          "impl.py"
+        ],
+        "refs": [
+          "[[wiki/store]]",
+          "[[governance/protocol_index]]"
+        ]
+      },
+      "settings": {}
+    },
+    "wiki/link": {
+      "kind": "wiki",
+      "title": "Wiki Link",
+      "summary": "Wiki link resolution describes `[[page]]` references from the persisted [[wiki/store]] read model.",
+      "path": "src/wiki/link/page.md",
+      "folder": "src/wiki/link",
+      "truth_ext": [
+        "__init__.py",
+        "impl.py"
+      ],
+      "links": [
+        "wiki/render",
+        "wiki/store"
+      ],
+      "content_hash": "e2776061cb9284b8b59770c809f6e3cac8ee66ed",
+      "runtime_action": null,
+      "section_map": {
+        "implementation": "- `impl.py`",
+        "refs": "- [[wiki/store]]\n- [[wiki/render]]"
+      },
+      "section_links": {
+        "implementation": [],
+        "refs": [
+          "wiki/store",
+          "wiki/render"
+        ]
+      },
+      "code_items": {
+        "implementation": [
+          "impl.py"
+        ],
+        "refs": [
+          "[[wiki/store]]",
+          "[[wiki/render]]"
+        ]
+      },
+      "settings": {}
+    },
     "wiki/planner": {
       "kind": "wiki",
       "title": "Wiki Planner",
@@ -2543,7 +2619,7 @@
       "links": [
         "wiki/service"
       ],
-      "content_hash": "eda770f9fb9ef620e94f62203da5cd9d65a4a573",
+      "content_hash": "1f2826abcf02db983a40f1b1cb9c252ceb67ecdc",
       "runtime_action": null,
       "section_map": {
         "refs": "- [[wiki/service]]"
@@ -2596,7 +2672,7 @@
         "wiki/runtime_harness",
         "wiki/runtime_lifecycle"
       ],
-      "content_hash": "4841d854888530606fb6fb9343a222c2bb3a5696",
+      "content_hash": "c21ca9e1831f3efe358414803023fb377057d319",
       "runtime_action": null,
       "section_map": {
         "implementation": "- `src/runtime/engine.py`",
@@ -2670,6 +2746,41 @@
       },
       "settings": {}
     },
+    "wiki/search": {
+      "kind": "wiki",
+      "title": "Wiki Search",
+      "summary": "Wiki search ranks pages from the persisted [[wiki/store]] catalog.",
+      "path": "src/wiki/search/page.md",
+      "folder": "src/wiki/search",
+      "truth_ext": [
+        "__init__.py",
+        "impl.py"
+      ],
+      "links": [
+        "wiki/store"
+      ],
+      "content_hash": "506ea0bca8ac9126011283716bff9844719ecf45",
+      "runtime_action": null,
+      "section_map": {
+        "implementation": "- `impl.py`",
+        "refs": "- [[wiki/store]]"
+      },
+      "section_links": {
+        "implementation": [],
+        "refs": [
+          "wiki/store"
+        ]
+      },
+      "code_items": {
+        "implementation": [
+          "impl.py"
+        ],
+        "refs": [
+          "[[wiki/store]]"
+        ]
+      },
+      "settings": {}
+    },
     "wiki/service": {
       "kind": "wiki",
       "title": "Wiki Service",
@@ -2684,7 +2795,7 @@
         "governance/protocol_index",
         "wiki/store"
       ],
-      "content_hash": "aca7799be78fd22f718fb0e5441580b9424d32af",
+      "content_hash": "abc806005f724a56eb6e3b6fbd81e54b79ba22f6",
       "runtime_action": null,
       "section_map": {
         "implementation": "- `impl.py`",
@@ -2742,13 +2853,10 @@
       "folder": "src/wiki/store",
       "truth_ext": [
         "__init__.py",
-        "catalog.json",
-        "graph.json",
-        "impl.py",
-        "index.json"
+        "impl.py"
       ],
       "links": [],
-      "content_hash": "d71f1193f81bdcd4d1236c7003ebfba5d05cd66a",
+      "content_hash": "6f4d04bc3759ab19ca660371f7f29cc86ba1dc72",
       "runtime_action": null,
       "section_map": {
         "implementation": "- `impl.py`"

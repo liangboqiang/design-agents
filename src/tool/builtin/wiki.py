@@ -85,7 +85,7 @@ class WikiAdminToolbox(Toolbox):
                 "Refresh wiki system pages",
                 "Scan allowed system/business sources and rebuild shared wiki pages through agent_build batch extraction.",
                 {"type": "object", "properties": {}},
-                lambda args: self.engine.refresh_wiki(),
+                lambda args: self.engine.knowledge_hub.refresh_from_registry(),
                 self.toolbox_name,
             ),
             ActionSpec(
@@ -93,7 +93,7 @@ class WikiAdminToolbox(Toolbox):
                 "Ingest files into wiki",
                 "Record user files into the shared wiki store.",
                 {"type": "object", "properties": {"files": {"type": "array"}}, "required": ["files"]},
-                lambda args: self.engine.ingest_files(list(args.get("files") or [])),
+                lambda args: self.engine.knowledge_hub.ingest_user_files(list(args.get("files") or [])),
                 self.toolbox_name,
             ),
             ActionSpec(

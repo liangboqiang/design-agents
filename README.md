@@ -2,12 +2,13 @@
 
 Target architecture migration is in its final cleanup stage. New work must land only in the final roots and names defined by [ARCHITECTURE_CONSTITUTION.md](/e:/A0_Projects/A1_Dynamics_Design_LM/GitLab/design-agents/ARCHITECTURE_CONSTITUTION.md) and [NAMING_CONSTITUTION.md](/e:/A0_Projects/A1_Dynamics_Design_LM/GitLab/design-agents/NAMING_CONSTITUTION.md); do not reintroduce `ctx`, `wiki_store`, `<kind>.md`, or runtime-local prompt and harness files.
 
-This repository now follows a `src/`-first architecture built around the v6.3 single-page truth protocol:
+This repository now follows a `src/`-first architecture built around the v6.4 single-page truth protocol:
 
 - flat resource layers under `src/skill`, `src/tool`, `src/context`, and `src/agent`
 - a protocol index that scans `src/` by folder and treats `page.md` as the entity truth page for that folder
 - a unified `SpecRegistry` that assembles skill and agent specs from the protocol index read model
-- `SpecRegistry + SurfaceResolver + Prompt + Harness + RuntimeBuilder` as the main execution spine
+- `SpecRegistry + SurfaceResolver + Prompt + Harness + RuntimeBuilder + Engine` as the main execution spine
+- prompt construction lives in `src/prompt/`, turn driving lives in `src/harness/`, and `runtime/engine.py` stays a thin facade
 - event-driven governance additions with audit trails
 - thin agent entrypoints that assemble runtime behavior from `page.md` truth pages
 
@@ -17,19 +18,43 @@ This repository now follows a `src/`-first architecture built around the v6.3 si
 src/
   agent/
   context/
-  domain/
   governance/
   harness/
+    capabilities/
+    action_dispatcher.py
+    reply_parser.py
+    turn_driver.py
+    turn_guard.py
+    turn_lifecycle.py
+    turn_policy.py
   llm/
   prompt/
+    history_compressor.py
+    knowledge_picker.py
+    prompt_assembler.py
+    prompt_packet.py
+    surface_assembler.py
   runtime/
+    builder.py
+    child_factory.py
+    engine.py
+    participant_set.py
+    service_hub.py
+    session_state.py
+    skill_state.py
+    toolbox_hub.py
   schemas/
   shared/
   skill/
   storage/
   tool/
   wiki/
-  wiki/store/
+    index/
+    link/
+    render/
+    search/
+    service/
+    store/
 tests/
 ```
 
@@ -93,12 +118,18 @@ These tests validate:
 
 - `governance/protocol_index/impl.py`: single read model for entity/page indexing, summaries, links, and lightweight section metadata
 - `governance/registry/spec_registry.py`: assembly layer that consumes the protocol index read model
-- `runtime/builder.py`: the single runtime assembly entrypoint
+- `runtime/builder.py`: the single runtime assembly entrypoint through `RuntimeBuilder`
 - `runtime/skill_state.py`: active skill closure and child/ref navigation
 - `governance/surface/surface_resolver.py`: final action/tool/skill surface resolution
+- `prompt/surface_assembler.py`: text-facing surface assembly
+- `prompt/history_compressor.py`: bounded history compaction
+- `prompt/knowledge_picker.py`: the only prompt-layer access path into Wiki knowledge
 - `prompt/prompt_assembler.py`: identity/surface/state/expansion/feedback prompt assembly
 - `harness/turn_driver.py`: thin loop for lifecycle, model calls, parsing, dispatching, and continuation
-- `runtime/engine.py`: the only external runtime entrypoint
+- `harness/capabilities/`: lifecycle/action extensions that participate in the turn loop without living under runtime
+- `wiki/index/impl.py`: persists the registry protocol read model into `src/wiki/store/`
+- `wiki/search/impl.py`: searches the persisted wiki catalog
+- `runtime/engine.py`: the only external runtime entrypoint; it exposes `chat`, `tick`, and `spawn_child`
 
 ## Layer Roles
 
@@ -129,5 +160,7 @@ These tests validate:
 - agent truth lives in `src/agent/**/page.md`
 - context truth lives in `src/context/**/page.md`
 - tool truth lives in `src/tool/**/page.md`
-- folders may also contain one non-entity page when the single markdown file is not named after its top-level kind
 - shared wiki state lives in `src/wiki/store/`
+- prompt code lives in `src/prompt/`
+- harness code lives in `src/harness/`
+- retired compatibility names are lint errors: `ctx`, `wiki_store`, `<kind>.md`, and runtime-local prompt/harness files

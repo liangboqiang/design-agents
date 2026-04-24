@@ -31,7 +31,7 @@ class InspectToolsToolbox(Toolbox):
     def _inspect(self) -> str:
         if self.engine is None:
             return json.dumps({"visible_actions": []}, ensure_ascii=False, indent=2)
-        surface = self.engine.last_surface_snapshot
+        surface = self.engine.runtime_state.last_surface_snapshot
         if surface is None:
             return json.dumps({"visible_actions": []}, ensure_ascii=False, indent=2)
         return json.dumps(

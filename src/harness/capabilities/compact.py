@@ -30,23 +30,23 @@ class CompactCapability(Capability):
             self.compact_now()
 
     def _micro_compact(self) -> None:
-        rows = self.engine.read_history()
+        rows = self.engine.session.history.read()
         compacted = micro_compact(rows, keep_turns=self.engine.settings.history_keep_turns)
         if len(compacted) < len(rows):
             self.engine.session.transcripts.append(
                 {"ts": time.time(), "type": "micro_compact", "dropped": len(rows) - len(compacted)}
             )
-            self.engine.replace_history(compacted)
+            self.engine.session.history.replace(compacted)
 
     def _estimate_size(self) -> int:
-        return sum(len(json.dumps(row, ensure_ascii=False)) for row in self.engine.read_history())
+        return sum(len(json.dumps(row, ensure_ascii=False)) for row in self.engine.session.history.read())
 
     def compact_now(self) -> str:
-        rows = self.engine.read_history()
+        rows = self.engine.session.history.read()
         if not rows:
             return "No history to compact."
         summary = build_summary(rows)
         self.engine.session.transcripts.append({"ts": time.time(), "type": "full_compact", "rows": rows})
-        self.engine.replace_history([{"role": "system", "content": f"[COMPACTED SUMMARY]\n{summary}"}])
+        self.engine.session.history.replace([{"role": "system", "content": f"[COMPACTED SUMMARY]\n{summary}"}])
         self.engine.events.emit("compact.performed", summary=summary)
         return "Context compacted."

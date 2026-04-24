@@ -35,6 +35,9 @@ FORBIDDEN_PATHS = (
     "src/runtime/skill_runtime.py",
     "src/runtime/child_engine_factory.py",
     "src/runtime/core_participants.py",
+    "src/runtime/control_actions.py",
+    "src/runtime/capabilities",
+    "src/runtime/services",
     "src/runtime/faults.py",
     "src/runtime/fault_boundary.py",
     "src/runtime/failure_sink.py",
@@ -43,6 +46,19 @@ FORBIDDEN_PATHS = (
     "src/runtime/dispatcher",
     "src/runtime/lifecycle",
 )
+
+FORBIDDEN_PATH_PARTS = {"ctx", "wiki_store"}
+
+FORBIDDEN_FILENAMES = {
+    "agent.md",
+    "skill.md",
+    "tool.md",
+    "ctx.md",
+    "engine_builder.py",
+    "engine_control.py",
+    "engine_ports.py",
+    "control_actions.py",
+}
 
 ACTION_LINE_RE = re.compile(r"^[-*]\s+`?([a-z][a-z0-9_]*\.[a-z0-9_]+)`?\s*$")
 
@@ -61,6 +77,7 @@ class RepositoryLint:
         self._check_links(resolvable)
         self._check_legacy_paths()
         self._check_forbidden_paths()
+        self._check_forbidden_legacy_names()
         self._check_forbidden_other()
         self._check_skill_tool_links(result.entities)
         self._check_agent_runtime_sections(result.entities)
@@ -146,6 +163,33 @@ class RepositoryLint:
                     "path": rel,
                 }
             )
+
+    def _check_forbidden_legacy_names(self) -> None:
+        src_root = self.project_root / "src"
+        if not src_root.exists():
+            return
+        for path in sorted(src_root.rglob("*")):
+            if "__pycache__" in path.parts:
+                continue
+            rel = str(path.relative_to(self.project_root).as_posix())
+            parts = set(path.relative_to(src_root).parts)
+            if parts & FORBIDDEN_PATH_PARTS:
+                self.issues.append(
+                    {
+                        "rule": "no_retired_names",
+                        "path": rel,
+                        "name": sorted(parts & FORBIDDEN_PATH_PARTS)[0],
+                    }
+                )
+                continue
+            if path.is_file() and path.name in FORBIDDEN_FILENAMES:
+                self.issues.append(
+                    {
+                        "rule": "no_retired_names",
+                        "path": rel,
+                        "name": path.name,
+                    }
+                )
 
     def _check_skill_tool_links(self, entities: dict[str, Any]) -> None:
         for node_id, node in sorted(entities.items()):

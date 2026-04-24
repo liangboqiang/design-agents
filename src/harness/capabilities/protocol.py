@@ -16,10 +16,10 @@ class ProtocolCapability(Capability):
 
     def bind(self, engine) -> None:
         super().bind(engine)
-        if self.engine.read_state_json(self.shutdown_file, None) is None:
-            self.engine.write_state_json(self.shutdown_file, {})
-        if self.engine.read_state_json(self.plan_file, None) is None:
-            self.engine.write_state_json(self.plan_file, {})
+        if self.engine.session.read_state_json(self.shutdown_file, None) is None:
+            self.engine.session.write_state_json(self.shutdown_file, {})
+        if self.engine.session.read_state_json(self.plan_file, None) is None:
+            self.engine.session.write_state_json(self.plan_file, {})
 
     def action_specs(self):
         return [
@@ -70,43 +70,43 @@ class ProtocolCapability(Capability):
         ]
 
     def _team(self):
-        return self.engine.capability("team")
+        return self.capability("team")
 
     def request_shutdown(self, worker: str) -> str:
         req_id = str(uuid.uuid4())[:8]
-        payload = self.engine.read_state_json(self.shutdown_file, {})
+        payload = self.engine.session.read_state_json(self.shutdown_file, {})
         payload[req_id] = {"target": worker, "status": "pending", "ts": time.time()}
-        self.engine.write_state_json(self.shutdown_file, payload)
+        self.engine.session.write_state_json(self.shutdown_file, payload)
         self._team().send_message(worker, "Please shut down gracefully.", message_type="shutdown_request", extra={"request_id": req_id})
         self.engine.events.emit("protocol.shutdown_requested", request_id=req_id, worker=worker)
         return f"shutdown request {req_id} sent to {worker}"
 
     def respond_shutdown(self, request_id: str, approve: bool, reason: str) -> str:
-        payload = self.engine.read_state_json(self.shutdown_file, {})
+        payload = self.engine.session.read_state_json(self.shutdown_file, {})
         payload.setdefault(request_id, {})
         payload[request_id]["status"] = "approved" if approve else "rejected"
         payload[request_id]["reason"] = reason
-        self.engine.write_state_json(self.shutdown_file, payload)
+        self.engine.session.write_state_json(self.shutdown_file, payload)
         self._team().send_message("lead", reason or "", message_type="shutdown_response", extra={"request_id": request_id, "approve": approve})
         self.engine.events.emit("protocol.shutdown_reviewed", request_id=request_id, approve=approve)
         return json.dumps(payload[request_id], ensure_ascii=False, indent=2)
 
     def submit_plan(self, from_worker: str, plan: str) -> str:
         req_id = str(uuid.uuid4())[:8]
-        payload = self.engine.read_state_json(self.plan_file, {})
+        payload = self.engine.session.read_state_json(self.plan_file, {})
         payload[req_id] = {"from": from_worker, "plan": plan, "status": "pending", "ts": time.time()}
-        self.engine.write_state_json(self.plan_file, payload)
+        self.engine.session.write_state_json(self.plan_file, payload)
         self._team().send_message("lead", plan, message_type="plan_request", extra={"request_id": req_id, "from_worker": from_worker})
         self.engine.events.emit("protocol.plan_submitted", request_id=req_id, worker=from_worker)
         return f"plan request {req_id} submitted"
 
     def review_plan(self, request_id: str, approve: bool, feedback: str) -> str:
-        payload = self.engine.read_state_json(self.plan_file, {})
+        payload = self.engine.session.read_state_json(self.plan_file, {})
         if request_id not in payload:
             raise ValueError(f"Unknown plan request {request_id}")
         payload[request_id]["status"] = "approved" if approve else "rejected"
         payload[request_id]["feedback"] = feedback
-        self.engine.write_state_json(self.plan_file, payload)
+        self.engine.session.write_state_json(self.plan_file, payload)
         self._team().send_message(payload[request_id]["from"], feedback, message_type="plan_response", extra={"request_id": request_id, "approve": approve})
         self.engine.events.emit("protocol.plan_reviewed", request_id=request_id, approve=approve)
         return json.dumps(payload[request_id], ensure_ascii=False, indent=2)

@@ -19,11 +19,12 @@ include-package-data = true
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["agent*", "ctx*", "governance*", "llm*", "runtime*", "schemas*", "shared*", "skill*", "storage*", "tool*", "wiki*"]
+include = ["agent*", "context*", "governance*", "harness*", "llm*", "prompt*", "runtime*", "schemas*", "shared*", "skill*", "storage*", "tool*", "wiki*"]
 
 [tool.setuptools.package-data]
 agent = ["**/*.md", "**/*.txt"]
-ctx = ["**/*.md", "**/*.txt"]
+context = ["**/*.md", "**/*.txt"]
+governance = ["**/*.md"]
 skill = ["**/*.md", "**/*.txt"]
 tool = ["**/*.md", "**/*.txt"]
-wiki = ["**/*.md"]
+wiki = ["**/*.md", "**/*.json"]

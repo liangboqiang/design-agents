@@ -18,8 +18,8 @@ class BackgroundCapability(Capability):
     def bind(self, engine) -> None:
         super().bind(engine)
         self._lock = threading.Lock()
-        if self.engine.read_state_json(self.tasks_file, None) is None:
-            self.engine.write_state_json(self.tasks_file, {})
+        if self.engine.session.read_state_json(self.tasks_file, None) is None:
+            self.engine.session.write_state_json(self.tasks_file, {})
 
     def action_specs(self):
         return [
@@ -42,16 +42,16 @@ class BackgroundCapability(Capability):
         ]
 
     def _read_tasks(self) -> dict:
-        return self.engine.read_state_json(self.tasks_file, {})
+        return self.engine.session.read_state_json(self.tasks_file, {})
 
     def _write_tasks(self, payload: dict) -> None:
-        self.engine.write_state_json(self.tasks_file, payload)
+        self.engine.session.write_state_json(self.tasks_file, payload)
 
     def _read_notifications(self) -> list[dict]:
-        return self.engine.read_state_json(self.notifications_file, [])
+        return self.engine.session.read_state_json(self.notifications_file, [])
 
     def _write_notifications(self, rows: list[dict]) -> None:
-        self.engine.write_state_json(self.notifications_file, rows)
+        self.engine.session.write_state_json(self.notifications_file, rows)
 
     def run(self, command: str) -> str:
         task_id = str(uuid.uuid4())[:8]
@@ -103,6 +103,6 @@ class BackgroundCapability(Capability):
                 f"[bg:{row['task_id']}] {row['status']} -> {row['output'][:500]}"
                 for row in rows
             )
-            self.engine.append_system_note(f"<background_notifications>\n{text}\n</background_notifications>")
+            self.engine.session.history.append_system(f"<background_notifications>\n{text}\n</background_notifications>")
             self._write_notifications([])
 

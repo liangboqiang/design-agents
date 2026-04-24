@@ -16,7 +16,7 @@ from harness.contracts import EngineRuntimeState, TurnRuntimePorts
 from harness.reply_parser import ReplyParser
 from harness.turn_guard import FailureSink, TurnGuard
 from harness.turn_lifecycle import TurnLifecycle
-from harness.turn_policy import TurnPolicy
+from harness.turn_policy import TurnPolicy, build_control_action_specs
 from llm.config import resolve_llm_config
 from llm.factory import LLMFactory
 from prompt.surface_assembler import SurfaceAssembler
@@ -29,13 +29,11 @@ from shared.paths import project_root
 from tool.indexes.tool_index import ToolIndex
 from tool.indexes.toolbox_registry import Toolbox
 
-from .capabilities.base import Capability
-from .capabilities.registry import create_capability
+from harness.capabilities.base import Capability
+from harness.capabilities.registry import create_capability
 from .child_factory import ChildFactory
-from .control_actions import build_control_action_specs
 from .participant_set import AttachmentIngressParticipant, ParticipantSet
-from .services import AttachmentIngestionService, KnowledgeHubService
-from .service_hub import ServiceHub
+from .service_hub import AttachmentIngestionService, KnowledgeHubService, ServiceHub
 from .session_state import SessionState
 from .skill_state import SkillState
 from .toolbox_hub import ToolboxHub
@@ -94,6 +92,25 @@ class EngineRuntimeBundle:
 
 
 class RuntimeBuilder:
+    def build_engine(self, request: EngineBuildRequest, *, engine_cls=None):  # noqa: ANN001
+        if engine_cls is None:
+            from .engine import Engine
+
+            engine_cls = Engine
+
+        bundle = self.build_bundle(request)
+        enhancement_names = list(request.enhancements or bundle.agent_spec.capabilities or [])
+        engine = engine_cls(
+            bundle=bundle,
+            enhancement_names=enhancement_names,
+            persistent_worker=request.persistent_worker,
+        )
+        self.install_runtime(engine, request)
+        bind = getattr(engine.knowledge_hub, "bind_engine", None)
+        if bind is not None:
+            bind(engine)
+        return engine
+
     def build_bundle(self, request: EngineBuildRequest) -> EngineRuntimeBundle:
         registry = request.registry or GovernanceRegistry(project_root())
         root_skill_id = self._resolve_skill_id(registry, request.skill_root)
@@ -283,4 +300,35 @@ class RuntimeBuilder:
         return participants
 
 
-EngineBuilder = RuntimeBuilder
+def request_from_agent_spec(spec: AgentSpec, **overrides) -> EngineBuildRequest:
+    llm_overrides = dict(spec.llm)
+    llm_overrides.update(
+        {key: overrides.pop(key) for key in list(overrides.keys()) if key in {"provider", "model", "api_key", "base_url"}}
+    )
+    request = EngineBuildRequest(
+        skill_root=overrides.pop("skill_root", spec.root_skill),
+        provider=llm_overrides.get("provider"),
+        model=llm_overrides.get("model"),
+        api_key=llm_overrides.get("api_key"),
+        base_url=llm_overrides.get("base_url"),
+        user_id=overrides.pop("user_id", "default_user"),
+        conversation_id=overrides.pop("conversation_id", "default_conversation"),
+        task_id=overrides.pop("task_id", "default_task"),
+        toolboxes=overrides.pop("toolboxes", spec.toolboxes),
+        enhancements=overrides.pop("enhancements", spec.capabilities),
+        storage_base=overrides.pop("storage_base", None),
+        max_steps=overrides.pop("max_steps", 12),
+        role_name=overrides.pop("role_name", None),
+        persistent_worker=overrides.pop("persistent_worker", False),
+        registry=overrides.pop("registry", None),
+        agent_spec=spec,
+        context_policy=overrides.pop("context_policy", spec.context_policy),
+    )
+    if overrides:
+        unknown = ", ".join(sorted(str(key) for key in overrides))
+        raise TypeError(f"Unsupported engine overrides: {unknown}")
+    return request
+
+
+def build_engine(request: EngineBuildRequest):
+    return RuntimeBuilder().build_engine(request)

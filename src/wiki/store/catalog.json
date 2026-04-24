@@ -450,6 +450,18 @@
       "summary": "Run a command inside a task workspace.",
       "path": "src/tool/workspace/run/page.md"
     },
+    "wiki/index": {
+      "kind": "wiki",
+      "title": "Wiki Index",
+      "summary": "Wiki index persistence copies the governance registry read model into [[wiki/store]].",
+      "path": "src/wiki/index/page.md"
+    },
+    "wiki/link": {
+      "kind": "wiki",
+      "title": "Wiki Link",
+      "summary": "Wiki link resolution describes `[[page]]` references from the persisted [[wiki/store]] read model.",
+      "path": "src/wiki/link/page.md"
+    },
     "wiki/planner": {
       "kind": "wiki",
       "title": "Wiki Planner",
@@ -485,6 +497,12 @@
       "title": "Turn Lifecycle",
       "summary": "Lifecycle coordinator for before-turn, before-model, after-tool, and state-fragment hooks.",
       "path": "src/wiki/runtime_lifecycle/page.md"
+    },
+    "wiki/search": {
+      "kind": "wiki",
+      "title": "Wiki Search",
+      "summary": "Wiki search ranks pages from the persisted [[wiki/store]] catalog.",
+      "path": "src/wiki/search/page.md"
     },
     "wiki/service": {
       "kind": "wiki",

@@ -8,11 +8,13 @@ from urllib.parse import urlparse
 
 import requests
 
-from governance.protocol_index import ProtocolIndexer
 from governance.repo_lint import lint_repository
 
+from ..index import WikiIndexWriter
 from ..render import WikiLinkRenderer
+from ..search import WikiSearcher
 from ..store import WikiStore
+
 
 class SharedWikiService:
     """Shared knowledge adapter backed by ``src/wiki/store``."""
@@ -27,7 +29,13 @@ class SharedWikiService:
 
     def refresh_system(self, *, engine) -> str:  # noqa: ANN001
         self.ensure_store()
-        result = ProtocolIndexer(self.project_root).refresh_store()
+        refresh = getattr(self.registry, "refresh", None)
+        if refresh is not None:
+            refresh()
+        result = getattr(self.registry, "protocol", None)
+        if result is None:
+            raise ValueError("Registry does not expose a protocol read model.")
+        index_payload = WikiIndexWriter(self.store).write(result)
         job_id = f"refresh_{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}"
         self.store.write_job(
             job_id,
@@ -39,19 +47,8 @@ class SharedWikiService:
             },
         )
 
-        return json.dumps(
-            {
-                "status": "ok",
-                "root": str(self.store.root),
-                "index_path": str(self.store.index_path),
-                "catalog_path": str(self.store.catalog_path),
-                "graph_path": str(self.store.graph_path),
-                "entities": len(result.entities),
-                "pages": len(result.pages),
-            },
-            ensure_ascii=False,
-            indent=2,
-        )
+        index_payload["status"] = "ok"
+        return json.dumps(index_payload, ensure_ascii=False, indent=2)
 
     def ingest_user_files(self, files: list[dict]) -> str:
         self.ensure_store()
@@ -64,34 +61,8 @@ class SharedWikiService:
         return json.dumps({"status": "ok", "files": created}, ensure_ascii=False, indent=2)
 
     def search(self, query: str, limit: int = 20) -> str:
-        self.ensure_store()
-        query = str(query or "").strip().lower()
-        limit = max(1, int(limit or 20))
-        pages = self.store.read_catalog().get("pages") or {}
-
-        scored = []
-        tokens = [token for token in query.split() if token]
-        for page_id, row in pages.items():
-            body = self._read_repo_text(str(row.get("path") or ""))
-            summary = str(row.get("summary") or "").strip()
-            hay = " ".join([str(row.get("title") or ""), str(row.get("path") or ""), summary, body[:4000]]).lower()
-            score = sum(hay.count(token) for token in tokens) if tokens else 1
-            if score > 0 or not tokens:
-                scored.append(
-                    (
-                        score,
-                        {
-                            "page_id": page_id,
-                            "title": row.get("title"),
-                            "path": row.get("path"),
-                            "score": score,
-                            "summary": summary or body[:400],
-                        },
-                    )
-                )
-
-        scored.sort(key=lambda item: (-item[0], str(item[1].get("title") or "")))
-        return json.dumps([row for _, row in scored[:limit]], ensure_ascii=False, indent=2)
+        searcher = WikiSearcher(store=self.store, read_text=self._read_repo_text)
+        return json.dumps(searcher.search(query, limit=limit), ensure_ascii=False, indent=2)
 
     def read_page(self, page_id: str) -> str:
         self.ensure_store()

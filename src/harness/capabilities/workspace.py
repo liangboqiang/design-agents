@@ -61,8 +61,9 @@ class WorkspaceCapability(Capability):
 
     def create(self, name: str, task_id: int | None) -> str:
         row = self.engine.session.workspaces.create(name, task_id)
-        if task_id and self.engine.capability("task"):
-            self.engine.capability("task").update(
+        task_cap = self.capability("task")
+        if task_id and task_cap:
+            task_cap.update(
                 task_id,
                 status="in_progress",
                 owner=self.engine.engine_id,
@@ -86,8 +87,9 @@ class WorkspaceCapability(Capability):
 
     def remove(self, name: str, complete_task: bool) -> str:
         row = self.engine.session.workspaces.remove(name)
-        if complete_task and row.get("task_id") and self.engine.capability("task"):
-            self.engine.capability("task").update(
+        task_cap = self.capability("task")
+        if complete_task and row.get("task_id") and task_cap:
+            task_cap.update(
                 int(row["task_id"]),
                 status="completed",
                 owner=self.engine.engine_id,

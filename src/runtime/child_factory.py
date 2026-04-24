@@ -64,7 +64,9 @@ class ChildFactory:
             },
             context_policy=child_context_policy,
         )
-        return parent.__class__.from_agent_spec(
+        from .builder import RuntimeBuilder, request_from_agent_spec
+
+        request = request_from_agent_spec(
             spec,
             user_id=parent.settings.user_id,
             conversation_id=parent.settings.conversation_id,
@@ -74,6 +76,7 @@ class ChildFactory:
             registry=parent.registry,
             storage_base=Path(storage_base),
         )
+        return RuntimeBuilder().build_engine(request)
 
     def _derive_prompt_budget(self, parent_budget: int) -> int:
         parent_budget = max(1, int(parent_budget))

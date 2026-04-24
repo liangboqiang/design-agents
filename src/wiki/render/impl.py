@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import re
 
+from ..link import WikiLinkResolver
+
 
 INLINE_LINK_RE = re.compile(r"\[\[([^\]]+)\]\]")
 LINE_LINK_RE = re.compile(r"^(?P<indent>\s*)(?P<bullet>[-*+]\s+)?\[\[(?P<target>[^\]]+)\]\]\s*$")
@@ -9,8 +11,7 @@ LINE_LINK_RE = re.compile(r"^(?P<indent>\s*)(?P<bullet>[-*+]\s+)?\[\[(?P<target>
 
 class WikiLinkRenderer:
     def __init__(self, *, index: dict, catalog: dict):
-        self.index = dict(index.get("entities") or {})
-        self.catalog = dict(catalog.get("pages") or {})
+        self.resolver = WikiLinkResolver(index=index, catalog=catalog)
 
     def render(self, text: str) -> str:
         rendered: list[str] = []
@@ -26,13 +27,7 @@ class WikiLinkRenderer:
         return "\n".join(rendered)
 
     def describe(self, target: str) -> dict[str, str] | None:
-        row = self.catalog.get(target) or self.index.get(target)
-        if row is None:
-            return None
-        title = str(row.get("title") or target)
-        summary = str(row.get("summary") or "").strip()
-        path = str(row.get("path") or "")
-        return {"title": title, "summary": summary, "path": path}
+        return self.resolver.describe(target)
 
     def _render_inline_links(self, line: str) -> str:
         def replace(match: re.Match[str]) -> str:

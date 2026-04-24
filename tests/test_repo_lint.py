@@ -20,12 +20,16 @@ def test_repository_lint_flags_new_consolidation_rules(tmp_path: Path) -> None:
     tool_dir = tmp_path / "src" / "tool" / "demo" / "run"
     noisy_tool_dir = tmp_path / "src" / "tool" / "demo" / "legacy"
     legacy_runtime_dir = tmp_path / "src" / "runtime" / "harness"
+    retired_ctx_dir = tmp_path / "src" / "ctx" / "demo"
+    retired_truth_dir = tmp_path / "src" / "skill" / "legacy_truth"
 
     skill_dir.mkdir(parents=True)
     agent_dir.mkdir(parents=True)
     tool_dir.mkdir(parents=True)
     noisy_tool_dir.mkdir(parents=True)
     legacy_runtime_dir.mkdir(parents=True)
+    retired_ctx_dir.mkdir(parents=True)
+    retired_truth_dir.mkdir(parents=True)
 
     (skill_dir / "page.md").write_text(
         "# Demo Root\n\n## Actions\n- `wiki_admin.refresh_system`\n",
@@ -45,6 +49,8 @@ def test_repository_lint_flags_new_consolidation_rules(tmp_path: Path) -> None:
         encoding="utf-8",
     )
     (noisy_tool_dir / "impl.py").write_text("ACTION_ID = 'demo.legacy'\n", encoding="utf-8")
+    (retired_ctx_dir / "ctx.md").write_text("# Retired Context\n", encoding="utf-8")
+    (retired_truth_dir / "skill.md").write_text("# Retired Truth\n", encoding="utf-8")
 
     payload = RepositoryLint(tmp_path).run()
     rules = {issue["rule"] for issue in payload["issues"]}
@@ -54,3 +60,4 @@ def test_repository_lint_flags_new_consolidation_rules(tmp_path: Path) -> None:
     assert "tool_impl_is_adjacent_impl_py" in rules
     assert "tool_page_not_protocolized" in rules
     assert "no_legacy_blueprint_paths" in rules
+    assert "no_retired_names" in rules

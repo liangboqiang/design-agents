@@ -47,6 +47,7 @@ SECTION_TITLE_ALIASES = {
 }
 
 SETTINGS_FILENAMES = ("runtime.toml", "profile.env", "overrides.json")
+GENERATED_STORE_FILENAMES = {"catalog.json", "graph.json", "index.json"}
 
 GENERIC_SUMMARY_PATTERNS = (
     re.compile(r"^skill page for\b", re.IGNORECASE),
@@ -462,7 +463,9 @@ class ProtocolIndexer:
         node_id = rel_folder if is_entity else f"page/{rel_folder}"
         text = markdown.read_text(encoding="utf-8")
         truth_ext = sorted(
-            file.name for file in folder.iterdir() if file.is_file() and file.suffix.lower() != ".md"
+            file.name
+            for file in folder.iterdir()
+            if file.is_file() and file.suffix.lower() != ".md" and not self._is_generated_store_file(folder, file)
         )
         section_map, section_links, code_items = build_structured_sections(text)
         runtime_action = tool_link_to_action_id(node_id) if kind == "tool" and is_entity else None
@@ -508,6 +511,13 @@ class ProtocolIndexer:
             except OSError:
                 continue
         return digest.hexdigest()
+
+    def _is_generated_store_file(self, folder: Path, file: Path) -> bool:
+        try:
+            rel_folder = folder.relative_to(self.src_root).as_posix()
+        except ValueError:
+            return False
+        return rel_folder == "wiki/store" and file.name in GENERATED_STORE_FILENAMES
 
     @staticmethod
     def _read_json(path: Path, default: Any) -> Any:

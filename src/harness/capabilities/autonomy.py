@@ -21,7 +21,7 @@ class AutonomyCapability(Capability):
         ]
 
     def claim_next(self, owner: str) -> str:
-        task_cap = self.engine.capability("task")
+        task_cap = self.capability("task")
         if task_cap is None:
             return "Task capability not enabled."
         unclaimed = task_cap.unclaimed_tasks()
