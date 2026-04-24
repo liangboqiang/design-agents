@@ -2562,13 +2562,13 @@
     },
     "wiki/runtime_dispatcher": {
       "kind": "wiki",
-      "title": "Dispatcher Runtime",
+      "title": "Action Dispatcher",
       "summary": "Action dispatcher that validates action ids and normalizes execution faults.",
       "path": "src/wiki/runtime_dispatcher/page.md",
       "folder": "src/wiki/runtime_dispatcher",
       "truth_ext": [],
       "links": [],
-      "content_hash": "9c4e15cdc3374fe036a8de91f6347ea37423568f",
+      "content_hash": "42b8fb2d31854709d5bfa6bcf9a9f2027d6a05c5",
       "runtime_action": null,
       "section_map": {
         "implementation": "- `src/harness/action_dispatcher.py`"
@@ -2626,13 +2626,13 @@
     },
     "wiki/runtime_harness": {
       "kind": "wiki",
-      "title": "Harness Runtime",
-      "summary": "Turn loop that compiles surface state, builds prompts, runs the model, and dispatches actions.",
+      "title": "Turn Driver",
+      "summary": "Turn loop that assembles surface state, builds prompts, runs the model, and dispatches actions.",
       "path": "src/wiki/runtime_harness/page.md",
       "folder": "src/wiki/runtime_harness",
       "truth_ext": [],
       "links": [],
-      "content_hash": "ea938da0739aa5d1441758fdcd3ce28987bcf714",
+      "content_hash": "0aefcdfad47fe18fd2c4043880630b30f58d42e3",
       "runtime_action": null,
       "section_map": {
         "implementation": "- `src/harness/turn_driver.py`"
@@ -2649,13 +2649,13 @@
     },
     "wiki/runtime_lifecycle": {
       "kind": "wiki",
-      "title": "Lifecycle Runtime",
+      "title": "Turn Lifecycle",
       "summary": "Lifecycle coordinator for before-turn, before-model, after-tool, and state-fragment hooks.",
       "path": "src/wiki/runtime_lifecycle/page.md",
       "folder": "src/wiki/runtime_lifecycle",
       "truth_ext": [],
       "links": [],
-      "content_hash": "01e3a1a95ad6999c55bdfa214ca2fc1860f9d50d",
+      "content_hash": "59a2ab8299e7b4c92e3c66c01e325d8c9c458328",
       "runtime_action": null,
       "section_map": {
         "implementation": "- `src/harness/turn_lifecycle.py`"
@@ -2748,7 +2748,7 @@
         "index.json"
       ],
       "links": [],
-      "content_hash": "c023582bc10ad87668d028215701468c9d48bd79",
+      "content_hash": "1bc64eff66d6f04289dba00e9fa50f2f6a32df10",
       "runtime_action": null,
       "section_map": {
         "implementation": "- `impl.py`"

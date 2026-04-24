@@ -15,13 +15,14 @@ class EngineRuntimeState:
 class TurnRuntimePorts:
     lifecycle: Any
     events: Any
-    skill_runtime: Any
+    skill_state: Any
     session: Any
     settings: Any
     surface_resolver: Any
-    context_assembler: Any
+    surface_assembler: Any
+    prompt_assembler: Any
     llm: Any
-    response_parser: Any
+    reply_parser: Any
     dispatcher: Any
     normalizer: Any
     audit: Any
@@ -32,6 +33,3 @@ class TurnRuntimePorts:
     state: EngineRuntimeState
     failure_sink: Any
     fault_boundary: Any
-
-
-TurnRuntimeState = EngineRuntimeState

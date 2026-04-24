@@ -1,4 +1,4 @@
-# Dispatcher Runtime
+# Action Dispatcher
 
 Action dispatcher that validates action ids and normalizes execution faults.
 

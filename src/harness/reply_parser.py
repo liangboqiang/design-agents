@@ -32,6 +32,3 @@ class ReplyParser:
             for call in payload.get("tool_calls", [])
         ]
         return LLMResponse(str(payload.get("assistant_message") or ""), calls, raw_text)
-
-
-ResponseParser = ReplyParser

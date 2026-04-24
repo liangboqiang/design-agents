@@ -88,6 +88,3 @@ class TurnLifecycle:
             or getattr(participant, "capability_name", None)
             or participant.__class__.__name__
         )
-
-
-LifecycleManager = TurnLifecycle

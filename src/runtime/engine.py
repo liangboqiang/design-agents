@@ -41,12 +41,13 @@ class Engine:
         self.knowledge_hub = bundle.knowledge_hub
         self.service_hub = bundle.service_hub
         self.wiki_hub = bundle.knowledge_hub
-        self.skill_runtime = bundle.skill_runtime
+        self.skill_state = bundle.skill_state
         self.tool_index = bundle.tool_index
         self.toolbox_hub = bundle.toolbox_hub
         self.surface_resolver = bundle.surface_resolver
-        self.context_assembler = bundle.context_assembler
-        self.response_parser = bundle.response_parser
+        self.surface_assembler = bundle.surface_assembler
+        self.prompt_assembler = bundle.prompt_assembler
+        self.reply_parser = bundle.reply_parser
         self.normalizer = bundle.normalizer
         self.audit = bundle.audit
         self.events = bundle.events
@@ -54,7 +55,7 @@ class Engine:
         self.action_registry = bundle.action_registry
         self.toolboxes = bundle.toolboxes
         self.capabilities = bundle.capabilities
-        self.core_participants = bundle.core_participants
+        self.participants = bundle.participants
         self.participant_set = None
         self.lifecycle = bundle.lifecycle
         self.dispatcher = bundle.dispatcher
@@ -106,7 +107,7 @@ class Engine:
 
         engine.control = TurnPolicy(
             registry=engine.registry,
-            skill_runtime=engine.skill_runtime,
+            skill_state=engine.skill_state,
             context=engine.context,
             events=engine.events,
             action_registry=engine.action_registry,

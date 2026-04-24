@@ -16,14 +16,14 @@ class SurfaceResolver:
     def resolve(
         self,
         *,
-        skill_runtime,
+        skill_state,
         action_registry: dict[str, ActionSpec],
         state_fragments: list[str],
         recent_events: list,
     ) -> SurfaceSnapshot:
-        base_skill_ids = skill_runtime.base_skill_ids()
+        base_skill_ids = skill_state.base_skill_ids()
         activated_skill_ids, governance_notes = self.activation_policy.resolve(
-            active_skill_id=skill_runtime.active_skill_id,
+            active_skill_id=skill_state.active_skill_id,
             base_skill_ids=base_skill_ids,
             recent_events=recent_events,
             state_fragments=state_fragments,
@@ -40,12 +40,12 @@ class SurfaceResolver:
                 actions.append(action_registry[action_id])
 
         visible_actions = dedupe_actions(actions)
-        visible_skills = dedupe_pairs(skill_runtime.visible_skill_cards(activated_skill_ids))
+        visible_skills = dedupe_pairs(skill_state.visible_skill_cards(activated_skill_ids))
         visible_toolboxes = sorted({action.source for action in visible_actions})
 
         self.audit.record(
             "surface.resolve",
-            active_skill=skill_runtime.active_skill_id,
+            active_skill=skill_state.active_skill_id,
             activated_skill_ids=activated_skill_ids,
             visible_actions=[action.action_id for action in visible_actions],
             visible_toolboxes=visible_toolboxes,

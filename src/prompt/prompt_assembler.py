@@ -29,7 +29,7 @@ class PromptAssembler:
         self,
         *,
         engine_context,
-        skill_runtime,
+        skill_state,
         surface_snapshot,
         history_rows: list[dict],
         state_fragments: list[str],
@@ -39,7 +39,7 @@ class PromptAssembler:
         knowledge_brief: str | None = None,
         knowledge_actions_visible: bool = False,
     ) -> str:
-        sections = [self.identity_layer.build(engine_context, skill_runtime)]
+        sections = [self.identity_layer.build(engine_context, skill_state)]
         sections.extend(self.surface_layer.build(surface_snapshot))
         sections.extend(self.state_layer.build(history_rows, self.normalizer.normalize_state_fragments(state_fragments)))
         sections.extend(self.expansion_layer.build(surface_snapshot, registry))
@@ -116,6 +116,3 @@ class PromptAssembler:
         if name == "compact_summary.md":
             return "[COMPACTED SUMMARY]\n{{summary}}"
         return "You are a governed skill runtime.\n\n{{sections}}"
-
-
-ContextAssembler = PromptAssembler

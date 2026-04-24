@@ -464,7 +464,7 @@
     },
     "wiki/runtime_dispatcher": {
       "kind": "wiki",
-      "title": "Dispatcher Runtime",
+      "title": "Action Dispatcher",
       "summary": "Action dispatcher that validates action ids and normalizes execution faults.",
       "path": "src/wiki/runtime_dispatcher/page.md"
     },
@@ -476,13 +476,13 @@
     },
     "wiki/runtime_harness": {
       "kind": "wiki",
-      "title": "Harness Runtime",
-      "summary": "Turn loop that compiles surface state, builds prompts, runs the model, and dispatches actions.",
+      "title": "Turn Driver",
+      "summary": "Turn loop that assembles surface state, builds prompts, runs the model, and dispatches actions.",
       "path": "src/wiki/runtime_harness/page.md"
     },
     "wiki/runtime_lifecycle": {
       "kind": "wiki",
-      "title": "Lifecycle Runtime",
+      "title": "Turn Lifecycle",
       "summary": "Lifecycle coordinator for before-turn, before-model, after-tool, and state-fragment hooks.",
       "path": "src/wiki/runtime_lifecycle/page.md"
     },

@@ -264,6 +264,3 @@ class TurnGuard:
                 exc_type=exc_type,
             )
         return self.sink.record_fault(fault, emit_event=emit_event)
-
-
-FaultBoundary = TurnGuard

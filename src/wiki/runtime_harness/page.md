@@ -1,6 +1,6 @@
-# Harness Runtime
+# Turn Driver
 
-Turn loop that compiles surface state, builds prompts, runs the model, and dispatches actions.
+Turn loop that assembles surface state, builds prompts, runs the model, and dispatches actions.
 
 ## Implementation
 

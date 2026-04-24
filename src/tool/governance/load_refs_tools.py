@@ -33,8 +33,8 @@ class LoadRefsToolbox(Toolbox):
             return json.dumps({"refs": []}, ensure_ascii=False, indent=2)
         return json.dumps(
             {
-                "active_skill": self.engine.skill_runtime.active_skill_id,
-                "activated_skill_ids": self.engine.skill_runtime.activated_skill_ids(),
+                "active_skill": self.engine.skill_state.active_skill_id,
+                "activated_skill_ids": self.engine.skill_state.activated_skill_ids(),
             },
             ensure_ascii=False,
             indent=2,

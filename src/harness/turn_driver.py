@@ -27,7 +27,7 @@ class TurnDriver:
         self.ports.events.emit(
             "user.turn.started",
             message=message,
-            active_skill=self.ports.skill_runtime.active_skill_id,
+            active_skill=self.ports.skill_state.active_skill_id,
             attachments=len(files or []),
         )
         self.ports.session.history.append_user(message, files=files)
@@ -43,8 +43,8 @@ class TurnDriver:
             surface_guard = self.ports.fault_boundary.call(
                 phase="surface_compile",
                 source_type="harness",
-                source_name="surface_resolver.resolve",
-                fn=lambda: self._compile_surface(state_fragments),
+                source_name="surface_assembler.assemble_surface",
+                fn=lambda: self._assemble_surface(state_fragments),
             )
             if not surface_guard.ok:
                 return self._visible_fault_message(surface_guard.fault, fallback=final_answer)
@@ -64,7 +64,7 @@ class TurnDriver:
                 phase="message_build",
                 source_type="harness",
                 source_name="prompt_assembler.build_messages",
-                fn=lambda: self.ports.context_assembler.build_messages(
+                fn=lambda: self.ports.prompt_assembler.build_messages(
                     self.ports.session.history.read(),
                     self.ports.settings.history_keep_turns,
                 ),
@@ -87,7 +87,7 @@ class TurnDriver:
                 phase="response_parse",
                 source_type="parser",
                 source_name="reply_parser.parse",
-                fn=lambda: self.ports.response_parser.parse(raw),
+                fn=lambda: self.ports.reply_parser.parse(raw),
                 context={"raw_preview": str(raw)[:1000]},
             )
             if not parse_guard.ok:
@@ -106,9 +106,9 @@ class TurnDriver:
             final_answer = self._handle_tool_calls(parsed.tool_calls, fallback=final_answer)
         return final_answer or "Max steps reached."
 
-    def _compile_surface(self, state_fragments: list[str]):
-        surface = self.ports.surface_resolver.resolve(
-            skill_runtime=self.ports.skill_runtime,
+    def _assemble_surface(self, state_fragments: list[str]):
+        surface = self.ports.surface_assembler.assemble_surface(
+            skill_state=self.ports.skill_state,
             action_registry=self.ports.action_registry,
             state_fragments=state_fragments,
             recent_events=self.ports.events.recent(),
@@ -118,9 +118,9 @@ class TurnDriver:
 
     def _build_system_prompt(self, surface, state_fragments: list[str]):  # noqa: ANN001
         selection = self.knowledge_picker.pick(surface_snapshot=surface, knowledge_hub=self.ports.knowledge_hub)
-        return self.ports.context_assembler.build_system_prompt(
+        return self.ports.prompt_assembler.build_system_prompt(
             engine_context=self.ports.context,
-            skill_runtime=self.ports.skill_runtime,
+            skill_state=self.ports.skill_state,
             surface_snapshot=surface,
             history_rows=self.ports.session.history.read(),
             state_fragments=state_fragments,
@@ -182,6 +182,3 @@ class TurnDriver:
         except Exception:
             pass
         return fallback or message
-
-
-Harness = TurnDriver

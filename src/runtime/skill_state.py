@@ -45,6 +45,3 @@ class SkillState:
         self.audit.record("skill.enter", target=target)
         skill = self.registry.get_skill(target)
         return f"Entered skill {target}: {skill.description or skill.name}"
-
-
-SkillRuntime = SkillState

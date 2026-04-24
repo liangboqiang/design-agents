@@ -2,8 +2,8 @@ from __future__ import annotations
 
 
 class IdentityLayer:
-    def build(self, engine_context, skill_runtime) -> tuple[str, str]:  # noqa: ANN001
-        active = skill_runtime.active_skill()
+    def build(self, engine_context, skill_state) -> tuple[str, str]:  # noqa: ANN001
+        active = skill_state.active_skill()
         body = "\n".join(
             [
                 f"- agent_name: {engine_context.agent_name}",
@@ -18,4 +18,3 @@ class IdentityLayer:
             ]
         )
         return ("Identity", body)
-

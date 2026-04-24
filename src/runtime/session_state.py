@@ -43,6 +43,3 @@ class SessionState:
 
     def write_state_json(self, name: str, payload: Any) -> None:
         self.state_store(name).write(payload)
-
-
-SessionRuntime = SessionState

@@ -11,7 +11,7 @@ ATTACHMENT_INGEST_STATE = "attachment_ingest.json"
 class AttachmentIngestionService:
     """Owns the attachment-ingestion state contract.
 
-    Harness should not know how attachments become knowledge. This service owns
+    TurnDriver should not know how attachments become knowledge. This service owns
     the only formal state artifact for that flow.
     """
 

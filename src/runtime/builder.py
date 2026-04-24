@@ -17,6 +17,7 @@ from harness.turn_guard import FailureSink, TurnGuard
 from harness.turn_lifecycle import TurnLifecycle
 from llm.config import resolve_llm_config
 from llm.factory import LLMFactory
+from prompt.surface_assembler import SurfaceAssembler
 from prompt.prompt_assembler import PromptAssembler
 from schemas.action import ActionSpec
 from schemas.agent import AgentSpec
@@ -67,12 +68,13 @@ class EngineRuntimeBundle:
     llm: Any
     knowledge_hub: KnowledgeHubService
     service_hub: ServiceHub
-    skill_runtime: SkillState
+    skill_state: SkillState
     tool_index: ToolIndex
     toolbox_hub: ToolboxHub
     surface_resolver: SurfaceResolver
-    context_assembler: PromptAssembler
-    response_parser: ReplyParser
+    surface_assembler: SurfaceAssembler
+    prompt_assembler: PromptAssembler
+    reply_parser: ReplyParser
     normalizer: Normalizer
     audit: GovernanceAudit
     events: EventBus
@@ -82,7 +84,7 @@ class EngineRuntimeBundle:
     action_registry: dict[str, ActionSpec] = field(default_factory=dict)
     toolboxes: list[Toolbox] = field(default_factory=list)
     capabilities: list[Capability] = field(default_factory=list)
-    core_participants: list[object] = field(default_factory=list)
+    participants: list[object] = field(default_factory=list)
     lifecycle: TurnLifecycle | None = None
     dispatcher: ActionDispatcher | None = None
 
@@ -112,12 +114,12 @@ class EngineBuilder:
         audit = GovernanceAudit()
         events = EventBus()
         normalizer = Normalizer()
-        skill_runtime = SkillState(registry, root_skill_id, audit)
+        skill_state = SkillState(registry, root_skill_id, audit)
         engine_id = request.role_name or new_id("engine")
         context = EngineContext(
             engine_id=engine_id,
             root_skill_id=root_skill_id,
-            active_skill_id=skill_runtime.active_skill_id,
+            active_skill_id=skill_state.active_skill_id,
             settings=settings,
             paths=session.paths,
             agent_name=agent_spec.name,
@@ -127,6 +129,7 @@ class EngineBuilder:
         service_hub = ServiceHub(knowledge_hub=knowledge_hub)
         tool_index = ToolIndex()
         toolbox_hub = ToolboxHub(tool_index=tool_index)
+        surface_resolver = SurfaceResolver(registry, ActivationPolicy(), audit)
         failure_sink = FailureSink(session=session, audit=audit, events=events, runtime_state=runtime_state)
         fault_boundary = TurnGuard(failure_sink)
         events.set_fault_reporter(fault_boundary.report)
@@ -139,12 +142,13 @@ class EngineBuilder:
             llm=llm,
             knowledge_hub=knowledge_hub,
             service_hub=service_hub,
-            skill_runtime=skill_runtime,
+            skill_state=skill_state,
             tool_index=tool_index,
             toolbox_hub=toolbox_hub,
-            surface_resolver=SurfaceResolver(registry, ActivationPolicy(), audit),
-            context_assembler=PromptAssembler(registry.context_root, max_prompt_chars=max_prompt_chars),
-            response_parser=ReplyParser(),
+            surface_resolver=surface_resolver,
+            surface_assembler=SurfaceAssembler(surface_resolver),
+            prompt_assembler=PromptAssembler(registry.context_root, max_prompt_chars=max_prompt_chars),
+            reply_parser=ReplyParser(),
             normalizer=normalizer,
             audit=audit,
             events=events,
@@ -160,8 +164,8 @@ class EngineBuilder:
         engine.toolboxes = self._prepare_toolboxes(engine, requested_toolboxes)
         engine.capabilities = self._prepare_capabilities(engine, enhancement_names)
         engine.toolbox_hub.toolboxes = list(engine.toolboxes)
-        engine.core_participants = self._prepare_core_participants(engine)
-        engine.participant_set = ParticipantSet(core=list(engine.core_participants))
+        engine.participants = self._prepare_participants(engine)
+        engine.participant_set = ParticipantSet(core=list(engine.participants))
         engine.lifecycle = TurnLifecycle(
             [*engine.participant_set.all(), *engine.capabilities],
             fault_reporter=engine.fault_boundary.report,
@@ -179,13 +183,14 @@ class EngineBuilder:
         engine.harness_ports = TurnRuntimePorts(
             lifecycle=engine.lifecycle,
             events=engine.events,
-            skill_runtime=engine.skill_runtime,
+            skill_state=engine.skill_state,
             session=engine.session,
             settings=engine.settings,
             surface_resolver=engine.surface_resolver,
-            context_assembler=engine.context_assembler,
+            surface_assembler=engine.surface_assembler,
+            prompt_assembler=engine.prompt_assembler,
             llm=engine.llm,
-            response_parser=engine.response_parser,
+            reply_parser=engine.reply_parser,
             dispatcher=engine.dispatcher,
             normalizer=engine.normalizer,
             audit=engine.audit,
@@ -251,7 +256,7 @@ class EngineBuilder:
         return prepared
 
     @staticmethod
-    def _prepare_core_participants(engine) -> list[object]:  # noqa: ANN001
+    def _prepare_participants(engine) -> list[object]:  # noqa: ANN001
         attachment_service = AttachmentIngestionService(knowledge_hub=engine.knowledge_hub, session=engine.session)
         participants = [AttachmentIngressParticipant(attachment_service)]
         for participant in participants:
@@ -260,6 +265,3 @@ class EngineBuilder:
                 bind(engine)
         engine.service_hub.attachment_ingestion = attachment_service
         return participants
-
-
-RuntimeBuilder = EngineBuilder

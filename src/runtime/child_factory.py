@@ -35,9 +35,9 @@ class ChildFactory:
         toolboxes: list[str] | None = None,
     ):
         target_skill = (
-            parent.skill_runtime.active_skill_id
+            parent.skill_state.active_skill_id
             if skill in (None, "", "root")
-            else parent.skill_runtime.resolve_skill_alias(skill)
+            else parent.skill_state.resolve_skill_alias(skill)
         )
         child_task_id = f"{parent.settings.task_id}__{role_name}"
         storage_base = self.storage_base or parent.session.paths.root.parents[2]
@@ -80,6 +80,3 @@ class ChildFactory:
         shrunk = int(parent_budget * self.prompt_shrink_ratio)
         shrunk = max(self.min_prompt_chars, shrunk)
         return min(parent_budget, shrunk)
-
-
-ChildEngineFactory = ChildFactory

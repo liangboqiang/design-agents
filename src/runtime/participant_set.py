@@ -8,7 +8,7 @@ class AttachmentIngressParticipant:
     """Lifecycle participant that owns attachment intake.
 
     It converts raw user attachments into explicit runtime state and an optional
-    system note, keeping Harness free of knowledge-specific branching.
+    system note, keeping TurnDriver free of knowledge-specific branching.
     """
 
     participant_name = "attachment_ingress"

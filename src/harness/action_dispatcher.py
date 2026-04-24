@@ -74,6 +74,3 @@ class ActionDispatcher:
             message=message,
             context={"arguments": arguments},
         )
-
-
-Dispatcher = ActionDispatcher
