@@ -3,7 +3,7 @@
 from .builder import EngineBuildRequest, RuntimeBuilder, request_from_agent_spec
 from .child_factory import ChildFactory
 from .engine import Engine
-from .participant_set import AttachmentIngressParticipant, ParticipantSet
+from .participant_set import AttachmentIngressParticipant
 from .session_state import SessionState
 from .skill_state import SkillState
 
@@ -12,7 +12,6 @@ __all__ = [
     "ChildFactory",
     "Engine",
     "EngineBuildRequest",
-    "ParticipantSet",
     "RuntimeBuilder",
     "SessionState",
     "SkillState",

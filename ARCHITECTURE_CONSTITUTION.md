@@ -42,7 +42,7 @@ The intended flow is:
 - `src/runtime/` must contain only host files: builder, engine, session/skill state, service boundaries, participant set, and child factory.
 - New prompt or harness implementation details must not be instantiated directly from ad hoc call sites outside the builder.
 
-## Migration Guard
+## Structural Guardrails
 
 - Do not introduce new roots such as `ctx/` or `wiki_store/`.
 - Do not reintroduce prompt or harness implementation files under `src/runtime/`.

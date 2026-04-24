@@ -2,7 +2,7 @@ from __future__ import annotations
 
 
 class DesignAgentsError(Exception):
-    """Base error for the VNext runtime."""
+    """Base error for the Design Agents runtime."""
 
 
 class RegistryError(DesignAgentsError):
@@ -15,4 +15,3 @@ class GovernanceError(DesignAgentsError):
 
 class BoundaryViolationError(DesignAgentsError):
     """Raised when a hard runtime boundary is crossed."""
-

@@ -1,8 +1,8 @@
-# Design Agents VNext
+# Design Agents
 
-Target architecture migration is in its final cleanup stage. New work must land only in the final roots and names defined by [ARCHITECTURE_CONSTITUTION.md](/e:/A0_Projects/A1_Dynamics_Design_LM/GitLab/design-agents/ARCHITECTURE_CONSTITUTION.md) and [NAMING_CONSTITUTION.md](/e:/A0_Projects/A1_Dynamics_Design_LM/GitLab/design-agents/NAMING_CONSTITUTION.md); do not reintroduce `ctx`, `wiki_store`, `<kind>.md`, or runtime-local prompt and harness files.
+This repository uses the final roots and names defined by [ARCHITECTURE_CONSTITUTION.md](/e:/A0_Projects/A1_Dynamics_Design_LM/GitLab/design-agents/ARCHITECTURE_CONSTITUTION.md) and [NAMING_CONSTITUTION.md](/e:/A0_Projects/A1_Dynamics_Design_LM/GitLab/design-agents/NAMING_CONSTITUTION.md); do not reintroduce `ctx`, `wiki_store`, `<kind>.md`, or runtime-local prompt and harness files.
 
-This repository now follows a `src/`-first architecture built around the v6.4 single-page truth protocol:
+This repository follows a `src/`-first architecture built around the v6.4 single-page truth protocol:
 
 - flat resource layers under `src/skill`, `src/tool`, `src/context`, and `src/agent`
 - a protocol index that scans `src/` by folder and treats `page.md` as the entity truth page for that folder
@@ -153,7 +153,7 @@ These tests validate:
         workspace_root/
 ```
 
-## Upgrade Notes
+## Current Protocol
 
 - skill truth lives in `src/skill/**/page.md`
 - agent truth lives in `src/agent/**/page.md`

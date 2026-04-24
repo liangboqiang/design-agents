@@ -31,6 +31,7 @@ def test_build_bundle_does_not_bootstrap_wiki(monkeypatch) -> None:
     assert not hasattr(bundle, "action_registry")
     assert not hasattr(bundle, "harness")
     assert not hasattr(runtime, "build_engine")
+    assert not hasattr(runtime, "ParticipantSet")
 
 
 def test_runtime_builder_injects_dependencies_and_keeps_engine_facade_small(tmp_path: Path) -> None:
