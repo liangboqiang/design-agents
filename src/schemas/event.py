@@ -11,4 +11,3 @@ class Event:
     payload: dict[str, Any] = field(default_factory=dict)
     scope: str = "session"
     ts: float = field(default_factory=time)
-

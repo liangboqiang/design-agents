@@ -88,4 +88,3 @@ class TaskStore:
             for row in self.list_all()
             if row.get("status") == "pending" and not row.get("owner") and not row.get("blocked_by")
         ]
-

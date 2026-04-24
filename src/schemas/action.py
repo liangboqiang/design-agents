@@ -32,4 +32,3 @@ class LLMResponse:
     assistant_message: str
     tool_calls: list[ToolCall] = field(default_factory=list)
     raw_text: str = ""
-

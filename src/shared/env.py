@@ -8,4 +8,3 @@ def env_or_default(name: str, default: str | None = None) -> str | None:
     if value is None:
         return default
     return value.strip() or default
-

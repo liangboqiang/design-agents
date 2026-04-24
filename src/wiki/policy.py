@@ -18,7 +18,7 @@ class WikiIngestPolicy:
         "src/context/",
         "src/tool/",
         "src/runtime/",
-        "src/governance/",
+        "src/control/",
         "src/wiki/",
         "src/domain/",
         "src/schemas/",

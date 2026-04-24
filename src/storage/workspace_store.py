@@ -67,4 +67,3 @@ class WorkspaceStore:
         self._save(rows)
         self.events.append({"ts": time.time(), "event": "workspace.remove", "workspace": removed})
         return removed
-

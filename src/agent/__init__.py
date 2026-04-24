@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from governance.registry import SpecRegistry
+from control.registry import SpecRegistry
 from runtime.builder import RuntimeBuilder, request_from_agent_spec
 from runtime.engine import Engine
 from shared.paths import project_root

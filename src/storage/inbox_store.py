@@ -24,4 +24,3 @@ class InboxStore:
         rows = store.read_all()
         store.replace([])
         return rows
-

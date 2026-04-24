@@ -42,4 +42,3 @@ class JsonlStore:
         with self.path.open("w", encoding="utf-8") as handle:
             for row in rows:
                 handle.write(json.dumps(row, ensure_ascii=False) + "\n")
-

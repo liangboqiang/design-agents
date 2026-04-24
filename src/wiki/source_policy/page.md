@@ -1,6 +1,6 @@
 # Wiki Source Policy
 
-Source selection rules for system, runtime, governance, and knowledge files.
+Source selection rules for system, runtime, control, and knowledge files.
 
 ## Implementation
 

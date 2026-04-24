@@ -23,4 +23,3 @@ class ToolboxDescriptor:
     discoverable: bool = True
     tags: list[str] = field(default_factory=list)
     metadata: dict[str, Any] = field(default_factory=dict)
-

@@ -16,4 +16,3 @@ class TranscriptStore:
 
     def read_all(self) -> list[dict]:
         return self.store.read([])
-

@@ -15,4 +15,3 @@ class DBToolbox(MCPStdIOToolbox):
             toolbox_name=self.toolbox_name,
             workspace_root=workspace_root,
         )
-

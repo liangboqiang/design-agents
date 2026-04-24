@@ -1,2 +1,1 @@
 """Tool indexes and registries."""
-

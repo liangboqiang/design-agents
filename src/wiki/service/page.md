@@ -9,4 +9,4 @@ Shared wiki adapter backed by `src/wiki/store`.
 ## Related
 
 - [[wiki/store]]
-- [[governance/protocol_index]]
+- [[control/protocol_index]]

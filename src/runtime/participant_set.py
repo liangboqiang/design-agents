@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import dataclass, field
 from typing import Any
 
 
@@ -42,3 +43,11 @@ class AttachmentIngressParticipant:
 
     def state_fragments(self) -> list[str]:
         return self.service.state_fragments()
+
+
+@dataclass(slots=True)
+class ParticipantSet:
+    core: list[object] = field(default_factory=list)
+
+    def all(self) -> list[object]:
+        return list(self.core)

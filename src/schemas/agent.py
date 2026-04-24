@@ -13,6 +13,7 @@ class AgentSpec:
     capabilities: list[str] = field(default_factory=list)
     llm: dict[str, Any] = field(default_factory=dict)
     context_policy: dict[str, Any] = field(default_factory=dict)
+    context_body: str = ""
     source_path: str = ""
 
     @classmethod
@@ -25,5 +26,6 @@ class AgentSpec:
             capabilities=[str(item) for item in payload.get("capabilities") or []],
             llm=dict(payload.get("llm") or {}),
             context_policy=dict(payload.get("context_policy") or {}),
+            context_body=str(payload.get("context_body") or ""),
             source_path=str(payload.get("source_path") or ""),
         )

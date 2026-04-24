@@ -29,8 +29,8 @@ class WikiSourcePolicy:
             return True, "tool_source", ["tool", "system"]
         if rel.startswith("src/runtime/") and path.suffix == ".py":
             return True, "runtime_source", ["runtime", "system"]
-        if rel.startswith("src/governance/") and path.suffix == ".py":
-            return True, "governance_source", ["governance", "system"]
+        if rel.startswith("src/control/") and path.suffix == ".py":
+            return True, "control_source", ["control", "system"]
         if rel.startswith("src/wiki/") and path.suffix == ".py":
             return True, "wiki_source", ["wiki", "system"]
         if rel.startswith("src/schemas/") and path.suffix == ".py":

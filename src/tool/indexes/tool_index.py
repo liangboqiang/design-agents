@@ -28,4 +28,3 @@ class ToolIndex:
 
     def list_all(self) -> list[ToolDescriptor]:
         return [self.descriptors[key] for key in sorted(self.descriptors)]
-

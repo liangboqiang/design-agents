@@ -40,6 +40,7 @@ class EngineContext:
     settings: EngineSettings
     paths: RuntimePaths
     agent_name: str = "ad-hoc"
+    agent_context: str = ""
 
 
 @dataclass(slots=True)

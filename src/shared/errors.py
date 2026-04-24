@@ -2,7 +2,7 @@ from __future__ import annotations
 
 
 class DesignAgentsError(Exception):
-    """Base error for the Design Agents runtime."""
+    """Base error for the VNext runtime."""
 
 
 class RegistryError(DesignAgentsError):

@@ -12,16 +12,15 @@
         "runtime.toml"
       ],
       "links": [
-        "context/system/default",
         "skill/general/root"
       ],
-      "content_hash": "88c648a00f8068f900ae4176a5d13b53e4a59b32",
+      "content_hash": "0676b9b95977873e4cc34d0dac92a3ae09727e6b",
       "runtime_action": null,
       "section_map": {
         "root skill": "- [[skill/general/root]]",
         "toolboxes": "- `files`\n- `shell`\n- `textops`\n- `runtime_tools`\n- `load_refs`\n- `inspect_tools`\n- `wiki`",
         "capabilities": "- `todo`\n- `task`\n- `compact`\n- `background`\n- `subagent`",
-        "context": "- [[context/system/default]]"
+        "context": "你是一个通用对话智能体入口，负责把用户请求映射到当前可见的 skill、tool 和 wiki 能力上。你的上下文直接写在本页中，不再引用 context 模板。\n\n### 行为原则\n\n- 先判断用户请求是普通问答、文件操作、知识检索、任务拆解还是需要进入子技能。\n- 只使用运行时暴露的可见工具，不推断隐藏工具或隐藏工具箱。\n- 需要知识时优先使用可见的 wiki 能力。\n- 简单问题直接回答；复杂问题先给出简短判断，再调用合适工具。"
       },
       "section_links": {
         "root skill": [
@@ -29,9 +28,7 @@
         ],
         "toolboxes": [],
         "capabilities": [],
-        "context": [
-          "context/system/default"
-        ]
+        "context": []
       },
       "code_items": {
         "root skill": [
@@ -54,7 +51,10 @@
           "subagent"
         ],
         "context": [
-          "[[context/system/default]]"
+          "先判断用户请求是普通问答、文件操作、知识检索、任务拆解还是需要进入子技能。",
+          "只使用运行时暴露的可见工具，不推断隐藏工具或隐藏工具箱。",
+          "需要知识时优先使用可见的 wiki 能力。",
+          "简单问题直接回答；复杂问题先给出简短判断，再调用合适工具。"
         ]
       },
       "settings": {
@@ -75,16 +75,15 @@
         "runtime.toml"
       ],
       "links": [
-        "context/system/default",
         "skill/parts_design/root"
       ],
-      "content_hash": "1ddd4fd26e9f959ecce2a3dcf3578c41e5ecfe01",
+      "content_hash": "1cebad5d2c160c5ec44e05cc93187a3617fa9cb6",
       "runtime_action": null,
       "section_map": {
         "root skill": "- [[skill/parts_design/root]]",
         "toolboxes": "- `files`\n- `shell`\n- `textops`\n- `runtime_tools`\n- `load_refs`\n- `inspect_tools`\n- `normalize_tools`\n- `wiki`",
         "capabilities": "- `todo`\n- `task`\n- `compact`\n- `workspace`\n- `background`\n- `subagent`",
-        "context": "- [[context/system/default]]"
+        "context": "你是零部件设计智能体入口，面向连杆、曲轴、凸轮轴等内燃动力零部件设计任务。你的上下文直接写在本页中，不再引用 context 模板。\n\n### 行为原则\n\n- 先澄清设计对象、设计阶段、输入参数、输出形式和约束边界。\n- 复杂任务优先进入匹配的零部件 child skill 或公共设计 skill。\n- 需要知识、SOP、工具说明或历史材料时优先使用 wiki 能力。\n- 保持工程闭环：需求解析、任务拆解、工具执行、结果解释、报告沉淀。"
       },
       "section_links": {
         "root skill": [
@@ -92,9 +91,7 @@
         ],
         "toolboxes": [],
         "capabilities": [],
-        "context": [
-          "context/system/default"
-        ]
+        "context": []
       },
       "code_items": {
         "root skill": [
@@ -119,7 +116,10 @@
           "subagent"
         ],
         "context": [
-          "[[context/system/default]]"
+          "先澄清设计对象、设计阶段、输入参数、输出形式和约束边界。",
+          "复杂任务优先进入匹配的零部件 child skill 或公共设计 skill。",
+          "需要知识、SOP、工具说明或历史材料时优先使用 wiki 能力。",
+          "保持工程闭环：需求解析、任务拆解、工具执行、结果解释、报告沉淀。"
         ]
       },
       "settings": {
@@ -140,16 +140,15 @@
         "runtime.toml"
       ],
       "links": [
-        "context/system/default",
         "skill/general/root"
       ],
-      "content_hash": "1626d0d2493598681cb338debe8c40763871d6c4",
+      "content_hash": "0e61d0a90b30de5b458ddc59104890c35e787cb5",
       "runtime_action": null,
       "section_map": {
         "root skill": "- [[skill/general/root]]",
         "toolboxes": "- `files`\n- `textops`\n- `inspect_tools`\n- `normalize_tools`",
         "capabilities": "- `compact`\n- `task`",
-        "context": "- [[context/system/default]]"
+        "context": "你是审查型智能体入口，重点检查方案、代码、工具表面和运行结果的一致性。你的上下文直接写在本页中，不再引用 context 模板。\n\n### 行为原则\n\n- 优先发现结构不一致、职责泄漏、重复表达、隐藏扩展口和不可维护路径。\n- 使用 inspect、normalize、files 等可见工具支撑判断。\n- 输出应直指问题、原因、影响和整改动作。\n- 不做无根据推断，不使用不可见能力。"
       },
       "section_links": {
         "root skill": [
@@ -157,9 +156,7 @@
         ],
         "toolboxes": [],
         "capabilities": [],
-        "context": [
-          "context/system/default"
-        ]
+        "context": []
       },
       "code_items": {
         "root skill": [
@@ -176,7 +173,10 @@
           "task"
         ],
         "context": [
-          "[[context/system/default]]"
+          "优先发现结构不一致、职责泄漏、重复表达、隐藏扩展口和不可维护路径。",
+          "使用 inspect、normalize、files 等可见工具支撑判断。",
+          "输出应直指问题、原因、影响和整改动作。",
+          "不做无根据推断，不使用不可见能力。"
         ]
       },
       "settings": {
@@ -197,16 +197,15 @@
         "runtime.toml"
       ],
       "links": [
-        "context/system/default",
         "skill/wiki_hub/root"
       ],
-      "content_hash": "5cdb8d122ce6497b253b17f52286e8dd4b4c2e7a",
+      "content_hash": "a506223d1fb425a96afe62c95d126e4ff5cae216",
       "runtime_action": null,
       "section_map": {
         "root skill": "- [[skill/wiki_hub/root]]",
         "toolboxes": "- `wiki`\n- `wiki_admin`",
         "capabilities": "- `subagent`\n- `compact`",
-        "context": "- [[context/system/default]]"
+        "context": "你是知识库前台智能体入口，负责读取共享 wiki、回答知识问题，并在需要时触发 wiki 维护工具。你的上下文直接写在本页中，不再引用 context 模板。\n\n### 行为原则\n\n- 优先检索和读取已编译的 wiki 页面。\n- 当知识库过期或缺失时，使用可见的 wiki_admin 能力刷新或导入。\n- 回答时说明依据来自 wiki 页面还是原始 source。\n- 不绕过 wiki 中枢直接猜测项目事实。"
       },
       "section_links": {
         "root skill": [
@@ -214,9 +213,7 @@
         ],
         "toolboxes": [],
         "capabilities": [],
-        "context": [
-          "context/system/default"
-        ]
+        "context": []
       },
       "code_items": {
         "root skill": [
@@ -231,7 +228,10 @@
           "compact"
         ],
         "context": [
-          "[[context/system/default]]"
+          "优先检索和读取已编译的 wiki 页面。",
+          "当知识库过期或缺失时，使用可见的 wiki_admin 能力刷新或导入。",
+          "回答时说明依据来自 wiki 页面还是原始 source。",
+          "不绕过 wiki 中枢直接猜测项目事实。"
         ]
       },
       "settings": {
@@ -252,16 +252,15 @@
         "runtime.toml"
       ],
       "links": [
-        "context/system/default",
         "skill/general/root"
       ],
-      "content_hash": "4c5e0366e7a88e927469f9f8a87618360c288f06",
+      "content_hash": "380e72bd63c351edc4979335043a312560011fa6",
       "runtime_action": null,
       "section_map": {
         "root skill": "- [[skill/general/root]]",
         "toolboxes": "- `files`\n- `shell`\n- `textops`",
         "capabilities": "- `todo`\n- `task`\n- `compact`\n- `autonomy`",
-        "context": "- [[context/system/default]]"
+        "context": "你是轻量 worker 智能体入口，负责在父运行时分配的窄任务范围内执行短链路工作。你的上下文直接写在本页中，不再引用 context 模板。\n\n### 行为原则\n\n- 只围绕当前任务目标行动，不主动扩大范围。\n- 优先使用当前可见的文件、shell、文本处理和任务工具。\n- 有阻塞时记录任务状态并返回清晰原因。\n- 不创建额外治理结构，不假设隐藏工具存在。"
       },
       "section_links": {
         "root skill": [
@@ -269,9 +268,7 @@
         ],
         "toolboxes": [],
         "capabilities": [],
-        "context": [
-          "context/system/default"
-        ]
+        "context": []
       },
       "code_items": {
         "root skill": [
@@ -289,7 +286,10 @@
           "autonomy"
         ],
         "context": [
-          "[[context/system/default]]"
+          "只围绕当前任务目标行动，不主动扩大范围。",
+          "优先使用当前可见的文件、shell、文本处理和任务工具。",
+          "有阻塞时记录任务状态并返回清晰原因。",
+          "不创建额外治理结构，不假设隐藏工具存在。"
         ]
       },
       "settings": {
@@ -298,150 +298,30 @@
         "model": "mock"
       }
     },
-    "context/compact_summary/default": {
-      "kind": "context",
-      "title": "Default Compact Summary Context",
-      "summary": "Template for compacted history summaries.",
-      "path": "src/context/compact_summary/default/page.md",
-      "folder": "src/context/compact_summary/default",
-      "truth_ext": [
-        "template.txt"
-      ],
-      "links": [],
-      "content_hash": "81090c44da6c233e5a55f2dfe59074c1b669add9",
-      "runtime_action": null,
-      "section_map": {
-        "template file": "- `template.txt`"
-      },
-      "section_links": {
-        "template file": []
-      },
-      "code_items": {
-        "template file": [
-          "template.txt"
-        ]
-      },
-      "settings": {}
-    },
-    "context/system/default": {
-      "kind": "context",
-      "title": "Default System Context",
-      "summary": "Default system prompt template for the governed runtime.",
-      "path": "src/context/system/default/page.md",
-      "folder": "src/context/system/default",
-      "truth_ext": [
-        "template.txt"
-      ],
-      "links": [
-        "agent/general_chat",
-        "agent/wiki_front_chat"
-      ],
-      "content_hash": "1ec9f27779efd998d500dad05b835ce0f9c42749",
-      "runtime_action": null,
-      "section_map": {
-        "template file": "- `template.txt`",
-        "refs": "- [[agent/general_chat]]\n- [[agent/wiki_front_chat]]"
-      },
-      "section_links": {
-        "template file": [],
-        "refs": [
-          "agent/general_chat",
-          "agent/wiki_front_chat"
-        ]
-      },
-      "code_items": {
-        "template file": [
-          "template.txt"
-        ],
-        "refs": [
-          "[[agent/general_chat]]",
-          "[[agent/wiki_front_chat]]"
-        ]
-      },
-      "settings": {}
-    },
-    "context/tool_result/default": {
-      "kind": "context",
-      "title": "Default Tool Result Context",
-      "summary": "Template for rendering tool outputs back into the model conversation.",
-      "path": "src/context/tool_result/default/page.md",
-      "folder": "src/context/tool_result/default",
-      "truth_ext": [
-        "template.txt"
-      ],
-      "links": [],
-      "content_hash": "3ebf85b71d742b616f9a602ee7e1cbe003273b28",
-      "runtime_action": null,
-      "section_map": {
-        "template file": "- `template.txt`"
-      },
-      "section_links": {
-        "template file": []
-      },
-      "code_items": {
-        "template file": [
-          "template.txt"
-        ]
-      },
-      "settings": {}
-    },
-    "governance/agent_build": {
-      "kind": "governance",
-      "title": "Agent Build Governance",
-      "summary": "Governance page describing how child agents and batch runs are created from the active runtime.",
-      "path": "src/governance/agent_build/page.md",
-      "folder": "src/governance/agent_build",
-      "truth_ext": [],
-      "links": [
-        "skill/governance/agent_build",
-        "tool/subagent/ask",
-        "tool/subagent/batch_run"
-      ],
-      "content_hash": "9955491a2c35ddd2aa318f6b166ac475008be4e6",
-      "runtime_action": null,
-      "section_map": {
-        "refs": "- [[skill/governance/agent_build]]\n- [[tool/subagent/ask]]\n- [[tool/subagent/batch_run]]"
-      },
-      "section_links": {
-        "refs": [
-          "skill/governance/agent_build",
-          "tool/subagent/ask",
-          "tool/subagent/batch_run"
-        ]
-      },
-      "code_items": {
-        "refs": [
-          "[[skill/governance/agent_build]]",
-          "[[tool/subagent/ask]]",
-          "[[tool/subagent/batch_run]]"
-        ]
-      },
-      "settings": {}
-    },
-    "governance/protocol_index": {
-      "kind": "governance",
-      "title": "Protocol Index",
+    "control/protocol_index": {
+      "kind": "control",
+      "title": "Control Protocol Index",
       "summary": "负责扫描 `src/` 下的单页真相结构，生成实体索引、页面目录和链接图。",
-      "path": "src/governance/protocol_index/page.md",
-      "folder": "src/governance/protocol_index",
+      "path": "src/control/protocol_index/page.md",
+      "folder": "src/control/protocol_index",
       "truth_ext": [
         "__init__.py",
         "impl.py"
       ],
       "links": [
-        "governance/repo_lint",
+        "control/repo_lint",
         "wiki/index"
       ],
-      "content_hash": "a9a2b614b37818bc1ca3aa66ed1afd73893e33a1",
+      "content_hash": "611fed8d4920a51ba018182869b3296c259e5ed1",
       "runtime_action": null,
       "section_map": {
         "输出": "- `src/wiki/store/index.json`\n- `src/wiki/store/catalog.json`\n- `src/wiki/store/graph.json`",
-        "refs": "- [[governance/repo_lint]]\n- [[wiki/index]]"
+        "refs": "- [[control/repo_lint]]\n- [[wiki/index]]"
       },
       "section_links": {
         "输出": [],
         "refs": [
-          "governance/repo_lint",
+          "control/repo_lint",
           "wiki/index"
         ]
       },
@@ -452,35 +332,35 @@
           "src/wiki/store/graph.json"
         ],
         "refs": [
-          "[[governance/repo_lint]]",
+          "[[control/repo_lint]]",
           "[[wiki/index]]"
         ]
       },
       "settings": {}
     },
-    "governance/repo_lint": {
-      "kind": "governance",
-      "title": "Repository Lint",
+    "control/repo_lint": {
+      "kind": "control",
+      "title": "Control Repository Lint",
       "summary": "负责校验仓库是否遵守单页真相协议和旧链路清理规则。",
-      "path": "src/governance/repo_lint/page.md",
-      "folder": "src/governance/repo_lint",
+      "path": "src/control/repo_lint/page.md",
+      "folder": "src/control/repo_lint",
       "truth_ext": [
         "__init__.py",
         "impl.py"
       ],
       "links": [
-        "governance/protocol_index"
+        "control/protocol_index"
       ],
-      "content_hash": "fbedc45b87d1a1be93d99d49af6ad70b5aca3648",
+      "content_hash": "30c46a3666a73a5d621687e5ff7369206fb33bcb",
       "runtime_action": null,
       "section_map": {
         "核心规则": "- 单文件夹最多一个 `.md`\n- `[[...]]` 链接必须可解析\n- 仓库中不得残留旧知识库路径和旧动作名",
-        "refs": "- [[governance/protocol_index]]"
+        "refs": "- [[control/protocol_index]]"
       },
       "section_links": {
         "核心规则": [],
         "refs": [
-          "governance/protocol_index"
+          "control/protocol_index"
         ]
       },
       "code_items": {
@@ -490,7 +370,7 @@
           "仓库中不得残留旧知识库路径和旧动作名"
         ],
         "refs": [
-          "[[governance/protocol_index]]"
+          "[[control/protocol_index]]"
         ]
       },
       "settings": {}
@@ -506,7 +386,7 @@
         "tool/compact/now",
         "tool/governance/load_refs"
       ],
-      "content_hash": "20ad10925ddce1c241b8b5fb600792f5580f2dc4",
+      "content_hash": "3430c2663d896977f183efe327265969e06a7b05",
       "runtime_action": null,
       "section_map": {
         "tools": "- [[tool/compact/now]]\n- [[tool/governance/load_refs]]"
@@ -539,7 +419,7 @@
         "tool/files/list_dir",
         "tool/files/read_text"
       ],
-      "content_hash": "47329d6df3b730a859671941a457feae448d6f06",
+      "content_hash": "6795abe297acb7ef0cb18ae7fd57b9c23009340e",
       "runtime_action": null,
       "section_map": {
         "tools": "- [[tool/engine/inspect_skill]]\n- [[tool/engine/inspect_action]]\n- [[tool/engine/list_child_skills]]\n- [[tool/files/read_text]]\n- [[tool/files/list_dir]]"
@@ -575,7 +455,7 @@
         "tool/files/read_text",
         "tool/files/write_text"
       ],
-      "content_hash": "f697206bdc782ba14121da60728aff6d17114658",
+      "content_hash": "0f240eaa17ae1fe0fc8582b53a395c8d87603f1b",
       "runtime_action": null,
       "section_map": {
         "tools": "- [[tool/files/write_text]]\n- [[tool/files/read_text]]"
@@ -606,7 +486,7 @@
         "tool/engine/list_child_skills",
         "tool/governance/inspect_tool_surface"
       ],
-      "content_hash": "24335b84b64bb7bf6872710e8743b28aa52f1983",
+      "content_hash": "3139798d195ecc16d2557e0c699b4cfcc9bc9c2d",
       "runtime_action": null,
       "section_map": {
         "tools": "- [[tool/engine/list_child_skills]]\n- [[tool/engine/enter_skill]]\n- [[tool/governance/inspect_tool_surface]]"
@@ -643,7 +523,7 @@
         "tool/todo/update",
         "tool/todo/view"
       ],
-      "content_hash": "9d4ed9a9c2d9b1e7bebb0c501afec8ecc900e913",
+      "content_hash": "8bc5d2875ac0acc8be4e08f16c9a2766e5af1123",
       "runtime_action": null,
       "section_map": {
         "tools": "- [[tool/todo/update]]\n- [[tool/todo/view]]\n- [[tool/task/create]]\n- [[tool/task/update]]\n- [[tool/task/list]]\n- [[tool/task/get]]\n- [[tool/task/claim]]"
@@ -693,7 +573,7 @@
         "tool/files/write_text",
         "tool/shell/run"
       ],
-      "content_hash": "5eb6e68e4ae4b574db25062e43682771470a1b36",
+      "content_hash": "bfcc18737242cd89814cffe15c71796e12f36453",
       "runtime_action": null,
       "section_map": {
         "child skills": "- [[skill/core/query]]\n- [[skill/core/task]]",
@@ -753,18 +633,25 @@
         "tool/subagent/ask",
         "tool/subagent/batch_run"
       ],
-      "content_hash": "3f63336d654e271eac704b973fe73e4fe59bff56",
+      "content_hash": "3729f7d07ea2aa424cad3455a8b4648c3c2c7c51",
       "runtime_action": null,
       "section_map": {
+        "scope": "- 子智能体和批量子任务创建的行为说明归属于本 skill。\n- control plane 只保留运行代码，不再保留只有 `page.md` 的治理说明页。\n- 构建 child agent 时应继承父运行时的 registry、LLM 配置、存储根与可见工具箱边界。",
         "tools": "- [[tool/subagent/ask]]\n- [[tool/subagent/batch_run]]"
       },
       "section_links": {
+        "scope": [],
         "tools": [
           "tool/subagent/ask",
           "tool/subagent/batch_run"
         ]
       },
       "code_items": {
+        "scope": [
+          "子智能体和批量子任务创建的行为说明归属于本 skill。",
+          "page.md",
+          "构建 child agent 时应继承父运行时的 registry、LLM 配置、存储根与可见工具箱边界。"
+        ],
         "tools": [
           "[[tool/subagent/ask]]",
           "[[tool/subagent/batch_run]]"
@@ -783,7 +670,7 @@
         "tool/compact/now",
         "tool/governance/normalize_tool_result"
       ],
-      "content_hash": "ec8945d8af2397a5318ab3018720beb9183f46b5",
+      "content_hash": "67f6f15803825bbfda0d9c13250b1ac4427fc7fb",
       "runtime_action": null,
       "section_map": {
         "tools": "- [[tool/compact/now]]\n- [[tool/governance/normalize_tool_result]]"
@@ -816,7 +703,7 @@
         "tool/protocol/submit_plan",
         "tool/team/read_inbox"
       ],
-      "content_hash": "8d2b0620ae0aa754c5e15ed3e048640d5bd69edc",
+      "content_hash": "20fe1c6bb8399c9b71dd281f33903ff18be67986",
       "runtime_action": null,
       "section_map": {
         "tools": "- [[tool/protocol/request_shutdown]]\n- [[tool/protocol/respond_shutdown]]\n- [[tool/protocol/submit_plan]]\n- [[tool/protocol/review_plan]]\n- [[tool/team/read_inbox]]"
@@ -852,7 +739,7 @@
         "tool/engine/inspect_skill",
         "tool/governance/load_refs"
       ],
-      "content_hash": "82fe42d525d2d267de63c421449e7ae5bfcb37ad",
+      "content_hash": "13828734e874c3b2f73019af1f7fa53e35dd7056",
       "runtime_action": null,
       "section_map": {
         "tools": "- [[tool/governance/load_refs]]\n- [[tool/engine/inspect_skill]]"
@@ -885,7 +772,7 @@
         "tool/task/update",
         "tool/todo/update"
       ],
-      "content_hash": "ff779ffdf1e82e605ef398b11cae95962baded2c",
+      "content_hash": "88995a1d4ee2365cd3ef64b0f9b4f4dbacccd746",
       "runtime_action": null,
       "section_map": {
         "tools": "- [[tool/todo/update]]\n- [[tool/task/create]]\n- [[tool/task/update]]\n- [[tool/task/list]]\n- [[tool/task/claim]]"
@@ -922,7 +809,7 @@
         "tool/governance/inspect_tool_surface",
         "tool/governance/normalize_tool_result"
       ],
-      "content_hash": "f9cdf25a517e023734b3713a7a36991b71d91b2b",
+      "content_hash": "39a895c7f756c006a0d2c6aaf336f71867874fff",
       "runtime_action": null,
       "section_map": {
         "tools": "- [[tool/governance/inspect_tool_surface]]\n- [[tool/governance/normalize_tool_result]]\n- [[tool/engine/inspect_action]]"
@@ -957,7 +844,7 @@
         "tool/workspace/remove",
         "tool/workspace/run"
       ],
-      "content_hash": "ab202dae7438097d215740fec8131241129ae246",
+      "content_hash": "da9e7da0853259c855f93887bd128e798e6092f8",
       "runtime_action": null,
       "section_map": {
         "tools": "- [[tool/workspace/create]]\n- [[tool/workspace/list]]\n- [[tool/workspace/run]]\n- [[tool/workspace/keep]]\n- [[tool/workspace/remove]]"
@@ -995,7 +882,7 @@
         "tool/files/write_text",
         "tool/shell/run"
       ],
-      "content_hash": "991839adc54bebdf21d6b4c3e7f5f18fa7934874",
+      "content_hash": "6104517982e27bdbd38f5559890a4151382d0956",
       "runtime_action": null,
       "section_map": {
         "refs": "- [[skill/parts_design/common/report]]",
@@ -1034,7 +921,7 @@
         "tool/files/read_text",
         "tool/files/write_text"
       ],
-      "content_hash": "e12c372c85d5d2fffc2039b3765847dbf1c05461",
+      "content_hash": "f13eb61762f99eab099f413277b6d317a6ab1f3d",
       "runtime_action": null,
       "section_map": {
         "tools": "- [[tool/files/write_text]]\n- [[tool/files/read_text]]"
@@ -1067,7 +954,7 @@
         "tool/todo/update",
         "tool/todo/view"
       ],
-      "content_hash": "a10751543479faba6a7b71b975e05eea2dec6934",
+      "content_hash": "b72320e839ba8c6a64640931c2241bf5a9548a89",
       "runtime_action": null,
       "section_map": {
         "tools": "- [[tool/todo/update]]\n- [[tool/todo/view]]\n- [[tool/task/create]]\n- [[tool/task/list]]\n- [[tool/files/write_text]]"
@@ -1114,7 +1001,7 @@
         "tool/workspace/create",
         "tool/workspace/run"
       ],
-      "content_hash": "fd5acb5a63772763afd715747706b21ff7979cc7",
+      "content_hash": "8e83d57f72d617b2e20adec47899bc7393e2089c",
       "runtime_action": null,
       "section_map": {
         "refs": "- [[skill/parts_design/common/requirement_parse]]\n- [[skill/parts_design/common/report]]",
@@ -1182,7 +1069,7 @@
         "tool/workspace/create",
         "tool/workspace/run"
       ],
-      "content_hash": "7394cd5b7745043841bf771a56bf48187732f2a8",
+      "content_hash": "41e5015504eb746cc0ecf26508bf7b287c7f6df6",
       "runtime_action": null,
       "section_map": {
         "refs": "- [[skill/parts_design/common/requirement_parse]]\n- [[skill/parts_design/common/report]]",
@@ -1258,7 +1145,7 @@
         "tool/workspace/remove",
         "tool/workspace/run"
       ],
-      "content_hash": "a4721e69a8bae62f818042e8aacabc82af4bf3e4",
+      "content_hash": "bbd29c89081a0bc43fa414b5ea4d726514556824",
       "runtime_action": null,
       "section_map": {
         "child skills": "- [[skill/core/query]]\n- [[skill/core/task]]\n- [[skill/parts_design/common/requirement_parse]]\n- [[skill/parts_design/common/report]]\n- [[skill/parts_design/conrod/root]]\n- [[skill/parts_design/crankshaft/root]]\n- [[skill/parts_design/camshaft/root]]",
@@ -1446,7 +1333,7 @@
         "tool/wiki_admin/lint",
         "tool/wiki_admin/refresh_system"
       ],
-      "content_hash": "b15c17f846847fc7e74cd8757be664385a58120a",
+      "content_hash": "df73e3efd940e3ad05222bed5af28d98df21f8e0",
       "runtime_action": null,
       "section_map": {
         "child skills": "- [[skill/wiki_hub/ingest]]\n- [[skill/wiki_hub/query]]\n- [[skill/wiki_hub/lint]]",
@@ -1503,7 +1390,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "cd1b5691fea3f46f868093ba4a7feb8d206f0475",
+      "content_hash": "2a91b941fd68cc5fd77db5b0d405d11e22bc37e7",
       "runtime_action": "compact.now",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1528,7 +1415,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "e0f187a6e2f05da8c2eb0224e9e6951b3c9a2271",
+      "content_hash": "6bb056d50dc300095c5d52dfa0446d099f2dc269",
       "runtime_action": "engine.enter_skill",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1553,7 +1440,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "60564750e1a2198d8cc630bdb7b971718445bc6d",
+      "content_hash": "92edefe5cd6432772e99f0b83faf96b6ffecfc14",
       "runtime_action": "engine.inspect_action",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1578,7 +1465,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "063eb985b3f8a43537d464e725b62c4ff78dc975",
+      "content_hash": "3597f6b230177ba8e0400ea7a78f14e45ea24d02",
       "runtime_action": "engine.inspect_skill",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1603,7 +1490,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "3f6c03ecae16ad264555f4e3ac0210bd3c750bb8",
+      "content_hash": "5d29a05a7c2ca428e90cef060ebfc51f02907673",
       "runtime_action": "engine.list_child_skills",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1628,7 +1515,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "88bf0fcb94850f47f1d50220865b4c22892026c3",
+      "content_hash": "65286b670e18cc6129e0ffc1ddccf22ab83d4192",
       "runtime_action": "files.edit_text",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1653,7 +1540,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "d18bd5642a47994b73695220379b73d61e22d315",
+      "content_hash": "5c8c2472e53525dc7da9a6ff16c3c434bf4cfe78",
       "runtime_action": "files.list_dir",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1678,7 +1565,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "1c6ca6a27f77dd4b8218391ca6cdcfd185cf779f",
+      "content_hash": "56b97ba3b49eb4ef2a5951672d352079de18319a",
       "runtime_action": "files.read_text",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1703,7 +1590,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "40a9f2fe732975003e2dcc77ce270cdd150c5333",
+      "content_hash": "fbd6779fe710afd7296db2ca9f107c235abc0f1f",
       "runtime_action": "files.write_text",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1728,7 +1615,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "201d5f200d47226e787060494df352b2d0b2c763",
+      "content_hash": "2e68252811f14cc5f48edca9f4095145a535250a",
       "runtime_action": "governance.inspect_tool_surface",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1753,7 +1640,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "30f935ca1904bb8edfbe614a3e34b51df1fa3dd8",
+      "content_hash": "82b2afa9520a64c4f5ad7036fa8199be2697dfdf",
       "runtime_action": "governance.load_refs",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1778,7 +1665,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "46ed950eba67431376714825e6623cbcd1835f34",
+      "content_hash": "52f3815b3dafbc9a54525501f63771b2eb9b4dc3",
       "runtime_action": "governance.normalize_tool_result",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1803,7 +1690,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "8761e3463718cc0d1bfeb2cfe83ea6c666c540db",
+      "content_hash": "a536ef2f94f2d1439cdd1e5741b8759e9911e597",
       "runtime_action": "protocol.request_shutdown",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1828,7 +1715,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "9d1b35385cb9ec98bfe56e8bfaecf918a0f06796",
+      "content_hash": "67352e63323c158990aaa2161e5ab3deb961abc4",
       "runtime_action": "protocol.respond_shutdown",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1853,7 +1740,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "27699c3879f888cc83667b7edc1e56199e72047b",
+      "content_hash": "fa3e51643b51ff7eb9a682b35b2ed6e8cb3b2dc1",
       "runtime_action": "protocol.review_plan",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1878,7 +1765,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "2775f43d8512ad6e5f272cd83a5bb6d158de46b0",
+      "content_hash": "6b301340c9838907f1775678c50d066a314d95ff",
       "runtime_action": "protocol.submit_plan",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1903,7 +1790,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "afa027f864685d281b2081c10da28f52f9b43bde",
+      "content_hash": "d2a70c2b97db1fdf328efb0625c2d1f8696c89b4",
       "runtime_action": "shell.run",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1928,7 +1815,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "00b27f6bef0c995b0fd33400b9bd477b4a08ec8d",
+      "content_hash": "050800f6c892b1dba5a563e663da9be296e91e4c",
       "runtime_action": "subagent.ask",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1953,7 +1840,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "a2e138691255da99cc99c9632c403435b8b588ba",
+      "content_hash": "4ad693474ac66ce986b05f5b785ce7193aef352d",
       "runtime_action": "subagent.batch_run",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -1978,7 +1865,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "8420c5dfb274951f0dd91f2b902312a7cdc27b57",
+      "content_hash": "4b035485ed4b4df4a46f68a18313f392f93bc795",
       "runtime_action": "task.claim",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2003,7 +1890,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "6b72884357ceb169bfda94d1a0f1a001b28d5d11",
+      "content_hash": "b66ec531b1c18ef3ca655236de44a61d620fd685",
       "runtime_action": "task.create",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2028,7 +1915,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "77565894c590f34c4dc12638272006e798130419",
+      "content_hash": "bd3d7239cdcab6284924804243310c76054d2ce1",
       "runtime_action": "task.get",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2053,7 +1940,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "0be84b369533d724bbf66ed8e9d1de677e99d68d",
+      "content_hash": "6033bb26b8c7894bb24dbbcb458af549bfdc9c60",
       "runtime_action": "task.list",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2078,7 +1965,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "163c8eabefe751a1b61a129170218900fed9c705",
+      "content_hash": "41100b7f0636510ef4b5f6a2a482d44e6955be71",
       "runtime_action": "task.update",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2103,7 +1990,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "7aff548a6b5f5872fc550a2252370c61aabc98c5",
+      "content_hash": "db1e1b33b61cfa39c08c46a96b42e8bd6f789da1",
       "runtime_action": "team.read_inbox",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2128,7 +2015,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "54450c82f7c2a6969f99d2f753e23668289a3c57",
+      "content_hash": "8806d714aee0ed869ee2aa789eeae80568aef0b2",
       "runtime_action": "todo.update",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2153,7 +2040,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "3bf6f952f1c803ed3ca3d2770d1d56d2f779e5f7",
+      "content_hash": "27328029db4633a7dcaf7ed63c138d2972e560e7",
       "runtime_action": "todo.view",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2178,7 +2065,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "c76481bde18b20902b6a3aca38ebb82114f9c8a4",
+      "content_hash": "13395a49d242dc2a4fbf549c873e14ac80beb1f9",
       "runtime_action": "wiki.answer",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2203,7 +2090,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "95e68be95570d814a9d3f277edacb528d6d5b46c",
+      "content_hash": "71b5cdcf0f84c1d01419d589cd514b97b2e66ec2",
       "runtime_action": "wiki.read_page",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2228,7 +2115,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "f592a5ea652e103b5644618c4020a343a2a05822",
+      "content_hash": "7a378f319a998edd03bd25537c4fdbcc64adbe35",
       "runtime_action": "wiki.read_source",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2253,7 +2140,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "060cf0ea2f7c6728dc15d971afcac89cc5d49e60",
+      "content_hash": "9ec45c80d41f773930c055a71876e2c047ca1a38",
       "runtime_action": "wiki.search",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2281,7 +2168,7 @@
         "skill/wiki_hub/ingest",
         "skill/wiki_hub/root"
       ],
-      "content_hash": "73c28d2e2b42900c4d7d46d0838b711a9d36211c",
+      "content_hash": "38bb28baee3762a77fe6dff67aab2e8adebc89a6",
       "runtime_action": "wiki_admin.ingest_files",
       "section_map": {
         "implementation": "- `impl.py`",
@@ -2318,7 +2205,7 @@
         "skill/wiki_hub/lint",
         "skill/wiki_hub/root"
       ],
-      "content_hash": "7480e9562a65373e552e0e7a9a57e3a63c5de31f",
+      "content_hash": "d7c9a65ea7d6e032e6773678ef4fd5c132d76037",
       "runtime_action": "wiki_admin.lint",
       "section_map": {
         "implementation": "- `impl.py`",
@@ -2355,7 +2242,7 @@
         "skill/wiki_hub/ingest",
         "skill/wiki_hub/root"
       ],
-      "content_hash": "8f46e92222f38e6798b771e9853c8a2531203d3c",
+      "content_hash": "a19a0b92607077b46436de67f2e26bb6c30007b0",
       "runtime_action": "wiki_admin.refresh_system",
       "section_map": {
         "implementation": "- `impl.py`",
@@ -2389,7 +2276,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "ab94e60d9fa8e074e64d63d533635896acebe935",
+      "content_hash": "f99551555d35e66e462d84ff9fdd444fb919e6ce",
       "runtime_action": "workspace.create",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2414,7 +2301,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "67c2e66eadfa718251b1618eea1196670eec1816",
+      "content_hash": "cdda37a43630d3a1f56c86b520a80597fd946e1a",
       "runtime_action": "workspace.keep",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2439,7 +2326,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "bab962d676cedab76aacb034acf84a0b943d2b08",
+      "content_hash": "5bef1a903baf0e8f86a2e36b573df48f7b0a0b19",
       "runtime_action": "workspace.list",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2464,7 +2351,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "8fd23d173187b68451aa21a9dd43779be67c2f76",
+      "content_hash": "600f6eaebba0784f155ef3d2700f610309a97515",
       "runtime_action": "workspace.remove",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2489,7 +2376,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "7bc1cc8e7fe257cdfb918fb73262158003056808",
+      "content_hash": "ab8257d6a6de6bd046027fbca23b319d8e8cc214",
       "runtime_action": "workspace.run",
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2507,7 +2394,7 @@
     "wiki/index": {
       "kind": "wiki",
       "title": "Wiki Index",
-      "summary": "Wiki index persistence copies the governance registry read model into [[wiki/store]].",
+      "summary": "Wiki index persistence copies the control-plane registry read model into [[wiki/store]].",
       "path": "src/wiki/index/page.md",
       "folder": "src/wiki/index",
       "truth_ext": [
@@ -2515,20 +2402,20 @@
         "impl.py"
       ],
       "links": [
-        "governance/protocol_index",
+        "control/protocol_index",
         "wiki/store"
       ],
-      "content_hash": "554ea657cf9908f9399cffa43ed60cf76bac6aff",
+      "content_hash": "ea6184b31ea1fc260e0458d536c8a66eb2a95575",
       "runtime_action": null,
       "section_map": {
         "implementation": "- `impl.py`",
-        "refs": "- [[wiki/store]]\n- [[governance/protocol_index]]"
+        "refs": "- [[wiki/store]]\n- [[control/protocol_index]]"
       },
       "section_links": {
         "implementation": [],
         "refs": [
           "wiki/store",
-          "governance/protocol_index"
+          "control/protocol_index"
         ]
       },
       "code_items": {
@@ -2537,7 +2424,7 @@
         ],
         "refs": [
           "[[wiki/store]]",
-          "[[governance/protocol_index]]"
+          "[[control/protocol_index]]"
         ]
       },
       "settings": {}
@@ -2591,7 +2478,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "1736425b57d3d82cf8757e768ba03571fce69276",
+      "content_hash": "c710cf528bea8853e8f659988c3bc5fa59a27207",
       "runtime_action": null,
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2619,7 +2506,7 @@
       "links": [
         "wiki/service"
       ],
-      "content_hash": "1f2826abcf02db983a40f1b1cb9c252ceb67ecdc",
+      "content_hash": "bce9344735e4e05b1cd1966b34713ee978be5373",
       "runtime_action": null,
       "section_map": {
         "refs": "- [[wiki/service]]"
@@ -2682,20 +2569,20 @@
         "impl.py"
       ],
       "links": [
-        "governance/protocol_index",
+        "control/protocol_index",
         "wiki/store"
       ],
-      "content_hash": "6d1b665c85d4c41d2cab715c5ca58f48532072ac",
+      "content_hash": "342f429155d8174baf9a76da67de25050dd022d3",
       "runtime_action": null,
       "section_map": {
         "implementation": "- `impl.py`",
-        "refs": "- [[wiki/store]]\n- [[governance/protocol_index]]"
+        "refs": "- [[wiki/store]]\n- [[control/protocol_index]]"
       },
       "section_links": {
         "implementation": [],
         "refs": [
           "wiki/store",
-          "governance/protocol_index"
+          "control/protocol_index"
         ]
       },
       "code_items": {
@@ -2704,7 +2591,7 @@
         ],
         "refs": [
           "[[wiki/store]]",
-          "[[governance/protocol_index]]"
+          "[[control/protocol_index]]"
         ]
       },
       "settings": {}
@@ -2712,7 +2599,7 @@
     "wiki/source_policy": {
       "kind": "wiki",
       "title": "Wiki Source Policy",
-      "summary": "Source selection rules for system, runtime, governance, and knowledge files.",
+      "summary": "Source selection rules for system, runtime, control, and knowledge files.",
       "path": "src/wiki/source_policy/page.md",
       "folder": "src/wiki/source_policy",
       "truth_ext": [
@@ -2720,7 +2607,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "d895beba672fb13d7c951a8074b89a74ddd8e4e9",
+      "content_hash": "cb9445e0e23aacb8fd2a75c4ec42aefc854f6c25",
       "runtime_action": null,
       "section_map": {
         "implementation": "- `impl.py`"
@@ -2746,7 +2633,7 @@
         "impl.py"
       ],
       "links": [],
-      "content_hash": "6f4d04bc3759ab19ca660371f7f29cc86ba1dc72",
+      "content_hash": "51077ac0d155daa77afcf9dc6b81eced2188876c",
       "runtime_action": null,
       "section_map": {
         "implementation": "- `impl.py`"

@@ -13,4 +13,3 @@ def src_root() -> Path:
 
 def resolve_from_root(*parts: str) -> Path:
     return project_root().joinpath(*parts)
-

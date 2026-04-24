@@ -38,4 +38,3 @@ class AnthropicClient:
             for part in data.get("content", [])
             if part.get("type") == "text"
         )
-

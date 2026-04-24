@@ -7,7 +7,7 @@ from pathlib import Path
 
 import yaml
 
-from governance.protocol_index import (
+from control.protocol_index import (
     extract_markdown_links,
     extract_markdown_title,
     extract_section_code_items,

@@ -30,41 +30,17 @@
       "summary": "Thin worker agent that shares the same runtime and governance stack.",
       "path": "src/agent/worker_agent/page.md"
     },
-    "context/compact_summary/default": {
-      "kind": "context",
-      "title": "Default Compact Summary Context",
-      "summary": "Template for compacted history summaries.",
-      "path": "src/context/compact_summary/default/page.md"
-    },
-    "context/system/default": {
-      "kind": "context",
-      "title": "Default System Context",
-      "summary": "Default system prompt template for the governed runtime.",
-      "path": "src/context/system/default/page.md"
-    },
-    "context/tool_result/default": {
-      "kind": "context",
-      "title": "Default Tool Result Context",
-      "summary": "Template for rendering tool outputs back into the model conversation.",
-      "path": "src/context/tool_result/default/page.md"
-    },
-    "governance/agent_build": {
-      "kind": "governance",
-      "title": "Agent Build Governance",
-      "summary": "Governance page describing how child agents and batch runs are created from the active runtime.",
-      "path": "src/governance/agent_build/page.md"
-    },
-    "governance/protocol_index": {
-      "kind": "governance",
-      "title": "Protocol Index",
+    "control/protocol_index": {
+      "kind": "control",
+      "title": "Control Protocol Index",
       "summary": "负责扫描 `src/` 下的单页真相结构，生成实体索引、页面目录和链接图。",
-      "path": "src/governance/protocol_index/page.md"
+      "path": "src/control/protocol_index/page.md"
     },
-    "governance/repo_lint": {
-      "kind": "governance",
-      "title": "Repository Lint",
+    "control/repo_lint": {
+      "kind": "control",
+      "title": "Control Repository Lint",
       "summary": "负责校验仓库是否遵守单页真相协议和旧链路清理规则。",
-      "path": "src/governance/repo_lint/page.md"
+      "path": "src/control/repo_lint/page.md"
     },
     "page/skill/parts_design/root/knowledge": {
       "kind": "page",
@@ -453,7 +429,7 @@
     "wiki/index": {
       "kind": "wiki",
       "title": "Wiki Index",
-      "summary": "Wiki index persistence copies the governance registry read model into [[wiki/store]].",
+      "summary": "Wiki index persistence copies the control-plane registry read model into [[wiki/store]].",
       "path": "src/wiki/index/page.md"
     },
     "wiki/link": {
@@ -489,7 +465,7 @@
     "wiki/source_policy": {
       "kind": "wiki",
       "title": "Wiki Source Policy",
-      "summary": "Source selection rules for system, runtime, governance, and knowledge files.",
+      "summary": "Source selection rules for system, runtime, control, and knowledge files.",
       "path": "src/wiki/source_policy/page.md"
     },
     "wiki/store": {

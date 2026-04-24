@@ -8,7 +8,7 @@ from urllib.parse import urlparse
 
 import requests
 
-from governance.repo_lint import lint_repository
+from control.repo_lint import lint_repository
 
 from ..index import WikiIndexWriter
 from ..render import WikiLinkRenderer

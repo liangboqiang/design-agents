@@ -59,4 +59,3 @@ def resolve_llm_config(
         api_key=resolved_api_key,
         base_url=resolved_base_url,
     )
-

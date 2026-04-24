@@ -7,4 +7,3 @@ class LLMConfigurationError(ValueError):
 
 class LLMTransportError(RuntimeError):
     """Raised when an LLM transport call fails."""
-

@@ -2,17 +2,7 @@
   "edges": [
     {
       "from": "agent/general_chat",
-      "to": "context/system/default",
-      "kind": "link"
-    },
-    {
-      "from": "agent/general_chat",
       "to": "skill/general/root",
-      "kind": "link"
-    },
-    {
-      "from": "agent/parts_design_chat",
-      "to": "context/system/default",
       "kind": "link"
     },
     {
@@ -22,17 +12,7 @@
     },
     {
       "from": "agent/review_agent",
-      "to": "context/system/default",
-      "kind": "link"
-    },
-    {
-      "from": "agent/review_agent",
       "to": "skill/general/root",
-      "kind": "link"
-    },
-    {
-      "from": "agent/wiki_front_chat",
-      "to": "context/system/default",
       "kind": "link"
     },
     {
@@ -42,52 +22,22 @@
     },
     {
       "from": "agent/worker_agent",
-      "to": "context/system/default",
-      "kind": "link"
-    },
-    {
-      "from": "agent/worker_agent",
       "to": "skill/general/root",
       "kind": "link"
     },
     {
-      "from": "context/system/default",
-      "to": "agent/general_chat",
+      "from": "control/protocol_index",
+      "to": "control/repo_lint",
       "kind": "link"
     },
     {
-      "from": "context/system/default",
-      "to": "agent/wiki_front_chat",
-      "kind": "link"
-    },
-    {
-      "from": "governance/agent_build",
-      "to": "skill/governance/agent_build",
-      "kind": "link"
-    },
-    {
-      "from": "governance/agent_build",
-      "to": "tool/subagent/ask",
-      "kind": "link"
-    },
-    {
-      "from": "governance/agent_build",
-      "to": "tool/subagent/batch_run",
-      "kind": "link"
-    },
-    {
-      "from": "governance/protocol_index",
-      "to": "governance/repo_lint",
-      "kind": "link"
-    },
-    {
-      "from": "governance/protocol_index",
+      "from": "control/protocol_index",
       "to": "wiki/index",
       "kind": "link"
     },
     {
-      "from": "governance/repo_lint",
-      "to": "governance/protocol_index",
+      "from": "control/repo_lint",
+      "to": "control/protocol_index",
       "kind": "link"
     },
     {
@@ -782,7 +732,7 @@
     },
     {
       "from": "wiki/index",
-      "to": "governance/protocol_index",
+      "to": "control/protocol_index",
       "kind": "link"
     },
     {
@@ -812,7 +762,7 @@
     },
     {
       "from": "wiki/service",
-      "to": "governance/protocol_index",
+      "to": "control/protocol_index",
       "kind": "link"
     },
     {

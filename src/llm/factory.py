@@ -20,4 +20,3 @@ class LLMFactory:
         if provider == "anthropic":
             return AnthropicClient(model, api_key or "", base_url or "")
         raise ValueError(f"Unsupported provider: {provider}")
-
