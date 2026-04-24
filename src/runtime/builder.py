@@ -10,18 +10,20 @@ from governance.events import EventBus
 from governance.normalizer import Normalizer
 from governance.registry import SpecRegistry
 from governance.surface import SurfaceResolver
-from harness.turn_driver import TurnDriver
 from harness.action_dispatcher import ActionDispatcher
+from harness.capabilities.base import Capability
+from harness.capabilities.registry import create_capability
 from harness.contracts import EngineRuntimeState, TurnRuntimePorts
 from harness.reply_parser import ReplyParser
+from harness.turn_driver import TurnDriver
 from harness.turn_guard import FailureSink, TurnGuard
 from harness.turn_lifecycle import TurnLifecycle
 from harness.turn_policy import TurnPolicy, build_control_action_specs
 from llm.config import resolve_llm_config
 from llm.factory import LLMFactory
 from prompt.knowledge_picker import KnowledgePicker
-from prompt.surface_assembler import SurfaceAssembler
 from prompt.prompt_assembler import PromptAssembler
+from prompt.surface_assembler import SurfaceAssembler
 from schemas.action import ActionSpec
 from schemas.agent import AgentSpec
 from schemas.runtime import EngineContext, EngineSettings
@@ -29,9 +31,8 @@ from shared.ids import new_id
 from shared.paths import project_root
 from tool.indexes.toolbox_registry import Toolbox
 
-from harness.capabilities.base import Capability
-from harness.capabilities.registry import create_capability
 from .child_factory import ChildFactory
+from .engine import Engine
 from .participant_set import AttachmentIngressParticipant, ParticipantSet
 from .service_hub import AttachmentIngestionService, KnowledgeHubService
 from .session_state import SessionState
@@ -113,11 +114,8 @@ class RuntimeHost:
 
 class RuntimeBuilder:
     def build_engine(self, request: EngineBuildRequest):
-        from .engine import Engine
-
         runtime = self.build_bundle(request)
         turn_driver, capability_lookup = self.install_runtime(runtime, request)
-
         return Engine(
             chat=turn_driver.chat,
             tick=self._build_tick(turn_driver, capability_lookup),
@@ -130,7 +128,6 @@ class RuntimeBuilder:
         agent_spec = request.agent_spec or AgentSpec(name="ad_hoc", root_skill=root_skill_id)
         llm_config = resolve_llm_config(request.provider, request.model, request.api_key, request.base_url)
         context_policy = dict(request.context_policy or agent_spec.context_policy or {})
-        max_prompt_chars = int(context_policy.get("max_prompt_chars", 18_000))
         settings = EngineSettings(
             provider=llm_config.provider,
             model=llm_config.model,
@@ -140,34 +137,30 @@ class RuntimeBuilder:
             conversation_id=request.conversation_id,
             task_id=request.task_id,
             max_steps=request.max_steps,
-            max_prompt_chars=max_prompt_chars,
+            max_prompt_chars=int(context_policy.get("max_prompt_chars", 18_000)),
         )
         storage_root = (request.storage_base or project_root() / ".runtime_data").resolve()
         session = SessionState(settings, storage_root)
-        runtime_state = EngineRuntimeState()
         audit = GovernanceAudit()
-        events = EventBus()
         skill_state = SkillState(registry, root_skill_id, audit)
-        engine_id = request.role_name or new_id("engine")
         context = EngineContext(
-            engine_id=engine_id,
+            engine_id=request.role_name or new_id("engine"),
             root_skill_id=root_skill_id,
             active_skill_id=skill_state.active_skill_id,
             settings=settings,
             paths=session.paths,
             agent_name=agent_spec.name,
         )
-        knowledge_hub = KnowledgeHubService(project_root=project_root(), registry=registry, session=session)
         return RuntimeHost(
             registry=registry,
             context_policy=context_policy,
             settings=settings,
             session=session,
             context=context,
-            knowledge_hub=knowledge_hub,
+            knowledge_hub=KnowledgeHubService(project_root=project_root(), registry=registry, session=session),
             skill_state=skill_state,
-            events=events,
-            runtime_state=runtime_state,
+            events=EventBus(),
+            runtime_state=EngineRuntimeState(),
             enhancement_names=list(agent_spec.capabilities or []),
             toolbox_names=list(agent_spec.toolboxes or ["files", "shell"]),
         )
@@ -179,8 +172,8 @@ class RuntimeBuilder:
         capability_by_name = self._install_capabilities(runtime, request.enhancements)
         lifecycle = self._build_lifecycle(runtime, capability_by_name.values(), fault_boundary)
         action_registry = self._build_action_registry(runtime, toolboxes, capability_by_name.values())
-        turn_driver = TurnDriver(self._build_turn_ports(runtime, lifecycle, fault_boundary, action_registry))
-        return turn_driver, capability_by_name.get
+        turn_ports = self._build_turn_ports(runtime, lifecycle, fault_boundary, action_registry)
+        return TurnDriver(turn_ports), capability_by_name.get
 
     @staticmethod
     def _build_tick(turn_driver: TurnDriver, capability_lookup):
@@ -190,7 +183,7 @@ class RuntimeBuilder:
                 return "Autonomy not enabled."
             result = autonomy.idle_tick()
             if result and not result.startswith("No unclaimed"):
-                return turn_driver.chat(f"Auto-claimed task detail:\n{result}")
+                return turn_driver.chat(f"Auto-claimed task detail:\\n{result}")
             return result
 
         return tick
@@ -262,11 +255,50 @@ class RuntimeBuilder:
         fault_boundary: TurnGuard,
         action_registry: dict[str, ActionSpec],
     ) -> TurnRuntimePorts:
+        dispatcher = ActionDispatcher(action_registry, fault_reporter=fault_boundary.report)
+        (
+            assemble_surface,
+            build_system_prompt,
+            build_messages,
+            complete_model,
+            parse_reply,
+            normalize_tool_result,
+        ) = self._build_turn_callables(runtime, action_registry)
+
+        return TurnRuntimePorts(
+            lifecycle=lifecycle,
+            fault_boundary=fault_boundary,
+            emit_event=runtime.events.emit,
+            active_skill_id=lambda: runtime.skill_state.active_skill_id,
+            history=runtime.session.history,
+            max_steps=runtime.settings.max_steps,
+            model_name=runtime.settings.model,
+            assemble_surface=assemble_surface,
+            build_system_prompt=build_system_prompt,
+            build_messages=build_messages,
+            complete_model=complete_model,
+            parse_reply=parse_reply,
+            dispatch_action=dispatcher.dispatch,
+            normalize_tool_result=normalize_tool_result,
+            record_audit=runtime.skill_state.audit.record,
+        )
+
+    def _build_turn_callables(self, runtime: RuntimeHost, action_registry: dict[str, ActionSpec]):
         audit = runtime.skill_state.audit
         surface_assembler = SurfaceAssembler(SurfaceResolver(runtime.registry, ActivationPolicy(), audit))
-        prompt_assembler = PromptAssembler(runtime.registry.context_root, max_prompt_chars=runtime.settings.max_prompt_chars)
+        prompt_assembler = PromptAssembler(
+            runtime.registry.context_root,
+            max_prompt_chars=runtime.settings.max_prompt_chars,
+        )
         knowledge_picker = KnowledgePicker()
         normalizer = Normalizer()
+        complete_model = LLMFactory.create(
+            runtime.provider,
+            runtime.model,
+            runtime.api_key,
+            runtime.base_url,
+        ).complete
+        parse_reply = ReplyParser().parse
 
         def assemble_surface(state_fragments: list[str]):
             surface = surface_assembler.assemble_surface(
@@ -293,28 +325,23 @@ class RuntimeBuilder:
                 knowledge_actions_visible=selection.actions_visible,
             )
 
-        dispatcher = ActionDispatcher(action_registry, fault_reporter=fault_boundary.report)
-        ports = TurnRuntimePorts(
-            lifecycle=lifecycle,
-            fault_boundary=fault_boundary,
-            emit_event=runtime.events.emit,
-            active_skill_id=lambda: runtime.skill_state.active_skill_id,
-            history=runtime.session.history,
-            max_steps=runtime.settings.max_steps,
-            model_name=runtime.settings.model,
-            assemble_surface=assemble_surface,
-            build_system_prompt=build_system_prompt,
-            build_messages=lambda: prompt_assembler.build_messages(
+        def build_messages():
+            return prompt_assembler.build_messages(
                 runtime.session.history.read(),
                 runtime.settings.history_keep_turns,
-            ),
-            complete_model=LLMFactory.create(runtime.provider, runtime.model, runtime.api_key, runtime.base_url).complete,
-            parse_reply=ReplyParser().parse,
-            dispatch_action=dispatcher.dispatch,
-            normalize_tool_result=lambda action, content: normalizer.normalize_tool_result(action, content, limit=8_000),
-            record_audit=audit.record,
+            )
+
+        def normalize_tool_result(action, content):  # noqa: ANN001
+            return normalizer.normalize_tool_result(action, content, limit=8_000)
+
+        return (
+            assemble_surface,
+            build_system_prompt,
+            build_messages,
+            complete_model,
+            parse_reply,
+            normalize_tool_result,
         )
-        return ports
 
     @staticmethod
     def _register_many(registry: dict[str, ActionSpec], specs: Iterable[ActionSpec]) -> None:
@@ -327,11 +354,11 @@ class RuntimeBuilder:
             candidate = skill_root
         else:
             candidate = Path(str(skill_root))
-        skill_text = str(skill_root).replace("\\", "/")
+        skill_text = str(skill_root).replace("\\\\", "/")
         if skill_text in registry.skills:
             return skill_text
         if candidate.is_absolute() and candidate.is_dir():
-            rel = str(candidate.resolve().relative_to(registry.skills_root.resolve())).replace("\\", "/")
+            rel = str(candidate.resolve().relative_to(registry.skills_root.resolve())).replace("\\\\", "/")
             return f"skill/{rel}"
         relative_candidates = [
             registry.skills_root / candidate,
@@ -339,11 +366,11 @@ class RuntimeBuilder:
         ]
         for option in relative_candidates:
             if option.is_dir() and (option / "page.md").exists():
-                rel = str(option.resolve().relative_to(registry.skills_root.resolve())).replace("\\", "/")
+                rel = str(option.resolve().relative_to(registry.skills_root.resolve())).replace("\\\\", "/")
                 return f"skill/{rel}"
         if skill_text.endswith("/page.md"):
             option = Path(skill_text).parent.resolve()
-            rel = str(option.relative_to(registry.skills_root.resolve())).replace("\\", "/")
+            rel = str(option.relative_to(registry.skills_root.resolve())).replace("\\\\", "/")
             return f"skill/{rel}"
         raise ValueError(f"Unknown skill root: {skill_root}")
 
