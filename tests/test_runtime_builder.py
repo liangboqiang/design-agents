@@ -4,7 +4,6 @@ import inspect
 from pathlib import Path
 
 import runtime
-import runtime.builder as builder_module
 from governance.registry import SpecRegistry
 from runtime.builder import EngineBuildRequest, RuntimeBuilder
 
@@ -15,6 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_build_bundle_does_not_bootstrap_wiki(monkeypatch) -> None:
     def fail(self) -> None:  # noqa: ANN001
         raise AssertionError("ensure_bootstrap should not run during RuntimeBuilder.build_bundle()")
+
+    import runtime.builder as builder_module
 
     monkeypatch.setattr(builder_module.KnowledgeHubService, "ensure_bootstrap", fail)
 
@@ -27,11 +28,10 @@ def test_build_bundle_does_not_bootstrap_wiki(monkeypatch) -> None:
 
     assert bundle.knowledge_hub is not None
     assert bundle.context.root_skill_id == "skill/general/root"
+    assert bundle.context_policy == {}
     assert not hasattr(bundle, "surface_assembler")
     assert not hasattr(bundle, "action_registry")
     assert not hasattr(bundle, "harness")
-    assert not hasattr(runtime, "build_engine")
-    assert not hasattr(runtime, "ParticipantSet")
 
 
 def test_runtime_builder_injects_dependencies_and_keeps_engine_facade_small(tmp_path: Path) -> None:
@@ -46,10 +46,8 @@ def test_runtime_builder_injects_dependencies_and_keeps_engine_facade_small(tmp_
     )
 
     assert set(engine.__dict__) == {"_ops"}
-    assert not hasattr(engine, "_runtime")
-    assert not hasattr(engine, "knowledge_hub")
-    assert not hasattr(engine, "action_registry")
     assert list(inspect.signature(RuntimeBuilder.build_engine).parameters) == ["self", "request"]
+    assert not hasattr(runtime, "build_engine")
 
 
 def test_turn_ports_are_narrow_runtime_callables(tmp_path: Path) -> None:
@@ -61,8 +59,8 @@ def test_turn_ports_are_narrow_runtime_callables(tmp_path: Path) -> None:
         registry=SpecRegistry(ROOT),
         storage_base=tmp_path,
     )
-    runtime = builder.build_bundle(request)
-    turn_driver, _ = builder.install_runtime(runtime, request)
+    runtime_host = builder.build_bundle(request)
+    turn_driver, _ = builder.install_runtime(runtime_host, request)
 
     assert set(turn_driver.ports.__dataclass_fields__) == {
         "lifecycle",

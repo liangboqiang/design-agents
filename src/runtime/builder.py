@@ -32,7 +32,7 @@ from tool.indexes.toolbox_registry import Toolbox
 from harness.capabilities.base import Capability
 from harness.capabilities.registry import create_capability
 from .child_factory import ChildFactory
-from .participant_set import AttachmentIngressParticipant
+from .participant_set import AttachmentIngressParticipant, ParticipantSet
 from .service_hub import AttachmentIngestionService, KnowledgeHubService
 from .session_state import SessionState
 from .skill_state import SkillState
@@ -213,20 +213,13 @@ class RuntimeBuilder:
         runtime._spawn_child = lambda **kwargs: child_factory.spawn_from_parent(runtime, **kwargs)
 
     def _install_toolboxes(self, runtime: RuntimeHost, requested: list[str | Toolbox] | None) -> list[Toolbox]:
-        toolboxes: list[Toolbox] = []
-        for item in requested if requested is not None else runtime.toolbox_names:
-            if isinstance(item, str):
-                toolbox = runtime.registry.toolbox_registry.create(item, runtime.session.workspace_root)
-            else:
-                toolbox = item if item.workspace_root == runtime.session.workspace_root else item.spawn(runtime.session.workspace_root)
-            toolbox.bind_runtime(runtime)
-            toolboxes.append(toolbox)
+        toolboxes = self._prepare_toolboxes(runtime, requested if requested is not None else runtime.toolbox_names)
         runtime.toolbox_names = [toolbox.toolbox_name for toolbox in toolboxes]
         return toolboxes
 
     def _install_capabilities(self, runtime: RuntimeHost, requested: list[str] | None) -> dict[str, Capability]:
         runtime.enhancement_names = list(requested or runtime.enhancement_names or [])
-        capabilities = [create_capability(name) for name in runtime.enhancement_names]
+        capabilities = self._prepare_capabilities(runtime.enhancement_names)
         by_name = {capability.capability_name: capability for capability in capabilities}
         for capability in capabilities:
             capability.bind(runtime, by_name.get)
@@ -238,11 +231,8 @@ class RuntimeBuilder:
         capabilities: Iterable[Capability],
         fault_boundary: TurnGuard,
     ) -> TurnLifecycle:
-        attachment_service = AttachmentIngestionService(knowledge_hub=runtime.knowledge_hub, session=runtime.session)
-        attachment_ingress = AttachmentIngressParticipant(attachment_service)
-        attachment_ingress.bind_runtime(runtime)
         return TurnLifecycle(
-            [attachment_ingress, *capabilities],
+            [*ParticipantSet(core=self._prepare_participants(runtime)).all(), *capabilities],
             fault_reporter=fault_boundary.report,
         )
 
@@ -356,6 +346,32 @@ class RuntimeBuilder:
             rel = str(option.relative_to(registry.skills_root.resolve())).replace("\\", "/")
             return f"skill/{rel}"
         raise ValueError(f"Unknown skill root: {skill_root}")
+
+    @staticmethod
+    def _prepare_toolboxes(runtime: RuntimeHost, toolboxes: Iterable[str | Toolbox]) -> list[Toolbox]:
+        prepared: list[Toolbox] = []
+        for item in toolboxes:
+            if isinstance(item, str):
+                toolbox = runtime.registry.toolbox_registry.create(item, runtime.session.workspace_root)
+            else:
+                toolbox = item if item.workspace_root == runtime.session.workspace_root else item.spawn(runtime.session.workspace_root)
+            toolbox.bind_runtime(runtime)
+            prepared.append(toolbox)
+        return prepared
+
+    @staticmethod
+    def _prepare_capabilities(names: Iterable[str]) -> list[Capability]:
+        return [create_capability(name) for name in names]
+
+    @staticmethod
+    def _prepare_participants(runtime: RuntimeHost) -> list[object]:
+        attachment_service = AttachmentIngestionService(knowledge_hub=runtime.knowledge_hub, session=runtime.session)
+        participants = [AttachmentIngressParticipant(attachment_service)]
+        for participant in participants:
+            bind = getattr(participant, "bind_runtime", None)
+            if bind is not None:
+                bind(runtime)
+        return participants
 
 
 def request_from_agent_spec(spec: AgentSpec, **overrides) -> EngineBuildRequest:
