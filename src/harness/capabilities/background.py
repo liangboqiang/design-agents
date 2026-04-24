@@ -15,8 +15,8 @@ class BackgroundCapability(Capability):
     tasks_file = "background_tasks.json"
     notifications_file = "background_notifications.json"
 
-    def bind(self, runtime) -> None:
-        super().bind(runtime)
+    def bind(self, runtime, capability_lookup=None) -> None:
+        super().bind(runtime, capability_lookup)
         self._lock = threading.Lock()
         if self.runtime.session.read_state_json(self.tasks_file, None) is None:
             self.runtime.session.write_state_json(self.tasks_file, {})

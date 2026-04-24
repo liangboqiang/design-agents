@@ -471,7 +471,7 @@
       "links": [
         "governance/protocol_index"
       ],
-      "content_hash": "aa15be00b6d4e85299e0261058df8645ef372bfd",
+      "content_hash": "fbedc45b87d1a1be93d99d49af6ad70b5aca3648",
       "runtime_action": null,
       "section_map": {
         "核心规则": "- 单文件夹最多一个 `.md`\n- `[[...]]` 链接必须可解析\n- 仓库中不得残留旧知识库路径和旧动作名",

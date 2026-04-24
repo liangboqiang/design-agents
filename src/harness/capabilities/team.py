@@ -13,8 +13,8 @@ class TeamCapability(Capability):
     capability_name = "team"
     roster_file = "team_roster.json"
 
-    def bind(self, runtime) -> None:
-        super().bind(runtime)
+    def bind(self, runtime, capability_lookup=None) -> None:
+        super().bind(runtime, capability_lookup)
         if self.runtime.session.read_state_json(self.roster_file, None) is None:
             self.runtime.session.write_state_json(self.roster_file, {"members": []})
         self.threads: dict[str, threading.Thread] = {}

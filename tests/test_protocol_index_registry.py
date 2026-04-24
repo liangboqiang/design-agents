@@ -17,7 +17,6 @@ RUNTIME_HOST_FILES = {
     "service_hub.py",
     "session_state.py",
     "skill_state.py",
-    "toolbox_hub.py",
 }
 
 

@@ -35,6 +35,7 @@ FORBIDDEN_PATHS = (
     "src/runtime/skill_runtime.py",
     "src/runtime/child_engine_factory.py",
     "src/runtime/core_participants.py",
+    "src/runtime/toolbox_hub.py",
     "src/runtime/control_actions.py",
     "src/runtime/capabilities",
     "src/runtime/services",

@@ -43,7 +43,7 @@ class RuntimeToolbox(Toolbox):
         return json.dumps(
             {
                 "engine_id": self.runtime.engine_id,
-                "agent_name": self.runtime.agent_spec.name,
+                "agent_name": self.runtime.context.agent_name,
                 "workspace_root": str(self.runtime.session.workspace_root),
                 "user_id": self.runtime.settings.user_id,
                 "conversation_id": self.runtime.settings.conversation_id,

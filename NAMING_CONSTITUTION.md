@@ -40,6 +40,7 @@ The following names are retired and must not be introduced in new code, docs, or
 - `control_actions`
 - `child_engine_factory`
 - `core_participants`
+- `toolbox_hub`
 - `wiki/runtime_*`
 
 ## Documentation Rule

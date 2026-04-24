@@ -14,21 +14,17 @@ class EngineRuntimeState:
 @dataclass(slots=True)
 class TurnRuntimePorts:
     lifecycle: Any
-    events: Any
-    skill_state: Any
-    session: Any
-    settings: Any
-    surface_assembler: Any
-    knowledge_picker: Any
-    prompt_assembler: Any
-    llm: Any
-    reply_parser: Any
-    dispatcher: Any
-    normalizer: Any
-    audit: Any
-    context: Any
-    registry: Any
-    knowledge_hub: Any
-    action_registry: dict[str, Any]
-    state: EngineRuntimeState
     fault_boundary: Any
+    emit_event: Any
+    active_skill_id: Any
+    history: Any
+    max_steps: int
+    model_name: str
+    assemble_surface: Any
+    build_system_prompt: Any
+    build_messages: Any
+    complete_model: Any
+    parse_reply: Any
+    dispatch_action: Any
+    normalize_tool_result: Any
+    record_audit: Any

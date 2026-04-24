@@ -9,8 +9,8 @@ class TodoCapability(Capability):
     capability_name = "todo"
     store_name = "todo.json"
 
-    def bind(self, runtime) -> None:
-        super().bind(runtime)
+    def bind(self, runtime, capability_lookup=None) -> None:
+        super().bind(runtime, capability_lookup)
         if self.runtime.session.read_state_json(self.store_name, None) is None:
             self.runtime.session.write_state_json(self.store_name, {"items": []})
 

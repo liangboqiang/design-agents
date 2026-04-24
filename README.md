@@ -8,7 +8,7 @@ This repository now follows a `src/`-first architecture built around the v6.4 si
 - a protocol index that scans `src/` by folder and treats `page.md` as the entity truth page for that folder
 - a unified `SpecRegistry` that assembles skill and agent specs from the protocol index read model
 - `SpecRegistry + SurfaceResolver + Prompt + Harness + RuntimeBuilder + Engine` as the main execution spine
-- prompt construction lives in `src/prompt/`, turn driving lives in `src/harness/`, and `runtime/engine.py` holds only a private runtime handle
+- prompt construction lives in `src/prompt/`, turn driving lives in `src/harness/`, and `runtime/engine.py` holds only injected facade operations
 - event-driven governance additions with audit trails
 - thin agent entrypoints that assemble runtime behavior from `page.md` truth pages
 
@@ -42,7 +42,6 @@ src/
     service_hub.py
     session_state.py
     skill_state.py
-    toolbox_hub.py
   schemas/
   shared/
   skill/
@@ -118,18 +117,18 @@ These tests validate:
 
 - `governance/protocol_index/impl.py`: single read model for entity/page indexing, summaries, links, and lightweight section metadata
 - `governance/registry/spec_registry.py`: assembly layer that consumes the protocol index read model
-- `runtime/builder.py`: the single runtime assembly entrypoint through `RuntimeBuilder`; it injects prompt and harness dependencies
+- `runtime/builder.py`: the single runtime assembly entrypoint through `RuntimeBuilder`; it keeps prompt and harness objects local and injects narrow turn callables
 - `runtime/skill_state.py`: active skill closure and child/ref navigation
 - `governance/surface/surface_resolver.py`: final action/tool/skill surface resolution
 - `prompt/surface_assembler.py`: text-facing surface assembly
 - `prompt/history_compressor.py`: bounded history compaction
 - `prompt/knowledge_picker.py`: the injected prompt-layer access path into Wiki knowledge
 - `prompt/prompt_assembler.py`: identity/surface/state/expansion/feedback prompt assembly
-- `harness/turn_driver.py`: thin loop for lifecycle, model calls, parsing, dispatching, and continuation
+- `harness/turn_driver.py`: thin loop over narrow callable ports for lifecycle, model calls, parsing, dispatching, and continuation
 - `harness/capabilities/`: lifecycle/action extensions that participate in the turn loop without living under runtime
 - `wiki/index/impl.py`: persists the registry protocol read model into `src/wiki/store/`
 - `wiki/search/impl.py`: searches the persisted wiki catalog
-- `runtime/engine.py`: the only external runtime facade; it exposes `chat`, `tick`, and `spawn_child`
+- `runtime/engine.py`: the only external runtime facade; it exposes `chat`, `tick`, and `spawn_child` over injected operations
 
 ## Layer Roles
 
@@ -163,4 +162,4 @@ These tests validate:
 - shared wiki state lives in `src/wiki/store/`
 - prompt code lives in `src/prompt/`
 - harness code lives in `src/harness/`
-- retired compatibility names are lint errors: `ctx`, `wiki_store`, `<kind>.md`, runtime-local prompt/harness files, and wiki `runtime_*` shadow pages
+- retired compatibility names are lint errors: `ctx`, `wiki_store`, `<kind>.md`, runtime-local prompt/harness files, `toolbox_hub`, and wiki `runtime_*` shadow pages

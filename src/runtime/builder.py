@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Callable, Iterable
 
 from governance.activation import ActivationPolicy
 from governance.audit import GovernanceAudit
@@ -27,17 +27,15 @@ from schemas.agent import AgentSpec
 from schemas.runtime import EngineContext, EngineSettings
 from shared.ids import new_id
 from shared.paths import project_root
-from tool.indexes.tool_index import ToolIndex
 from tool.indexes.toolbox_registry import Toolbox
 
 from harness.capabilities.base import Capability
 from harness.capabilities.registry import create_capability
 from .child_factory import ChildFactory
 from .participant_set import AttachmentIngressParticipant, ParticipantSet
-from .service_hub import AttachmentIngestionService, KnowledgeHubService, ServiceHub
+from .service_hub import AttachmentIngestionService, KnowledgeHubService
 from .session_state import SessionState
 from .skill_state import SkillState
-from .toolbox_hub import ToolboxHub
 
 
 @dataclass(slots=True)
@@ -63,31 +61,17 @@ class EngineBuildRequest:
 @dataclass(slots=True)
 class RuntimeHost:
     registry: SpecRegistry
-    agent_spec: AgentSpec
+    context_policy: dict[str, Any]
     settings: EngineSettings
     session: SessionState
     context: EngineContext
-    llm: Any
     knowledge_hub: KnowledgeHubService
-    service_hub: ServiceHub
     skill_state: SkillState
-    tool_index: ToolIndex
-    toolbox_hub: ToolboxHub
-    surface_assembler: SurfaceAssembler
-    knowledge_picker: KnowledgePicker
-    prompt_assembler: PromptAssembler
-    reply_parser: ReplyParser
-    normalizer: Normalizer
-    audit: GovernanceAudit
     events: EventBus
     runtime_state: EngineRuntimeState = field(default_factory=EngineRuntimeState)
-    fault_boundary: TurnGuard | None = None
-    action_registry: dict[str, ActionSpec] = field(default_factory=dict)
-    toolboxes: list[Toolbox] = field(default_factory=list)
-    capabilities: list[Capability] = field(default_factory=list)
     enhancement_names: list[str] = field(default_factory=list)
-    harness: TurnDriver | None = None
-    child_factory: ChildFactory | None = None
+    toolbox_names: list[str] = field(default_factory=list)
+    _spawn_child: Callable[..., Any] | None = None
 
     @property
     def engine_id(self) -> str:
@@ -109,9 +93,6 @@ class RuntimeHost:
     def base_url(self) -> str | None:
         return self.settings.base_url
 
-    def capability(self, name: str):
-        return next((item for item in self.capabilities if item.capability_name == name), None)
-
     def spawn_child(
         self,
         *,
@@ -120,8 +101,9 @@ class RuntimeHost:
         role_name: str,
         toolboxes: list[str] | None = None,
     ):
-        return self.child_factory.spawn_from_parent(
-            self,
+        if self._spawn_child is None:
+            raise RuntimeError("Child spawning is not installed on this runtime host.")
+        return self._spawn_child(
             skill=skill,
             enhancements=enhancements or self.enhancement_names,
             role_name=role_name,
@@ -136,10 +118,23 @@ class RuntimeBuilder:
 
             engine_cls = Engine
 
-        bundle = self.build_bundle(request)
-        self.install_runtime(bundle, request)
-        engine = engine_cls(runtime=bundle)
-        return engine
+        runtime = self.build_bundle(request)
+        turn_driver, capability_lookup = self.install_runtime(runtime, request)
+
+        def tick() -> str:
+            autonomy = capability_lookup("autonomy")
+            if autonomy is None:
+                return "Autonomy not enabled."
+            result = autonomy.idle_tick()
+            if result and not result.startswith("No unclaimed"):
+                return turn_driver.chat(f"Auto-claimed task detail:\n{result}")
+            return result
+
+        return engine_cls(
+            chat=turn_driver.chat,
+            tick=tick,
+            spawn_child=runtime.spawn_child,
+        )
 
     def build_bundle(self, request: EngineBuildRequest) -> RuntimeHost:
         registry = request.registry or SpecRegistry(project_root())
@@ -164,7 +159,6 @@ class RuntimeBuilder:
         runtime_state = EngineRuntimeState()
         audit = GovernanceAudit()
         events = EventBus()
-        normalizer = Normalizer()
         skill_state = SkillState(registry, root_skill_id, audit)
         engine_id = request.role_name or new_id("engine")
         context = EngineContext(
@@ -175,94 +169,119 @@ class RuntimeBuilder:
             paths=session.paths,
             agent_name=agent_spec.name,
         )
-        llm = LLMFactory.create(llm_config.provider, llm_config.model, llm_config.api_key, llm_config.base_url)
         knowledge_hub = KnowledgeHubService(project_root=project_root(), registry=registry, session=session)
-        service_hub = ServiceHub(knowledge_hub=knowledge_hub)
-        tool_index = ToolIndex()
-        toolbox_hub = ToolboxHub(tool_index=tool_index)
-        surface_resolver = SurfaceResolver(registry, ActivationPolicy(), audit)
-        failure_sink = FailureSink(session=session, audit=audit, events=events, runtime_state=runtime_state)
-        fault_boundary = TurnGuard(failure_sink)
-        events.set_fault_reporter(fault_boundary.report)
         return RuntimeHost(
             registry=registry,
-            agent_spec=agent_spec,
+            context_policy=dict(agent_spec.context_policy or {}),
             settings=settings,
             session=session,
             context=context,
-            llm=llm,
             knowledge_hub=knowledge_hub,
-            service_hub=service_hub,
             skill_state=skill_state,
-            tool_index=tool_index,
-            toolbox_hub=toolbox_hub,
-            surface_assembler=SurfaceAssembler(surface_resolver),
-            knowledge_picker=KnowledgePicker(),
-            prompt_assembler=PromptAssembler(registry.context_root, max_prompt_chars=max_prompt_chars),
-            reply_parser=ReplyParser(),
-            normalizer=normalizer,
-            audit=audit,
             events=events,
             runtime_state=runtime_state,
-            fault_boundary=fault_boundary,
+            enhancement_names=list(agent_spec.capabilities or []),
+            toolbox_names=list(agent_spec.toolboxes or ["files", "shell"]),
         )
 
-    def install_runtime(self, runtime: RuntimeHost, request: EngineBuildRequest) -> None:
-        requested_toolboxes = list(request.toolboxes if request.toolboxes is not None else (runtime.agent_spec.toolboxes or ["files", "shell"]))
-        runtime.enhancement_names = list(request.enhancements or runtime.agent_spec.capabilities or [])
+    def install_runtime(self, runtime: RuntimeHost, request: EngineBuildRequest):
+        audit = runtime.skill_state.audit
+        normalizer = Normalizer()
+        llm = LLMFactory.create(runtime.provider, runtime.model, runtime.api_key, runtime.base_url)
+        surface_assembler = SurfaceAssembler(SurfaceResolver(runtime.registry, ActivationPolicy(), audit))
+        knowledge_picker = KnowledgePicker()
+        prompt_assembler = PromptAssembler(runtime.registry.context_root, max_prompt_chars=runtime.settings.max_prompt_chars)
+        reply_parser = ReplyParser()
+        failure_sink = FailureSink(session=runtime.session, audit=audit, events=runtime.events, runtime_state=runtime.runtime_state)
+        fault_boundary = TurnGuard(failure_sink)
+        runtime.events.set_fault_reporter(fault_boundary.report)
 
-        runtime.toolboxes = self._prepare_toolboxes(runtime, requested_toolboxes)
-        runtime.capabilities = self._prepare_capabilities(runtime, runtime.enhancement_names)
-        runtime.toolbox_hub.toolboxes = list(runtime.toolboxes)
+        child_factory = ChildFactory(storage_base=request.storage_base)
+        runtime._spawn_child = lambda **kwargs: child_factory.spawn_from_parent(runtime, **kwargs)
+
+        requested_toolboxes = list(request.toolboxes if request.toolboxes is not None else runtime.toolbox_names)
+        runtime.enhancement_names = list(request.enhancements or runtime.enhancement_names or [])
+
+        toolboxes = self._prepare_toolboxes(runtime, requested_toolboxes)
+        runtime.toolbox_names = [toolbox.toolbox_name for toolbox in toolboxes]
+        capabilities = self._prepare_capabilities(runtime, runtime.enhancement_names)
+        capability_by_name = {capability.capability_name: capability for capability in capabilities}
+        for capability in capabilities:
+            capability.bind(runtime, capability_by_name.get)
+
         participants = self._prepare_participants(runtime)
         participant_set = ParticipantSet(core=list(participants))
         lifecycle = TurnLifecycle(
-            [*participant_set.all(), *runtime.capabilities],
-            fault_reporter=runtime.fault_boundary.report,
+            [*participant_set.all(), *capabilities],
+            fault_reporter=fault_boundary.report,
         )
 
-        for toolbox in runtime.toolboxes:
+        action_registry: dict[str, ActionSpec] = {}
+        for toolbox in toolboxes:
             specs = list(toolbox.action_specs())
-            runtime.tool_index.register_toolbox_actions(toolbox.toolbox_name, specs)
-            self._register_many(runtime.action_registry, specs)
+            self._register_many(action_registry, specs)
 
-        for capability in runtime.capabilities:
-            self._register_many(runtime.action_registry, capability.action_specs())
+        for capability in capabilities:
+            self._register_many(action_registry, capability.action_specs())
 
         control = TurnPolicy(
             registry=runtime.registry,
             skill_state=runtime.skill_state,
             context=runtime.context,
             events=runtime.events,
-            action_registry=runtime.action_registry,
+            action_registry=action_registry,
         )
         for spec in build_control_action_specs(control):
-            runtime.action_registry[spec.action_id] = spec
+            action_registry[spec.action_id] = spec
 
-        dispatcher = ActionDispatcher(runtime.action_registry, fault_reporter=runtime.fault_boundary.report)
+        dispatcher = ActionDispatcher(action_registry, fault_reporter=fault_boundary.report)
+
+        def assemble_surface(state_fragments: list[str]):
+            surface = surface_assembler.assemble_surface(
+                skill_state=runtime.skill_state,
+                action_registry=action_registry,
+                state_fragments=state_fragments,
+                recent_events=runtime.events.recent(),
+            )
+            runtime.runtime_state.last_surface_snapshot = surface
+            return surface
+
+        def build_system_prompt(surface, state_fragments: list[str]):  # noqa: ANN001
+            selection = knowledge_picker.pick(surface_snapshot=surface, knowledge_hub=runtime.knowledge_hub)
+            return prompt_assembler.build_system_prompt(
+                engine_context=runtime.context,
+                skill_state=runtime.skill_state,
+                surface_snapshot=surface,
+                history_rows=runtime.session.history.read(),
+                state_fragments=state_fragments,
+                recent_events=runtime.events.recent(),
+                audit=audit,
+                registry=runtime.registry,
+                knowledge_brief=selection.brief,
+                knowledge_actions_visible=selection.actions_visible,
+            )
+
         ports = TurnRuntimePorts(
             lifecycle=lifecycle,
-            events=runtime.events,
-            skill_state=runtime.skill_state,
-            session=runtime.session,
-            settings=runtime.settings,
-            surface_assembler=runtime.surface_assembler,
-            knowledge_picker=runtime.knowledge_picker,
-            prompt_assembler=runtime.prompt_assembler,
-            llm=runtime.llm,
-            reply_parser=runtime.reply_parser,
-            dispatcher=dispatcher,
-            normalizer=runtime.normalizer,
-            audit=runtime.audit,
-            context=runtime.context,
-            registry=runtime.registry,
-            knowledge_hub=runtime.knowledge_hub,
-            action_registry=runtime.action_registry,
-            state=runtime.runtime_state,
-            fault_boundary=runtime.fault_boundary,
+            fault_boundary=fault_boundary,
+            emit_event=runtime.events.emit,
+            active_skill_id=lambda: runtime.skill_state.active_skill_id,
+            history=runtime.session.history,
+            max_steps=runtime.settings.max_steps,
+            model_name=runtime.settings.model,
+            assemble_surface=assemble_surface,
+            build_system_prompt=build_system_prompt,
+            build_messages=lambda: prompt_assembler.build_messages(
+                runtime.session.history.read(),
+                runtime.settings.history_keep_turns,
+            ),
+            complete_model=llm.complete,
+            parse_reply=reply_parser.parse,
+            dispatch_action=dispatcher.dispatch,
+            normalize_tool_result=lambda action, content: normalizer.normalize_tool_result(action, content, limit=8_000),
+            record_audit=audit.record,
         )
-        runtime.child_factory = ChildFactory(storage_base=request.storage_base)
-        runtime.harness = TurnDriver(ports)
+        return TurnDriver(ports), capability_by_name.get
 
     @staticmethod
     def _register_many(registry: dict[str, ActionSpec], specs: Iterable[ActionSpec]) -> None:
@@ -311,9 +330,7 @@ class RuntimeBuilder:
     def _prepare_capabilities(runtime: RuntimeHost, names: Iterable[str]) -> list[Capability]:
         prepared: list[Capability] = []
         for name in names:
-            capability = create_capability(name)
-            capability.bind(runtime)
-            prepared.append(capability)
+            prepared.append(create_capability(name))
         return prepared
 
     @staticmethod
@@ -324,7 +341,6 @@ class RuntimeBuilder:
             bind = getattr(participant, "bind_runtime", None)
             if bind is not None:
                 bind(runtime)
-        runtime.service_hub.attachment_ingestion = attachment_service
         return participants
 
 

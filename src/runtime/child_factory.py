@@ -39,15 +39,13 @@ class ChildFactory:
         )
         child_task_id = f"{parent.settings.task_id}__{role_name}"
         storage_base = self.storage_base or parent.session.paths.root.parents[2]
-        child_toolboxes = list(
-            toolboxes if toolboxes is not None else [toolbox.toolbox_name for toolbox in parent.toolboxes]
-        )
+        child_toolboxes = list(toolboxes if toolboxes is not None else parent.toolbox_names)
 
         child_prompt_chars = self._derive_prompt_budget(parent.settings.max_prompt_chars)
-        child_context_policy = dict(parent.agent_spec.context_policy or {})
+        child_context_policy = dict(parent.context_policy or {})
         child_context_policy["max_prompt_chars"] = child_prompt_chars
 
-        parent_name = getattr(parent.agent_spec, "name", "") or parent.engine_id
+        parent_name = parent.context.agent_name or parent.engine_id
         spec = AgentSpec(
             name=role_name,
             root_skill=target_skill,

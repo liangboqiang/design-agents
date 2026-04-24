@@ -37,13 +37,15 @@ The intended flow is:
 
 - `runtime/engine.py` is the only external runtime facade.
 - `Engine` exposes only `chat`, `tick`, and `spawn_child`.
-- `Engine` holds a private runtime handle; construction ownership belongs to `RuntimeBuilder`.
-- `src/runtime/` must contain only host files: builder, engine, session/skill state, hubs, participant set, and child factory.
+- `Engine` holds only injected facade operations; construction ownership belongs to `RuntimeBuilder`.
+- Runtime host state must not carry prompt assemblers, parsers, dispatchers, action registries, toolboxes, capabilities, or turn drivers.
+- `src/runtime/` must contain only host files: builder, engine, session/skill state, service boundaries, participant set, and child factory.
 - New prompt or harness implementation details must not be instantiated directly from ad hoc call sites outside the builder.
 
 ## Migration Guard
 
 - Do not introduce new roots such as `ctx/` or `wiki_store/`.
 - Do not reintroduce prompt or harness implementation files under `src/runtime/`.
+- Do not reintroduce `toolbox_hub`; toolbox names are runtime host data, not a second hub.
 - Do not reintroduce wiki pages that mirror runtime internals, such as `src/wiki/runtime_*`.
 - Do not create a second registry, wiki store, or prompt assembly path.

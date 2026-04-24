@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -10,12 +9,6 @@ from wiki.service import SharedWikiService
 
 
 ATTACHMENT_INGEST_STATE = "attachment_ingest.json"
-
-
-@dataclass(slots=True)
-class ServiceHub:
-    knowledge_hub: Any
-    attachment_ingestion: Any | None = None
 
 
 class KnowledgeHubService:

@@ -14,8 +14,8 @@ class ProtocolCapability(Capability):
     shutdown_file = "shutdown_requests.json"
     plan_file = "plan_requests.json"
 
-    def bind(self, runtime) -> None:
-        super().bind(runtime)
+    def bind(self, runtime, capability_lookup=None) -> None:
+        super().bind(runtime, capability_lookup)
         if self.runtime.session.read_state_json(self.shutdown_file, None) is None:
             self.runtime.session.write_state_json(self.shutdown_file, {})
         if self.runtime.session.read_state_json(self.plan_file, None) is None:
