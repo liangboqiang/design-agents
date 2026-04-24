@@ -16,7 +16,7 @@ class SubagentCapability(Capability):
             ActionSpec(
                 "subagent.ask",
                 "Delegate to subagent",
-                "Instantiate one child engine from the current parent engine and return the child result.",
+                "Instantiate one child runtime from the current parent runtime and return the child result.",
                 {
                     "type": "object",
                     "properties": {
@@ -42,7 +42,7 @@ class SubagentCapability(Capability):
             ActionSpec(
                 "subagent.batch_run",
                 "Batch run subagents",
-                "Instantiate multiple child engines in parallel and run one prompt per child.",
+                "Instantiate multiple child runtimes in parallel and run one prompt per child.",
                 {
                     "type": "object",
                     "properties": {
@@ -68,9 +68,9 @@ class SubagentCapability(Capability):
         toolboxes: list[str] | None,
         role_name: str,
     ) -> str:
-        child = self.engine.spawn_child(
+        child = self.runtime.spawn_child(
             skill=skill,
-            enhancements=enhancements or self.engine.enhancement_names,
+            enhancements=enhancements or self.runtime.enhancement_names,
             role_name=role_name,
             toolboxes=toolboxes,
         )
@@ -89,7 +89,7 @@ class SubagentCapability(Capability):
                 result = self.ask(
                     prompt=str(job["prompt"]),
                     skill=job.get("skill"),
-                    enhancements=[str(item) for item in job.get("enhancements") or self.engine.enhancement_names],
+                    enhancements=[str(item) for item in job.get("enhancements") or self.runtime.enhancement_names],
                     toolboxes=[str(item) for item in job.get("toolboxes") or []]
                     if job.get("toolboxes") is not None
                     else None,

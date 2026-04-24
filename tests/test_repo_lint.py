@@ -20,6 +20,7 @@ def test_repository_lint_flags_new_consolidation_rules(tmp_path: Path) -> None:
     tool_dir = tmp_path / "src" / "tool" / "demo" / "run"
     noisy_tool_dir = tmp_path / "src" / "tool" / "demo" / "legacy"
     legacy_runtime_dir = tmp_path / "src" / "runtime" / "harness"
+    legacy_wiki_dir = tmp_path / "src" / "wiki" / "runtime_engine"
     retired_ctx_dir = tmp_path / "src" / "ctx" / "demo"
     retired_truth_dir = tmp_path / "src" / "skill" / "legacy_truth"
 
@@ -28,6 +29,7 @@ def test_repository_lint_flags_new_consolidation_rules(tmp_path: Path) -> None:
     tool_dir.mkdir(parents=True)
     noisy_tool_dir.mkdir(parents=True)
     legacy_runtime_dir.mkdir(parents=True)
+    legacy_wiki_dir.mkdir(parents=True)
     retired_ctx_dir.mkdir(parents=True)
     retired_truth_dir.mkdir(parents=True)
 

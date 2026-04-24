@@ -69,7 +69,7 @@ class TaskCapability(Capability):
                 "Get task",
                 "Get a single task.",
                 {"type": "object", "properties": {"task_id": {"type": "integer"}}, "required": ["task_id"]},
-                lambda args: json.dumps(self.engine.session.tasks.get(args["task_id"]), ensure_ascii=False, indent=2),
+                lambda args: json.dumps(self.runtime.session.tasks.get(args["task_id"]), ensure_ascii=False, indent=2),
                 "capability.task",
             ),
             ActionSpec(
@@ -87,9 +87,9 @@ class TaskCapability(Capability):
         ]
 
     def create(self, subject: str, description: str, blocked_by: list[int]) -> str:
-        payload = self.engine.session.tasks.create(subject, description, blocked_by)
+        payload = self.runtime.session.tasks.create(subject, description, blocked_by)
         if blocked_by:
-            self.engine.events.emit("task.blocked", task_id=payload["id"], blocked_by=blocked_by)
+            self.runtime.events.emit("task.blocked", task_id=payload["id"], blocked_by=blocked_by)
         return json.dumps(payload, ensure_ascii=False, indent=2)
 
     def update(
@@ -100,7 +100,7 @@ class TaskCapability(Capability):
         add_blocked_by: list[int],
         remove_blocked_by: list[int],
     ) -> str:
-        payload = self.engine.session.tasks.update(
+        payload = self.runtime.session.tasks.update(
             task_id,
             status=status,
             owner=owner,
@@ -108,22 +108,22 @@ class TaskCapability(Capability):
             remove_blocked_by=remove_blocked_by,
         )
         if payload.get("blocked_by"):
-            self.engine.events.emit("task.blocked", task_id=task_id, blocked_by=payload["blocked_by"])
+            self.runtime.events.emit("task.blocked", task_id=task_id, blocked_by=payload["blocked_by"])
         return json.dumps(payload, ensure_ascii=False, indent=2)
 
     def claim(self, task_id: int, owner: str) -> str:
-        payload = self.engine.session.tasks.claim(task_id, owner)
-        self.engine.events.emit("task.claimed", task_id=task_id, owner=owner)
+        payload = self.runtime.session.tasks.claim(task_id, owner)
+        self.runtime.events.emit("task.claimed", task_id=task_id, owner=owner)
         return json.dumps(payload, ensure_ascii=False, indent=2)
 
     def list_all(self) -> str:
-        return json.dumps(self.engine.session.tasks.list_all(), ensure_ascii=False, indent=2)
+        return json.dumps(self.runtime.session.tasks.list_all(), ensure_ascii=False, indent=2)
 
     def unclaimed_tasks(self) -> list[dict]:
-        return self.engine.session.tasks.unclaimed()
+        return self.runtime.session.tasks.unclaimed()
 
     def state_fragments(self) -> list[str]:
-        rows = self.engine.session.tasks.list_all()
+        rows = self.runtime.session.tasks.list_all()
         if not rows:
             return ["tasks: (none)"]
         summary = "\n".join(
@@ -131,4 +131,3 @@ class TaskCapability(Capability):
             for row in rows[:10]
         )
         return [f"tasks:\n{summary}"]
-

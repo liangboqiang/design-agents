@@ -1,14 +1,11 @@
 from __future__ import annotations
 
-from prompt.knowledge_picker import KnowledgePicker
-
 from .turn_guard import ActionExecutionResult
 
 
 class TurnDriver:
     def __init__(self, ports):  # noqa: ANN001
         self.ports = ports
-        self.knowledge_picker = KnowledgePicker()
 
     def chat(self, message: str, files: list[dict] | None = None) -> str:
         begin = self.ports.fault_boundary.call(
@@ -117,7 +114,7 @@ class TurnDriver:
         return surface
 
     def _build_system_prompt(self, surface, state_fragments: list[str]):  # noqa: ANN001
-        selection = self.knowledge_picker.pick(surface_snapshot=surface, knowledge_hub=self.ports.knowledge_hub)
+        selection = self.ports.knowledge_picker.pick(surface_snapshot=surface, knowledge_hub=self.ports.knowledge_hub)
         return self.ports.prompt_assembler.build_system_prompt(
             engine_context=self.ports.context,
             skill_state=self.ports.skill_state,

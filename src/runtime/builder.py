@@ -8,7 +8,7 @@ from governance.activation import ActivationPolicy
 from governance.audit import GovernanceAudit
 from governance.events import EventBus
 from governance.normalizer import Normalizer
-from governance.registry import GovernanceRegistry
+from governance.registry import SpecRegistry
 from governance.surface import SurfaceResolver
 from harness.turn_driver import TurnDriver
 from harness.action_dispatcher import ActionDispatcher
@@ -19,6 +19,7 @@ from harness.turn_lifecycle import TurnLifecycle
 from harness.turn_policy import TurnPolicy, build_control_action_specs
 from llm.config import resolve_llm_config
 from llm.factory import LLMFactory
+from prompt.knowledge_picker import KnowledgePicker
 from prompt.surface_assembler import SurfaceAssembler
 from prompt.prompt_assembler import PromptAssembler
 from schemas.action import ActionSpec
@@ -54,15 +55,14 @@ class EngineBuildRequest:
     storage_base: Path | None = None
     max_steps: int = 12
     role_name: str | None = None
-    persistent_worker: bool = False
-    registry: GovernanceRegistry | None = None
+    registry: SpecRegistry | None = None
     agent_spec: AgentSpec | None = None
     context_policy: dict[str, Any] | None = None
 
 
 @dataclass(slots=True)
-class EngineRuntimeBundle:
-    registry: GovernanceRegistry
+class RuntimeHost:
+    registry: SpecRegistry
     agent_spec: AgentSpec
     settings: EngineSettings
     session: SessionState
@@ -73,22 +73,60 @@ class EngineRuntimeBundle:
     skill_state: SkillState
     tool_index: ToolIndex
     toolbox_hub: ToolboxHub
-    surface_resolver: SurfaceResolver
     surface_assembler: SurfaceAssembler
+    knowledge_picker: KnowledgePicker
     prompt_assembler: PromptAssembler
     reply_parser: ReplyParser
     normalizer: Normalizer
     audit: GovernanceAudit
     events: EventBus
     runtime_state: EngineRuntimeState = field(default_factory=EngineRuntimeState)
-    failure_sink: FailureSink | None = None
     fault_boundary: TurnGuard | None = None
     action_registry: dict[str, ActionSpec] = field(default_factory=dict)
     toolboxes: list[Toolbox] = field(default_factory=list)
     capabilities: list[Capability] = field(default_factory=list)
-    participants: list[object] = field(default_factory=list)
-    lifecycle: TurnLifecycle | None = None
-    dispatcher: ActionDispatcher | None = None
+    enhancement_names: list[str] = field(default_factory=list)
+    harness: TurnDriver | None = None
+    child_factory: ChildFactory | None = None
+
+    @property
+    def engine_id(self) -> str:
+        return self.context.engine_id
+
+    @property
+    def provider(self) -> str:
+        return self.settings.provider
+
+    @property
+    def model(self) -> str:
+        return self.settings.model
+
+    @property
+    def api_key(self) -> str | None:
+        return self.settings.api_key
+
+    @property
+    def base_url(self) -> str | None:
+        return self.settings.base_url
+
+    def capability(self, name: str):
+        return next((item for item in self.capabilities if item.capability_name == name), None)
+
+    def spawn_child(
+        self,
+        *,
+        skill: str | None,
+        enhancements: list[str],
+        role_name: str,
+        toolboxes: list[str] | None = None,
+    ):
+        return self.child_factory.spawn_from_parent(
+            self,
+            skill=skill,
+            enhancements=enhancements or self.enhancement_names,
+            role_name=role_name,
+            toolboxes=toolboxes,
+        )
 
 
 class RuntimeBuilder:
@@ -99,20 +137,12 @@ class RuntimeBuilder:
             engine_cls = Engine
 
         bundle = self.build_bundle(request)
-        enhancement_names = list(request.enhancements or bundle.agent_spec.capabilities or [])
-        engine = engine_cls(
-            bundle=bundle,
-            enhancement_names=enhancement_names,
-            persistent_worker=request.persistent_worker,
-        )
-        self.install_runtime(engine, request)
-        bind = getattr(engine.knowledge_hub, "bind_engine", None)
-        if bind is not None:
-            bind(engine)
+        self.install_runtime(bundle, request)
+        engine = engine_cls(runtime=bundle)
         return engine
 
-    def build_bundle(self, request: EngineBuildRequest) -> EngineRuntimeBundle:
-        registry = request.registry or GovernanceRegistry(project_root())
+    def build_bundle(self, request: EngineBuildRequest) -> RuntimeHost:
+        registry = request.registry or SpecRegistry(project_root())
         root_skill_id = self._resolve_skill_id(registry, request.skill_root)
         agent_spec = request.agent_spec or AgentSpec(name="ad_hoc", root_skill=root_skill_id)
         llm_config = resolve_llm_config(request.provider, request.model, request.api_key, request.base_url)
@@ -154,7 +184,7 @@ class RuntimeBuilder:
         failure_sink = FailureSink(session=session, audit=audit, events=events, runtime_state=runtime_state)
         fault_boundary = TurnGuard(failure_sink)
         events.set_fault_reporter(fault_boundary.report)
-        return EngineRuntimeBundle(
+        return RuntimeHost(
             registry=registry,
             agent_spec=agent_spec,
             settings=settings,
@@ -166,75 +196,73 @@ class RuntimeBuilder:
             skill_state=skill_state,
             tool_index=tool_index,
             toolbox_hub=toolbox_hub,
-            surface_resolver=surface_resolver,
             surface_assembler=SurfaceAssembler(surface_resolver),
+            knowledge_picker=KnowledgePicker(),
             prompt_assembler=PromptAssembler(registry.context_root, max_prompt_chars=max_prompt_chars),
             reply_parser=ReplyParser(),
             normalizer=normalizer,
             audit=audit,
             events=events,
             runtime_state=runtime_state,
-            failure_sink=failure_sink,
             fault_boundary=fault_boundary,
         )
 
-    def install_runtime(self, engine, request: EngineBuildRequest) -> None:  # noqa: ANN001
-        requested_toolboxes = list(request.toolboxes if request.toolboxes is not None else (engine.agent_spec.toolboxes or ["files", "shell"]))
-        enhancement_names = list(request.enhancements or engine.agent_spec.capabilities or [])
+    def install_runtime(self, runtime: RuntimeHost, request: EngineBuildRequest) -> None:
+        requested_toolboxes = list(request.toolboxes if request.toolboxes is not None else (runtime.agent_spec.toolboxes or ["files", "shell"]))
+        runtime.enhancement_names = list(request.enhancements or runtime.agent_spec.capabilities or [])
 
-        engine.toolboxes = self._prepare_toolboxes(engine, requested_toolboxes)
-        engine.capabilities = self._prepare_capabilities(engine, enhancement_names)
-        engine.toolbox_hub.toolboxes = list(engine.toolboxes)
-        engine.participants = self._prepare_participants(engine)
-        engine.participant_set = ParticipantSet(core=list(engine.participants))
-        engine.lifecycle = TurnLifecycle(
-            [*engine.participant_set.all(), *engine.capabilities],
-            fault_reporter=engine.fault_boundary.report,
+        runtime.toolboxes = self._prepare_toolboxes(runtime, requested_toolboxes)
+        runtime.capabilities = self._prepare_capabilities(runtime, runtime.enhancement_names)
+        runtime.toolbox_hub.toolboxes = list(runtime.toolboxes)
+        participants = self._prepare_participants(runtime)
+        participant_set = ParticipantSet(core=list(participants))
+        lifecycle = TurnLifecycle(
+            [*participant_set.all(), *runtime.capabilities],
+            fault_reporter=runtime.fault_boundary.report,
         )
 
-        for toolbox in engine.toolboxes:
+        for toolbox in runtime.toolboxes:
             specs = list(toolbox.action_specs())
-            engine.tool_index.register_toolbox_actions(toolbox.toolbox_name, specs)
-            self._register_many(engine.action_registry, specs)
+            runtime.tool_index.register_toolbox_actions(toolbox.toolbox_name, specs)
+            self._register_many(runtime.action_registry, specs)
 
-        for capability in engine.capabilities:
-            self._register_many(engine.action_registry, capability.action_specs())
+        for capability in runtime.capabilities:
+            self._register_many(runtime.action_registry, capability.action_specs())
 
-        engine.dispatcher = ActionDispatcher(engine.action_registry, fault_reporter=engine.fault_boundary.report)
-        engine.harness_ports = TurnRuntimePorts(
-            lifecycle=engine.lifecycle,
-            events=engine.events,
-            skill_state=engine.skill_state,
-            session=engine.session,
-            settings=engine.settings,
-            surface_resolver=engine.surface_resolver,
-            surface_assembler=engine.surface_assembler,
-            prompt_assembler=engine.prompt_assembler,
-            llm=engine.llm,
-            reply_parser=engine.reply_parser,
-            dispatcher=engine.dispatcher,
-            normalizer=engine.normalizer,
-            audit=engine.audit,
-            context=engine.context,
-            registry=engine.registry,
-            knowledge_hub=engine.knowledge_hub,
-            action_registry=engine.action_registry,
-            state=engine.runtime_state,
-            failure_sink=engine.failure_sink,
-            fault_boundary=engine.fault_boundary,
+        control = TurnPolicy(
+            registry=runtime.registry,
+            skill_state=runtime.skill_state,
+            context=runtime.context,
+            events=runtime.events,
+            action_registry=runtime.action_registry,
         )
-        engine.control = TurnPolicy(
-            registry=engine.registry,
-            skill_state=engine.skill_state,
-            context=engine.context,
-            events=engine.events,
-            action_registry=engine.action_registry,
+        for spec in build_control_action_specs(control):
+            runtime.action_registry[spec.action_id] = spec
+
+        dispatcher = ActionDispatcher(runtime.action_registry, fault_reporter=runtime.fault_boundary.report)
+        ports = TurnRuntimePorts(
+            lifecycle=lifecycle,
+            events=runtime.events,
+            skill_state=runtime.skill_state,
+            session=runtime.session,
+            settings=runtime.settings,
+            surface_assembler=runtime.surface_assembler,
+            knowledge_picker=runtime.knowledge_picker,
+            prompt_assembler=runtime.prompt_assembler,
+            llm=runtime.llm,
+            reply_parser=runtime.reply_parser,
+            dispatcher=dispatcher,
+            normalizer=runtime.normalizer,
+            audit=runtime.audit,
+            context=runtime.context,
+            registry=runtime.registry,
+            knowledge_hub=runtime.knowledge_hub,
+            action_registry=runtime.action_registry,
+            state=runtime.runtime_state,
+            fault_boundary=runtime.fault_boundary,
         )
-        for spec in build_control_action_specs(engine.control):
-            engine.action_registry[spec.action_id] = spec
-        engine.dispatcher.registry = engine.action_registry
-        engine.child_factory = ChildFactory(storage_base=request.storage_base)
-        engine.harness = TurnDriver(engine.harness_ports)
+        runtime.child_factory = ChildFactory(storage_base=request.storage_base)
+        runtime.harness = TurnDriver(ports)
 
     @staticmethod
     def _register_many(registry: dict[str, ActionSpec], specs: Iterable[ActionSpec]) -> None:
@@ -242,7 +270,7 @@ class RuntimeBuilder:
             registry[spec.action_id] = spec
 
     @staticmethod
-    def _resolve_skill_id(registry: GovernanceRegistry, skill_root: str | Path) -> str:
+    def _resolve_skill_id(registry: SpecRegistry, skill_root: str | Path) -> str:
         if isinstance(skill_root, Path):
             candidate = skill_root
         else:
@@ -268,35 +296,35 @@ class RuntimeBuilder:
         raise ValueError(f"Unknown skill root: {skill_root}")
 
     @staticmethod
-    def _prepare_toolboxes(engine, toolboxes: Iterable[str | Toolbox]) -> list[Toolbox]:  # noqa: ANN001
+    def _prepare_toolboxes(runtime: RuntimeHost, toolboxes: Iterable[str | Toolbox]) -> list[Toolbox]:
         prepared: list[Toolbox] = []
         for item in toolboxes:
             if isinstance(item, str):
-                toolbox = engine.registry.toolbox_registry.create(item, engine.session.workspace_root)
+                toolbox = runtime.registry.toolbox_registry.create(item, runtime.session.workspace_root)
             else:
-                toolbox = item if item.workspace_root == engine.session.workspace_root else item.spawn(engine.session.workspace_root)
-            toolbox.bind_engine(engine)
+                toolbox = item if item.workspace_root == runtime.session.workspace_root else item.spawn(runtime.session.workspace_root)
+            toolbox.bind_runtime(runtime)
             prepared.append(toolbox)
         return prepared
 
     @staticmethod
-    def _prepare_capabilities(engine, names: Iterable[str]) -> list[Capability]:  # noqa: ANN001
+    def _prepare_capabilities(runtime: RuntimeHost, names: Iterable[str]) -> list[Capability]:
         prepared: list[Capability] = []
         for name in names:
             capability = create_capability(name)
-            capability.bind(engine)
+            capability.bind(runtime)
             prepared.append(capability)
         return prepared
 
     @staticmethod
-    def _prepare_participants(engine) -> list[object]:  # noqa: ANN001
-        attachment_service = AttachmentIngestionService(knowledge_hub=engine.knowledge_hub, session=engine.session)
+    def _prepare_participants(runtime: RuntimeHost) -> list[object]:
+        attachment_service = AttachmentIngestionService(knowledge_hub=runtime.knowledge_hub, session=runtime.session)
         participants = [AttachmentIngressParticipant(attachment_service)]
         for participant in participants:
-            bind = getattr(participant, "bind", None)
+            bind = getattr(participant, "bind_runtime", None)
             if bind is not None:
-                bind(engine)
-        engine.service_hub.attachment_ingestion = attachment_service
+                bind(runtime)
+        runtime.service_hub.attachment_ingestion = attachment_service
         return participants
 
 
@@ -319,7 +347,6 @@ def request_from_agent_spec(spec: AgentSpec, **overrides) -> EngineBuildRequest:
         storage_base=overrides.pop("storage_base", None),
         max_steps=overrides.pop("max_steps", 12),
         role_name=overrides.pop("role_name", None),
-        persistent_worker=overrides.pop("persistent_worker", False),
         registry=overrides.pop("registry", None),
         agent_spec=spec,
         context_policy=overrides.pop("context_policy", spec.context_policy),

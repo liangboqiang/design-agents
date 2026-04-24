@@ -30,5 +30,5 @@ class AutonomyCapability(Capability):
         return task_cap.claim(int(unclaimed[0]["id"]), owner)
 
     def idle_tick(self) -> str:
-        return self.claim_next(self.engine.engine_id)
+        return self.claim_next(self.runtime.engine_id)
 

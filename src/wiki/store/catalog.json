@@ -474,30 +474,6 @@
       "summary": "Render wiki pages into a reader-friendly view without mutating the source markdown.",
       "path": "src/wiki/render/page.md"
     },
-    "wiki/runtime_dispatcher": {
-      "kind": "wiki",
-      "title": "Action Dispatcher",
-      "summary": "Action dispatcher that validates action ids and normalizes execution faults.",
-      "path": "src/wiki/runtime_dispatcher/page.md"
-    },
-    "wiki/runtime_engine": {
-      "kind": "wiki",
-      "title": "Engine Runtime",
-      "summary": "Primary runtime facade that assembles the governed engine and exposes chat entrypoints.",
-      "path": "src/wiki/runtime_engine/page.md"
-    },
-    "wiki/runtime_harness": {
-      "kind": "wiki",
-      "title": "Turn Driver",
-      "summary": "Turn loop that assembles surface state, builds prompts, runs the model, and dispatches actions.",
-      "path": "src/wiki/runtime_harness/page.md"
-    },
-    "wiki/runtime_lifecycle": {
-      "kind": "wiki",
-      "title": "Turn Lifecycle",
-      "summary": "Lifecycle coordinator for before-turn, before-model, after-tool, and state-fragment hooks.",
-      "path": "src/wiki/runtime_lifecycle/page.md"
-    },
     "wiki/search": {
       "kind": "wiki",
       "title": "Wiki Search",

@@ -26,27 +26,27 @@ class CompactCapability(Capability):
 
     def before_model_call(self) -> None:
         self._micro_compact()
-        if self._estimate_size() > self.engine.settings.auto_compact_threshold:
+        if self._estimate_size() > self.runtime.settings.auto_compact_threshold:
             self.compact_now()
 
     def _micro_compact(self) -> None:
-        rows = self.engine.session.history.read()
-        compacted = micro_compact(rows, keep_turns=self.engine.settings.history_keep_turns)
+        rows = self.runtime.session.history.read()
+        compacted = micro_compact(rows, keep_turns=self.runtime.settings.history_keep_turns)
         if len(compacted) < len(rows):
-            self.engine.session.transcripts.append(
+            self.runtime.session.transcripts.append(
                 {"ts": time.time(), "type": "micro_compact", "dropped": len(rows) - len(compacted)}
             )
-            self.engine.session.history.replace(compacted)
+            self.runtime.session.history.replace(compacted)
 
     def _estimate_size(self) -> int:
-        return sum(len(json.dumps(row, ensure_ascii=False)) for row in self.engine.session.history.read())
+        return sum(len(json.dumps(row, ensure_ascii=False)) for row in self.runtime.session.history.read())
 
     def compact_now(self) -> str:
-        rows = self.engine.session.history.read()
+        rows = self.runtime.session.history.read()
         if not rows:
             return "No history to compact."
         summary = build_summary(rows)
-        self.engine.session.transcripts.append({"ts": time.time(), "type": "full_compact", "rows": rows})
-        self.engine.session.history.replace([{"role": "system", "content": f"[COMPACTED SUMMARY]\n{summary}"}])
-        self.engine.events.emit("compact.performed", summary=summary)
+        self.runtime.session.transcripts.append({"ts": time.time(), "type": "full_compact", "rows": rows})
+        self.runtime.session.history.replace([{"role": "system", "content": f"[COMPACTED SUMMARY]\n{summary}"}])
+        self.runtime.events.emit("compact.performed", summary=summary)
         return "Context compacted."

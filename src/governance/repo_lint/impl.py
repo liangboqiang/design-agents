@@ -45,6 +45,10 @@ FORBIDDEN_PATHS = (
     "src/runtime/harness",
     "src/runtime/dispatcher",
     "src/runtime/lifecycle",
+    "src/wiki/runtime_dispatcher",
+    "src/wiki/runtime_engine",
+    "src/wiki/runtime_harness",
+    "src/wiki/runtime_lifecycle",
 )
 
 FORBIDDEN_PATH_PARTS = {"ctx", "wiki_store"}

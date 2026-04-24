@@ -26,7 +26,7 @@ class WorkspaceCapability(Capability):
                 "List workspaces",
                 "List current workspaces.",
                 {"type": "object", "properties": {}},
-                lambda args: json.dumps({"workspaces": self.engine.session.workspaces.list_all()}, ensure_ascii=False, indent=2),
+                lambda args: json.dumps({"workspaces": self.runtime.session.workspaces.list_all()}, ensure_ascii=False, indent=2),
                 "capability.workspace",
             ),
             ActionSpec(
@@ -60,42 +60,42 @@ class WorkspaceCapability(Capability):
         ]
 
     def create(self, name: str, task_id: int | None) -> str:
-        row = self.engine.session.workspaces.create(name, task_id)
+        row = self.runtime.session.workspaces.create(name, task_id)
         task_cap = self.capability("task")
         if task_id and task_cap:
             task_cap.update(
                 task_id,
                 status="in_progress",
-                owner=self.engine.engine_id,
+                owner=self.runtime.engine_id,
                 add_blocked_by=[],
                 remove_blocked_by=[],
             )
-        self.engine.events.emit("workspace.created", workspace=row)
+        self.runtime.events.emit("workspace.created", workspace=row)
         return json.dumps(row, ensure_ascii=False, indent=2)
 
     def run(self, name: str, command: str) -> str:
-        row = self.engine.session.workspaces.get(name)
+        row = self.runtime.session.workspaces.get(name)
         completed = subprocess.run(command, shell=True, cwd=row["path"], capture_output=True, text=True, timeout=300)
         output = (completed.stdout + completed.stderr).strip()
-        self.engine.events.emit("workspace.command_ran", workspace=name, command=command)
+        self.runtime.events.emit("workspace.command_ran", workspace=name, command=command)
         return output[:50000] if output else "(no output)"
 
     def keep(self, name: str) -> str:
-        row = self.engine.session.workspaces.keep(name)
-        self.engine.events.emit("workspace.kept", workspace=row)
+        row = self.runtime.session.workspaces.keep(name)
+        self.runtime.events.emit("workspace.kept", workspace=row)
         return f"Workspace {name} kept"
 
     def remove(self, name: str, complete_task: bool) -> str:
-        row = self.engine.session.workspaces.remove(name)
+        row = self.runtime.session.workspaces.remove(name)
         task_cap = self.capability("task")
         if complete_task and row.get("task_id") and task_cap:
             task_cap.update(
                 int(row["task_id"]),
                 status="completed",
-                owner=self.engine.engine_id,
+                owner=self.runtime.engine_id,
                 add_blocked_by=[],
                 remove_blocked_by=[],
             )
-        self.engine.events.emit("workspace.removed", workspace=row, complete_task=complete_task)
+        self.runtime.events.emit("workspace.removed", workspace=row, complete_task=complete_task)
         return f"Workspace {name} removed"
 

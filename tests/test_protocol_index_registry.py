@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from governance.protocol_index import ProtocolIndexer
-from governance.registry import GovernanceRegistry
+from governance.registry import SpecRegistry
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,7 +46,7 @@ def test_protocol_index_emits_structured_nodes() -> None:
 
 
 def test_registry_consumes_protocol_index_for_skills_and_agents() -> None:
-    registry = GovernanceRegistry(ROOT)
+    registry = SpecRegistry(ROOT)
 
     ingest_skill = registry.get_skill("skill/wiki_hub/ingest")
     assert ingest_skill.actions == ["wiki_admin.refresh_system", "wiki_admin.ingest_files"]

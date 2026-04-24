@@ -28,11 +28,7 @@ class KnowledgeHubService:
         self.registry = registry
         self.session = session
         self.hub_name = hub_name
-        self.engine = None
         self.shared = SharedWikiService(project_root=self.project_root, registry=self.registry)
-
-    def bind_engine(self, engine) -> None:  # noqa: ANN001
-        self.engine = engine
 
     @property
     def root(self) -> Path:
@@ -42,7 +38,7 @@ class KnowledgeHubService:
         self.shared.ensure_store()
 
     def refresh_from_registry(self) -> str:
-        return self.shared.refresh_system(engine=self.engine)
+        return self.shared.refresh_system()
 
     def ingest_user_files(self, files: list[dict[str, Any]] | None) -> str:
         return self.shared.ingest_user_files(files or [])

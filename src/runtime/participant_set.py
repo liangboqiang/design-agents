@@ -15,20 +15,20 @@ class AttachmentIngressParticipant:
 
     def __init__(self, service):  # noqa: ANN001
         self.service = service
-        self.engine = None
+        self.runtime = None
 
-    def bind(self, engine) -> None:  # noqa: ANN001
-        self.engine = engine
+    def bind_runtime(self, runtime) -> None:  # noqa: ANN001
+        self.runtime = runtime
 
     def before_user_turn(self, message: str, files: list[dict[str, Any]] | None = None) -> None:
-        if self.engine is None:
-            raise RuntimeError("AttachmentIngressParticipant is not bound to an engine.")
+        if self.runtime is None:
+            raise RuntimeError("AttachmentIngressParticipant is not bound to a runtime.")
         result = self.service.ingest(files)
         if not result:
             return
-        self.engine.session.history.append_system(f"Attachment ingest summary:\n{result}")
+        self.runtime.session.history.append_system(f"Attachment ingest summary:\n{result}")
         snapshot = self.service.latest_snapshot()
-        self.engine.events.emit(
+        self.runtime.events.emit(
             "attachments.ingested",
             message=message,
             count=snapshot.get("file_count", 0),

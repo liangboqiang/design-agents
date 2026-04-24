@@ -13,17 +13,17 @@ class TeamCapability(Capability):
     capability_name = "team"
     roster_file = "team_roster.json"
 
-    def bind(self, engine) -> None:
-        super().bind(engine)
-        if self.engine.session.read_state_json(self.roster_file, None) is None:
-            self.engine.session.write_state_json(self.roster_file, {"members": []})
+    def bind(self, runtime) -> None:
+        super().bind(runtime)
+        if self.runtime.session.read_state_json(self.roster_file, None) is None:
+            self.runtime.session.write_state_json(self.roster_file, {"members": []})
         self.threads: dict[str, threading.Thread] = {}
 
     def action_specs(self):
         return [
             ActionSpec(
                 "team.spawn_worker",
-                "Spawn worker engine",
+                "Spawn worker runtime",
                 "Create a worker agent that reuses the same runtime framework.",
                 {
                     "type": "object",
@@ -34,7 +34,7 @@ class TeamCapability(Capability):
                     args["name"],
                     args["skill"],
                     args["prompt"],
-                    [str(item) for item in args.get("enhancements") or self.engine.enhancement_names],
+                    [str(item) for item in args.get("enhancements") or self.runtime.enhancement_names],
                 ),
                 "capability.team",
             ),
@@ -77,20 +77,20 @@ class TeamCapability(Capability):
         ]
 
     def _roster(self) -> list[dict]:
-        return list(self.engine.session.read_state_json(self.roster_file, {"members": []})["members"])
+        return list(self.runtime.session.read_state_json(self.roster_file, {"members": []})["members"])
 
     def _save_roster(self, rows: list[dict]) -> None:
-        self.engine.session.write_state_json(self.roster_file, {"members": rows})
+        self.runtime.session.write_state_json(self.roster_file, {"members": rows})
 
     def send_message(self, to: str, content: str, message_type: str = "message", extra: dict | None = None) -> str:
-        payload = {"type": message_type, "from": self.engine.engine_id, "content": content, "ts": time.time()}
+        payload = {"type": message_type, "from": self.runtime.engine_id, "content": content, "ts": time.time()}
         if extra:
             payload.update(extra)
-        self.engine.session.inbox.append(to, payload)
+        self.runtime.session.inbox.append(to, payload)
         return f"sent to {to}"
 
     def read_inbox(self, name: str) -> str:
-        rows = self.engine.session.inbox.drain(name)
+        rows = self.runtime.session.inbox.drain(name)
         return json.dumps(rows, ensure_ascii=False, indent=2)
 
     def broadcast(self, content: str) -> str:
@@ -104,34 +104,34 @@ class TeamCapability(Capability):
             raise ValueError(f"Worker already exists: {name}")
         members.append({"name": name, "skill": skill, "status": "working", "enhancements": enhancements})
         self._save_roster(members)
-        worker = self.engine.spawn_child(skill=skill, enhancements=enhancements, role_name=name, persistent_worker=True)
-        thread = threading.Thread(target=self._worker_loop, args=(worker, name, prompt), daemon=True)
+        worker = self.runtime.spawn_child(skill=skill, enhancements=enhancements, role_name=name)
+        thread = threading.Thread(target=self._worker_loop, args=(worker, name, prompt, "autonomy" in enhancements), daemon=True)
         thread.start()
         self.threads[name] = thread
-        self.engine.events.emit("team.worker_spawned", worker=name, skill=skill)
+        self.runtime.events.emit("team.worker_spawned", worker=name, skill=skill)
         return f"worker {name} spawned"
 
-    def _worker_loop(self, worker, name: str, prompt: str) -> None:  # noqa: ANN001
+    def _worker_loop(self, worker, name: str, prompt: str, has_autonomy: bool) -> None:  # noqa: ANN001
         worker.chat(prompt)
         while True:
-            inbox_rows = self.engine.session.inbox.drain(name)
+            inbox_rows = self.runtime.session.inbox.drain(name)
             if inbox_rows:
                 for row in inbox_rows:
                     response = worker.chat(row["content"])
-                    self.engine.session.inbox.append("lead", {"type": "worker_response", "from": name, "content": response, "ts": time.time()})
-            elif "autonomy" in worker.enhancement_names:
+                    self.runtime.session.inbox.append("lead", {"type": "worker_response", "from": name, "content": response, "ts": time.time()})
+            elif has_autonomy:
                 worker.tick()
                 time.sleep(1.5)
             else:
                 time.sleep(1.5)
 
     def before_user_turn(self, message: str) -> None:
-        lead_messages = self.engine.session.inbox.read_all("lead")
+        lead_messages = self.runtime.session.inbox.read_all("lead")
         if lead_messages:
-            self.engine.session.history.append_system(
+            self.runtime.session.history.append_system(
                 f"<team_inbox>\n{json.dumps(lead_messages, ensure_ascii=False, indent=2)}\n</team_inbox>"
             )
-            self.engine.session.inbox.drain("lead")
+            self.runtime.session.inbox.drain("lead")
 
     def state_fragments(self) -> list[str]:
         members = self._roster()

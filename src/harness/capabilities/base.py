@@ -9,12 +9,12 @@ from schemas.action import ActionSpec
 class Capability(ABC):
     capability_name: str
 
-    def bind(self, engine) -> None:  # noqa: ANN001
-        self.engine = engine
+    def bind(self, runtime) -> None:  # noqa: ANN001
+        self.runtime = runtime
 
     def capability(self, name: str):
         return next(
-            (capability for capability in self.engine.capabilities if capability.capability_name == name),
+            (capability for capability in self.runtime.capabilities if capability.capability_name == name),
             None,
         )
 

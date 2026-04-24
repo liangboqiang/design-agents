@@ -19,10 +19,10 @@ class Toolbox(ABC):
 
     def __init__(self, workspace_root: Path | None = None):
         self.workspace_root = workspace_root.resolve() if workspace_root else None
-        self.engine = None
+        self.runtime = None
 
-    def bind_engine(self, engine) -> None:  # noqa: ANN001
-        self.engine = engine
+    def bind_runtime(self, runtime) -> None:  # noqa: ANN001
+        self.runtime = runtime
 
     @abstractmethod
     def action_specs(self) -> Iterable[ActionSpec]:

@@ -1,3 +1,3 @@
-from .spec_registry import GovernanceRegistry, SpecRegistry
+from .spec_registry import SpecRegistry
 
-__all__ = ["GovernanceRegistry", "SpecRegistry"]
+__all__ = ["SpecRegistry"]

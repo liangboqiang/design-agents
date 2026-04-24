@@ -225,6 +225,3 @@ class SpecRegistry:
             seen.add(item)
             ordered.append(item)
         return ordered
-
-
-GovernanceRegistry = SpecRegistry

@@ -38,16 +38,16 @@ class RuntimeToolbox(Toolbox):
         ]
 
     def _describe_session(self) -> str:
-        if self.engine is None:
+        if self.runtime is None:
             return json.dumps({"workspace_root": str(self.workspace_root or "")}, ensure_ascii=False, indent=2)
         return json.dumps(
             {
-                "engine_id": self.engine.engine_id,
-                "agent_name": self.engine.agent_spec.name,
-                "workspace_root": str(self.engine.session.workspace_root),
-                "user_id": self.engine.settings.user_id,
-                "conversation_id": self.engine.settings.conversation_id,
-                "task_id": self.engine.settings.task_id,
+                "engine_id": self.runtime.engine_id,
+                "agent_name": self.runtime.agent_spec.name,
+                "workspace_root": str(self.runtime.session.workspace_root),
+                "user_id": self.runtime.settings.user_id,
+                "conversation_id": self.runtime.settings.conversation_id,
+                "task_id": self.runtime.settings.task_id,
             },
             ensure_ascii=False,
             indent=2,

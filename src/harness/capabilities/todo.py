@@ -9,13 +9,13 @@ class TodoCapability(Capability):
     capability_name = "todo"
     store_name = "todo.json"
 
-    def bind(self, engine) -> None:
-        super().bind(engine)
-        if self.engine.session.read_state_json(self.store_name, None) is None:
-            self.engine.session.write_state_json(self.store_name, {"items": []})
+    def bind(self, runtime) -> None:
+        super().bind(runtime)
+        if self.runtime.session.read_state_json(self.store_name, None) is None:
+            self.runtime.session.write_state_json(self.store_name, {"items": []})
 
     def _render(self) -> str:
-        payload = self.engine.session.read_state_json(self.store_name, {"items": []})
+        payload = self.runtime.session.read_state_json(self.store_name, {"items": []})
         lines = []
         for item in payload["items"]:
             icon = {"pending": "[ ]", "in_progress": "[>]", "completed": "[x]"}.get(item["status"], "[?]")
@@ -54,7 +54,7 @@ class TodoCapability(Capability):
             }
             for index, item in enumerate(items, start=1)
         ]
-        self.engine.session.write_state_json(self.store_name, {"items": normalized})
+        self.runtime.session.write_state_json(self.store_name, {"items": normalized})
         return self._render()
 
     def state_fragments(self) -> list[str]:

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from governance.registry import GovernanceRegistry
+from governance.registry import SpecRegistry
 from wiki.service import SharedWikiService
 
 
@@ -10,8 +10,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_read_page_renders_link_cards_with_store_summaries() -> None:
-    service = SharedWikiService(project_root=ROOT, registry=GovernanceRegistry(ROOT))
-    service.refresh_system(engine=None)
+    service = SharedWikiService(project_root=ROOT, registry=SpecRegistry(ROOT))
+    service.refresh_system()
 
     body = service.read_page("skill/wiki_hub/ingest")
 
@@ -22,8 +22,8 @@ def test_read_page_renders_link_cards_with_store_summaries() -> None:
 
 
 def test_read_page_renders_inline_links_with_store_summaries() -> None:
-    service = SharedWikiService(project_root=ROOT, registry=GovernanceRegistry(ROOT))
-    service.refresh_system(engine=None)
+    service = SharedWikiService(project_root=ROOT, registry=SpecRegistry(ROOT))
+    service.refresh_system()
 
     body = service.read_page("wiki/render")
 

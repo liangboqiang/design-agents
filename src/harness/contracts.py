@@ -18,8 +18,8 @@ class TurnRuntimePorts:
     skill_state: Any
     session: Any
     settings: Any
-    surface_resolver: Any
     surface_assembler: Any
+    knowledge_picker: Any
     prompt_assembler: Any
     llm: Any
     reply_parser: Any
@@ -31,5 +31,4 @@ class TurnRuntimePorts:
     knowledge_hub: Any
     action_registry: dict[str, Any]
     state: EngineRuntimeState
-    failure_sink: Any
     fault_boundary: Any

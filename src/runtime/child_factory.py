@@ -6,11 +6,10 @@ from schemas.agent import AgentSpec
 
 
 class ChildFactory:
-    """Build child engines from a parent engine using inherited runtime config.
+    """Build child runtimes from a parent runtime using inherited config.
 
-    This factory is governance-oriented: a child engine should inherit the
-    parent's execution environment while defaulting to a smaller prompt budget
-    and a narrower task description.
+    Children inherit the parent's execution environment while defaulting to a
+    smaller prompt budget and a narrower task description.
     """
 
     def __init__(
@@ -31,7 +30,6 @@ class ChildFactory:
         skill: str | None,
         enhancements: list[str],
         role_name: str,
-        persistent_worker: bool = False,
         toolboxes: list[str] | None = None,
     ):
         target_skill = (
@@ -72,7 +70,6 @@ class ChildFactory:
             conversation_id=parent.settings.conversation_id,
             task_id=child_task_id,
             role_name=role_name,
-            persistent_worker=persistent_worker,
             registry=parent.registry,
             storage_base=Path(storage_base),
         )

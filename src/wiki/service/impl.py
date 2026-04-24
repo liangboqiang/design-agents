@@ -27,7 +27,7 @@ class SharedWikiService:
     def ensure_store(self) -> None:
         self.store.ensure()
 
-    def refresh_system(self, *, engine) -> str:  # noqa: ANN001
+    def refresh_system(self) -> str:
         self.ensure_store()
         refresh = getattr(self.registry, "refresh", None)
         if refresh is not None:

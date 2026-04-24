@@ -25,7 +25,7 @@ The intended flow is:
 2. `SurfaceResolver` decides the visible governed surface.
 3. `Prompt` assembles prompt packets from state, surface, and wiki knowledge.
 4. `Harness` runs turn lifecycle, reply parsing, dispatch, and guard boundaries.
-5. `RuntimeBuilder` assembles the engine-facing runtime host.
+5. `RuntimeBuilder` assembles the runtime host behind the Engine facade.
 
 ## Knowledge Spine
 
@@ -36,8 +36,8 @@ The intended flow is:
 ## Engine Boundary
 
 - `runtime/engine.py` is the only external runtime facade.
-- `Engine` exposes only construction state plus `chat`, `tick`, and `spawn_child`.
-- `Engine` may hold assembled runtime objects, but construction ownership belongs to `RuntimeBuilder`.
+- `Engine` exposes only `chat`, `tick`, and `spawn_child`.
+- `Engine` holds a private runtime handle; construction ownership belongs to `RuntimeBuilder`.
 - `src/runtime/` must contain only host files: builder, engine, session/skill state, hubs, participant set, and child factory.
 - New prompt or harness implementation details must not be instantiated directly from ad hoc call sites outside the builder.
 
@@ -45,4 +45,5 @@ The intended flow is:
 
 - Do not introduce new roots such as `ctx/` or `wiki_store/`.
 - Do not reintroduce prompt or harness implementation files under `src/runtime/`.
+- Do not reintroduce wiki pages that mirror runtime internals, such as `src/wiki/runtime_*`.
 - Do not create a second registry, wiki store, or prompt assembly path.

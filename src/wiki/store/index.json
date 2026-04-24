@@ -430,19 +430,19 @@
       ],
       "links": [
         "governance/repo_lint",
-        "wiki/runtime_engine"
+        "wiki/index"
       ],
-      "content_hash": "b87908eef7ec475e0c96b1b2ab7f0f49a1f7538e",
+      "content_hash": "a9a2b614b37818bc1ca3aa66ed1afd73893e33a1",
       "runtime_action": null,
       "section_map": {
         "输出": "- `src/wiki/store/index.json`\n- `src/wiki/store/catalog.json`\n- `src/wiki/store/graph.json`",
-        "refs": "- [[governance/repo_lint]]\n- [[wiki/runtime_engine]]"
+        "refs": "- [[governance/repo_lint]]\n- [[wiki/index]]"
       },
       "section_links": {
         "输出": [],
         "refs": [
           "governance/repo_lint",
-          "wiki/runtime_engine"
+          "wiki/index"
         ]
       },
       "code_items": {
@@ -453,7 +453,7 @@
         ],
         "refs": [
           "[[governance/repo_lint]]",
-          "[[wiki/runtime_engine]]"
+          "[[wiki/index]]"
         ]
       },
       "settings": {}
@@ -471,7 +471,7 @@
       "links": [
         "governance/protocol_index"
       ],
-      "content_hash": "ca8d1c30c131792b4a4638bc6c5751efa0719823",
+      "content_hash": "aa15be00b6d4e85299e0261058df8645ef372bfd",
       "runtime_action": null,
       "section_map": {
         "核心规则": "- 单文件夹最多一个 `.md`\n- `[[...]]` 链接必须可解析\n- 仓库中不得残留旧知识库路径和旧动作名",
@@ -2636,116 +2636,6 @@
       },
       "settings": {}
     },
-    "wiki/runtime_dispatcher": {
-      "kind": "wiki",
-      "title": "Action Dispatcher",
-      "summary": "Action dispatcher that validates action ids and normalizes execution faults.",
-      "path": "src/wiki/runtime_dispatcher/page.md",
-      "folder": "src/wiki/runtime_dispatcher",
-      "truth_ext": [],
-      "links": [],
-      "content_hash": "42b8fb2d31854709d5bfa6bcf9a9f2027d6a05c5",
-      "runtime_action": null,
-      "section_map": {
-        "implementation": "- `src/harness/action_dispatcher.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "src/harness/action_dispatcher.py"
-        ]
-      },
-      "settings": {}
-    },
-    "wiki/runtime_engine": {
-      "kind": "wiki",
-      "title": "Engine Runtime",
-      "summary": "Primary runtime facade that assembles the governed engine and exposes chat entrypoints.",
-      "path": "src/wiki/runtime_engine/page.md",
-      "folder": "src/wiki/runtime_engine",
-      "truth_ext": [],
-      "links": [
-        "governance/protocol_index",
-        "wiki/runtime_dispatcher",
-        "wiki/runtime_harness",
-        "wiki/runtime_lifecycle"
-      ],
-      "content_hash": "c21ca9e1831f3efe358414803023fb377057d319",
-      "runtime_action": null,
-      "section_map": {
-        "implementation": "- `src/runtime/engine.py`",
-        "refs": "- [[wiki/runtime_harness]]\n- [[wiki/runtime_dispatcher]]\n- [[wiki/runtime_lifecycle]]\n- [[governance/protocol_index]]"
-      },
-      "section_links": {
-        "implementation": [],
-        "refs": [
-          "wiki/runtime_harness",
-          "wiki/runtime_dispatcher",
-          "wiki/runtime_lifecycle",
-          "governance/protocol_index"
-        ]
-      },
-      "code_items": {
-        "implementation": [
-          "src/runtime/engine.py"
-        ],
-        "refs": [
-          "[[wiki/runtime_harness]]",
-          "[[wiki/runtime_dispatcher]]",
-          "[[wiki/runtime_lifecycle]]",
-          "[[governance/protocol_index]]"
-        ]
-      },
-      "settings": {}
-    },
-    "wiki/runtime_harness": {
-      "kind": "wiki",
-      "title": "Turn Driver",
-      "summary": "Turn loop that assembles surface state, builds prompts, runs the model, and dispatches actions.",
-      "path": "src/wiki/runtime_harness/page.md",
-      "folder": "src/wiki/runtime_harness",
-      "truth_ext": [],
-      "links": [],
-      "content_hash": "0aefcdfad47fe18fd2c4043880630b30f58d42e3",
-      "runtime_action": null,
-      "section_map": {
-        "implementation": "- `src/harness/turn_driver.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "src/harness/turn_driver.py"
-        ]
-      },
-      "settings": {}
-    },
-    "wiki/runtime_lifecycle": {
-      "kind": "wiki",
-      "title": "Turn Lifecycle",
-      "summary": "Lifecycle coordinator for before-turn, before-model, after-tool, and state-fragment hooks.",
-      "path": "src/wiki/runtime_lifecycle/page.md",
-      "folder": "src/wiki/runtime_lifecycle",
-      "truth_ext": [],
-      "links": [],
-      "content_hash": "59a2ab8299e7b4c92e3c66c01e325d8c9c458328",
-      "runtime_action": null,
-      "section_map": {
-        "implementation": "- `src/harness/turn_lifecycle.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "src/harness/turn_lifecycle.py"
-        ]
-      },
-      "settings": {}
-    },
     "wiki/search": {
       "kind": "wiki",
       "title": "Wiki Search",
@@ -2795,7 +2685,7 @@
         "governance/protocol_index",
         "wiki/store"
       ],
-      "content_hash": "abc806005f724a56eb6e3b6fbd81e54b79ba22f6",
+      "content_hash": "6d1b665c85d4c41d2cab715c5ca58f48532072ac",
       "runtime_action": null,
       "section_map": {
         "implementation": "- `impl.py`",

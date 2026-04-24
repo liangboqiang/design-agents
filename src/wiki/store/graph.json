@@ -82,7 +82,7 @@
     },
     {
       "from": "governance/protocol_index",
-      "to": "wiki/runtime_engine",
+      "to": "wiki/index",
       "kind": "link"
     },
     {
@@ -803,26 +803,6 @@
     {
       "from": "wiki/render",
       "to": "wiki/service",
-      "kind": "link"
-    },
-    {
-      "from": "wiki/runtime_engine",
-      "to": "governance/protocol_index",
-      "kind": "link"
-    },
-    {
-      "from": "wiki/runtime_engine",
-      "to": "wiki/runtime_dispatcher",
-      "kind": "link"
-    },
-    {
-      "from": "wiki/runtime_engine",
-      "to": "wiki/runtime_harness",
-      "kind": "link"
-    },
-    {
-      "from": "wiki/runtime_engine",
-      "to": "wiki/runtime_lifecycle",
       "kind": "link"
     },
     {
