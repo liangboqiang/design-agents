@@ -112,27 +112,15 @@ class RuntimeHost:
 
 
 class RuntimeBuilder:
-    def build_engine(self, request: EngineBuildRequest, *, engine_cls=None):  # noqa: ANN001
-        if engine_cls is None:
-            from .engine import Engine
-
-            engine_cls = Engine
+    def build_engine(self, request: EngineBuildRequest):
+        from .engine import Engine
 
         runtime = self.build_bundle(request)
         turn_driver, capability_lookup = self.install_runtime(runtime, request)
 
-        def tick() -> str:
-            autonomy = capability_lookup("autonomy")
-            if autonomy is None:
-                return "Autonomy not enabled."
-            result = autonomy.idle_tick()
-            if result and not result.startswith("No unclaimed"):
-                return turn_driver.chat(f"Auto-claimed task detail:\n{result}")
-            return result
-
-        return engine_cls(
+        return Engine(
             chat=turn_driver.chat,
-            tick=tick,
+            tick=self._build_tick(turn_driver, capability_lookup),
             spawn_child=runtime.spawn_child,
         )
 
@@ -172,7 +160,7 @@ class RuntimeBuilder:
         knowledge_hub = KnowledgeHubService(project_root=project_root(), registry=registry, session=session)
         return RuntimeHost(
             registry=registry,
-            context_policy=dict(agent_spec.context_policy or {}),
+            context_policy=context_policy,
             settings=settings,
             session=session,
             context=context,
@@ -185,45 +173,78 @@ class RuntimeBuilder:
         )
 
     def install_runtime(self, runtime: RuntimeHost, request: EngineBuildRequest):
-        audit = runtime.skill_state.audit
-        normalizer = Normalizer()
-        llm = LLMFactory.create(runtime.provider, runtime.model, runtime.api_key, runtime.base_url)
-        surface_assembler = SurfaceAssembler(SurfaceResolver(runtime.registry, ActivationPolicy(), audit))
-        knowledge_picker = KnowledgePicker()
-        prompt_assembler = PromptAssembler(runtime.registry.context_root, max_prompt_chars=runtime.settings.max_prompt_chars)
-        reply_parser = ReplyParser()
-        failure_sink = FailureSink(session=runtime.session, audit=audit, events=runtime.events, runtime_state=runtime.runtime_state)
-        fault_boundary = TurnGuard(failure_sink)
-        runtime.events.set_fault_reporter(fault_boundary.report)
+        fault_boundary = self._install_fault_boundary(runtime)
+        self._install_child_spawning(runtime, request.storage_base)
+        toolboxes = self._install_toolboxes(runtime, request.toolboxes)
+        capability_by_name = self._install_capabilities(runtime, request.enhancements)
+        lifecycle = self._build_lifecycle(runtime, capability_by_name.values(), fault_boundary)
+        action_registry = self._build_action_registry(runtime, toolboxes, capability_by_name.values())
+        turn_driver = TurnDriver(self._build_turn_ports(runtime, lifecycle, fault_boundary, action_registry))
+        return turn_driver, capability_by_name.get
 
-        child_factory = ChildFactory(storage_base=request.storage_base)
+    @staticmethod
+    def _build_tick(turn_driver: TurnDriver, capability_lookup):
+        def tick() -> str:
+            autonomy = capability_lookup("autonomy")
+            if autonomy is None:
+                return "Autonomy not enabled."
+            result = autonomy.idle_tick()
+            if result and not result.startswith("No unclaimed"):
+                return turn_driver.chat(f"Auto-claimed task detail:\n{result}")
+            return result
+
+        return tick
+
+    def _install_fault_boundary(self, runtime: RuntimeHost) -> TurnGuard:
+        fault_boundary = TurnGuard(
+            FailureSink(
+                session=runtime.session,
+                audit=runtime.skill_state.audit,
+                events=runtime.events,
+                runtime_state=runtime.runtime_state,
+            )
+        )
+        runtime.events.set_fault_reporter(fault_boundary.report)
+        return fault_boundary
+
+    @staticmethod
+    def _install_child_spawning(runtime: RuntimeHost, storage_base: Path | None) -> None:
+        child_factory = ChildFactory(storage_base=storage_base)
         runtime._spawn_child = lambda **kwargs: child_factory.spawn_from_parent(runtime, **kwargs)
 
-        requested_toolboxes = list(request.toolboxes if request.toolboxes is not None else runtime.toolbox_names)
-        runtime.enhancement_names = list(request.enhancements or runtime.enhancement_names or [])
-
-        toolboxes = self._prepare_toolboxes(runtime, requested_toolboxes)
+    def _install_toolboxes(self, runtime: RuntimeHost, requested: list[str | Toolbox] | None) -> list[Toolbox]:
+        toolboxes = self._prepare_toolboxes(runtime, requested if requested is not None else runtime.toolbox_names)
         runtime.toolbox_names = [toolbox.toolbox_name for toolbox in toolboxes]
-        capabilities = self._prepare_capabilities(runtime, runtime.enhancement_names)
-        capability_by_name = {capability.capability_name: capability for capability in capabilities}
-        for capability in capabilities:
-            capability.bind(runtime, capability_by_name.get)
+        return toolboxes
 
-        participants = self._prepare_participants(runtime)
-        participant_set = ParticipantSet(core=list(participants))
-        lifecycle = TurnLifecycle(
-            [*participant_set.all(), *capabilities],
+    def _install_capabilities(self, runtime: RuntimeHost, requested: list[str] | None) -> dict[str, Capability]:
+        runtime.enhancement_names = list(requested or runtime.enhancement_names or [])
+        capabilities = self._prepare_capabilities(runtime.enhancement_names)
+        by_name = {capability.capability_name: capability for capability in capabilities}
+        for capability in capabilities:
+            capability.bind(runtime, by_name.get)
+        return by_name
+
+    def _build_lifecycle(
+        self,
+        runtime: RuntimeHost,
+        capabilities: Iterable[Capability],
+        fault_boundary: TurnGuard,
+    ) -> TurnLifecycle:
+        return TurnLifecycle(
+            [*ParticipantSet(core=self._prepare_participants(runtime)).all(), *capabilities],
             fault_reporter=fault_boundary.report,
         )
 
+    def _build_action_registry(
+        self,
+        runtime: RuntimeHost,
+        toolboxes: Iterable[Toolbox],
+        capabilities: Iterable[Capability],
+    ) -> dict[str, ActionSpec]:
         action_registry: dict[str, ActionSpec] = {}
-        for toolbox in toolboxes:
-            specs = list(toolbox.action_specs())
-            self._register_many(action_registry, specs)
-
-        for capability in capabilities:
-            self._register_many(action_registry, capability.action_specs())
-
+        for source in [*toolboxes, *capabilities]:
+            self._register_many(action_registry, source.action_specs())
         control = TurnPolicy(
             registry=runtime.registry,
             skill_state=runtime.skill_state,
@@ -231,10 +252,21 @@ class RuntimeBuilder:
             events=runtime.events,
             action_registry=action_registry,
         )
-        for spec in build_control_action_specs(control):
-            action_registry[spec.action_id] = spec
+        self._register_many(action_registry, build_control_action_specs(control))
+        return action_registry
 
-        dispatcher = ActionDispatcher(action_registry, fault_reporter=fault_boundary.report)
+    def _build_turn_ports(
+        self,
+        runtime: RuntimeHost,
+        lifecycle: TurnLifecycle,
+        fault_boundary: TurnGuard,
+        action_registry: dict[str, ActionSpec],
+    ) -> TurnRuntimePorts:
+        audit = runtime.skill_state.audit
+        surface_assembler = SurfaceAssembler(SurfaceResolver(runtime.registry, ActivationPolicy(), audit))
+        prompt_assembler = PromptAssembler(runtime.registry.context_root, max_prompt_chars=runtime.settings.max_prompt_chars)
+        knowledge_picker = KnowledgePicker()
+        normalizer = Normalizer()
 
         def assemble_surface(state_fragments: list[str]):
             surface = surface_assembler.assemble_surface(
@@ -261,6 +293,7 @@ class RuntimeBuilder:
                 knowledge_actions_visible=selection.actions_visible,
             )
 
+        dispatcher = ActionDispatcher(action_registry, fault_reporter=fault_boundary.report)
         ports = TurnRuntimePorts(
             lifecycle=lifecycle,
             fault_boundary=fault_boundary,
@@ -275,13 +308,13 @@ class RuntimeBuilder:
                 runtime.session.history.read(),
                 runtime.settings.history_keep_turns,
             ),
-            complete_model=llm.complete,
-            parse_reply=reply_parser.parse,
+            complete_model=LLMFactory.create(runtime.provider, runtime.model, runtime.api_key, runtime.base_url).complete,
+            parse_reply=ReplyParser().parse,
             dispatch_action=dispatcher.dispatch,
             normalize_tool_result=lambda action, content: normalizer.normalize_tool_result(action, content, limit=8_000),
             record_audit=audit.record,
         )
-        return TurnDriver(ports), capability_by_name.get
+        return ports
 
     @staticmethod
     def _register_many(registry: dict[str, ActionSpec], specs: Iterable[ActionSpec]) -> None:
@@ -327,11 +360,8 @@ class RuntimeBuilder:
         return prepared
 
     @staticmethod
-    def _prepare_capabilities(runtime: RuntimeHost, names: Iterable[str]) -> list[Capability]:
-        prepared: list[Capability] = []
-        for name in names:
-            prepared.append(create_capability(name))
-        return prepared
+    def _prepare_capabilities(names: Iterable[str]) -> list[Capability]:
+        return [create_capability(name) for name in names]
 
     @staticmethod
     def _prepare_participants(runtime: RuntimeHost) -> list[object]:
@@ -371,7 +401,3 @@ def request_from_agent_spec(spec: AgentSpec, **overrides) -> EngineBuildRequest:
         unknown = ", ".join(sorted(str(key) for key in overrides))
         raise TypeError(f"Unsupported engine overrides: {unknown}")
     return request
-
-
-def build_engine(request: EngineBuildRequest):
-    return RuntimeBuilder().build_engine(request)

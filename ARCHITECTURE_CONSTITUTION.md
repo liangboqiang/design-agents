@@ -25,7 +25,7 @@ The intended flow is:
 2. `SurfaceResolver` decides the visible governed surface.
 3. `Prompt` assembles prompt packets from state, surface, and wiki knowledge.
 4. `Harness` runs turn lifecycle, reply parsing, dispatch, and guard boundaries.
-5. `RuntimeBuilder` assembles the runtime host behind the Engine facade.
+5. `RuntimeBuilder` builds the runtime host, installs the turn phases, and returns the Engine facade.
 
 ## Knowledge Spine
 

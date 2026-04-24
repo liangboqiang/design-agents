@@ -117,7 +117,7 @@ These tests validate:
 
 - `governance/protocol_index/impl.py`: single read model for entity/page indexing, summaries, links, and lightweight section metadata
 - `governance/registry/spec_registry.py`: assembly layer that consumes the protocol index read model
-- `runtime/builder.py`: the single runtime assembly entrypoint through `RuntimeBuilder`; it keeps prompt and harness objects local and injects narrow turn callables
+- `runtime/builder.py`: the single runtime assembly entrypoint through `RuntimeBuilder`; it installs fault, child, action, and turn phases without package-level build helpers
 - `runtime/skill_state.py`: active skill closure and child/ref navigation
 - `governance/surface/surface_resolver.py`: final action/tool/skill surface resolution
 - `prompt/surface_assembler.py`: text-facing surface assembly

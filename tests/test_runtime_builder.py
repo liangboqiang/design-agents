@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import inspect
 from pathlib import Path
 
+import runtime
 import runtime.builder as builder_module
 from governance.registry import SpecRegistry
 from runtime.builder import EngineBuildRequest, RuntimeBuilder
@@ -28,6 +30,7 @@ def test_build_bundle_does_not_bootstrap_wiki(monkeypatch) -> None:
     assert not hasattr(bundle, "surface_assembler")
     assert not hasattr(bundle, "action_registry")
     assert not hasattr(bundle, "harness")
+    assert not hasattr(runtime, "build_engine")
 
 
 def test_runtime_builder_injects_dependencies_and_keeps_engine_facade_small(tmp_path: Path) -> None:
@@ -45,6 +48,7 @@ def test_runtime_builder_injects_dependencies_and_keeps_engine_facade_small(tmp_
     assert not hasattr(engine, "_runtime")
     assert not hasattr(engine, "knowledge_hub")
     assert not hasattr(engine, "action_registry")
+    assert list(inspect.signature(RuntimeBuilder.build_engine).parameters) == ["self", "request"]
 
 
 def test_turn_ports_are_narrow_runtime_callables(tmp_path: Path) -> None:
