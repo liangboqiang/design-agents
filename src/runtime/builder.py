@@ -10,11 +10,13 @@ from governance.events import EventBus
 from governance.normalizer import Normalizer
 from governance.registry import GovernanceRegistry
 from governance.surface import SurfaceResolver
+from harness.turn_driver import TurnDriver
 from harness.action_dispatcher import ActionDispatcher
 from harness.contracts import EngineRuntimeState, TurnRuntimePorts
 from harness.reply_parser import ReplyParser
 from harness.turn_guard import FailureSink, TurnGuard
 from harness.turn_lifecycle import TurnLifecycle
+from harness.turn_policy import TurnPolicy
 from llm.config import resolve_llm_config
 from llm.factory import LLMFactory
 from prompt.surface_assembler import SurfaceAssembler
@@ -29,6 +31,8 @@ from tool.indexes.toolbox_registry import Toolbox
 
 from .capabilities.base import Capability
 from .capabilities.registry import create_capability
+from .child_factory import ChildFactory
+from .control_actions import build_control_action_specs
 from .participant_set import AttachmentIngressParticipant, ParticipantSet
 from .services import AttachmentIngestionService, KnowledgeHubService
 from .service_hub import ServiceHub
@@ -89,7 +93,7 @@ class EngineRuntimeBundle:
     dispatcher: ActionDispatcher | None = None
 
 
-class EngineBuilder:
+class RuntimeBuilder:
     def build_bundle(self, request: EngineBuildRequest) -> EngineRuntimeBundle:
         registry = request.registry or GovernanceRegistry(project_root())
         root_skill_id = self._resolve_skill_id(registry, request.skill_root)
@@ -202,6 +206,18 @@ class EngineBuilder:
             failure_sink=engine.failure_sink,
             fault_boundary=engine.fault_boundary,
         )
+        engine.control = TurnPolicy(
+            registry=engine.registry,
+            skill_state=engine.skill_state,
+            context=engine.context,
+            events=engine.events,
+            action_registry=engine.action_registry,
+        )
+        for spec in build_control_action_specs(engine.control):
+            engine.action_registry[spec.action_id] = spec
+        engine.dispatcher.registry = engine.action_registry
+        engine.child_factory = ChildFactory(storage_base=request.storage_base)
+        engine.harness = TurnDriver(engine.harness_ports)
 
     @staticmethod
     def _register_many(registry: dict[str, ActionSpec], specs: Iterable[ActionSpec]) -> None:
@@ -265,3 +281,6 @@ class EngineBuilder:
                 bind(engine)
         engine.service_hub.attachment_ingestion = attachment_service
         return participants
+
+
+EngineBuilder = RuntimeBuilder

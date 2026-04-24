@@ -1,11 +1,13 @@
 # Design Agents VNext
 
+Target architecture migration is in its final cleanup stage. New work must land only in the final roots and names defined by [ARCHITECTURE_CONSTITUTION.md](/e:/A0_Projects/A1_Dynamics_Design_LM/GitLab/design-agents/ARCHITECTURE_CONSTITUTION.md) and [NAMING_CONSTITUTION.md](/e:/A0_Projects/A1_Dynamics_Design_LM/GitLab/design-agents/NAMING_CONSTITUTION.md); do not reintroduce `ctx`, `wiki_store`, `<kind>.md`, or runtime-local prompt and harness files.
+
 This repository now follows a `src/`-first architecture built around the v6.3 single-page truth protocol:
 
 - flat resource layers under `src/skill`, `src/tool`, `src/context`, and `src/agent`
 - a protocol index that scans `src/` by folder and treats `page.md` as the entity truth page for that folder
 - a unified `SpecRegistry` that assembles skill and agent specs from the protocol index read model
-- `SkillState + SurfaceResolver + PromptAssembler + TurnDriver` as the main execution spine
+- `SpecRegistry + SurfaceResolver + Prompt + Harness + RuntimeBuilder` as the main execution spine
 - event-driven governance additions with audit trails
 - thin agent entrypoints that assemble runtime behavior from `page.md` truth pages
 
@@ -91,11 +93,20 @@ These tests validate:
 
 - `governance/protocol_index/impl.py`: single read model for entity/page indexing, summaries, links, and lightweight section metadata
 - `governance/registry/spec_registry.py`: assembly layer that consumes the protocol index read model
+- `runtime/builder.py`: the single runtime assembly entrypoint
 - `runtime/skill_state.py`: active skill closure and child/ref navigation
 - `governance/surface/surface_resolver.py`: final action/tool/skill surface resolution
 - `prompt/prompt_assembler.py`: identity/surface/state/expansion/feedback prompt assembly
 - `harness/turn_driver.py`: thin loop for lifecycle, model calls, parsing, dispatching, and continuation
 - `runtime/engine.py`: the only external runtime entrypoint
+
+## Layer Roles
+
+- `context/` is the asset layer for stable prompt fragments and templates.
+- `prompt/` is the context-engineering code layer.
+- `wiki/` is the only shared knowledge hub.
+- `runtime/` is the runtime host and assembly layer.
+- `harness/` is the turn-driving and reply-handling layer.
 
 ## Runtime Data
 

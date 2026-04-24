@@ -4,14 +4,10 @@ from pathlib import Path
 from typing import Any
 
 from governance.registry import GovernanceRegistry
-from harness.turn_driver import TurnDriver
-from harness.turn_policy import TurnPolicy
 from schemas.agent import AgentSpec
 from shared.paths import project_root
 
 from .builder import EngineBuildRequest, EngineBuilder, EngineRuntimeBundle
-from .child_factory import ChildFactory
-from .control_actions import build_control_action_specs
 
 
 class Engine:
@@ -104,20 +100,6 @@ class Engine:
         engine = cls(bundle=bundle, enhancement_names=enhancement_names, persistent_worker=request.persistent_worker)
 
         builder.install_runtime(engine, request)
-
-        engine.control = TurnPolicy(
-            registry=engine.registry,
-            skill_state=engine.skill_state,
-            context=engine.context,
-            events=engine.events,
-            action_registry=engine.action_registry,
-        )
-        for spec in build_control_action_specs(engine.control):
-            engine.action_registry[spec.action_id] = spec
-        engine.dispatcher.registry = engine.action_registry
-
-        engine.child_factory = ChildFactory(storage_base=request.storage_base)
-        engine.harness = TurnDriver(engine.harness_ports)
         bind = getattr(engine.knowledge_hub, "bind_engine", None)
         if bind is not None:
             bind(engine)
