@@ -22,6 +22,7 @@ class KnowledgeHubService:
         self.session = session
         self.hub_name = hub_name
         self.shared = SharedWikiService(project_root=self.project_root, registry=self.registry)
+        self.wiki_guard = None
 
     @property
     def root(self) -> Path:
@@ -29,6 +30,10 @@ class KnowledgeHubService:
 
     def ensure_bootstrap(self) -> None:
         self.shared.ensure_store()
+
+    def bind_permission_guard(self, wiki_guard) -> None:  # noqa: ANN001
+        self.wiki_guard = wiki_guard
+        self.shared.bind_permission_guard(wiki_guard)
 
     def refresh_from_registry(self) -> str:
         return self.shared.refresh_system()
@@ -47,9 +52,6 @@ class KnowledgeHubService:
 
     def answer(self, query: str, limit: int = 5) -> str:
         return self.shared.answer(query=query, limit=limit)
-
-    def lint(self) -> str:
-        return self.shared.lint()
 
     def system_brief(self) -> str:
         return self.shared.system_brief()

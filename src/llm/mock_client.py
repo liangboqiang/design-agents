@@ -4,9 +4,9 @@ import json
 import re
 
 
-CALL_RE = re.compile(r"^/call\s+(?P<action>[\w\.-]+)(?:\s+(?P<args>\{.*\}))?\s*$", re.DOTALL)
+CALL_RE = re.compile(r"^/tool\s+(?P<tool>[\w\.-]+)(?:\s+(?P<args>\{.*\}))?\s*$", re.DOTALL)
 SKILL_RE = re.compile(r"^/skill\s+(?P<skill>.+)$")
-TOOL_RESULT_RE = re.compile(r"<tool_result action=\"(?P<action>[^\"]+)\">\n(?P<body>.*?)\n</tool_result>", re.DOTALL)
+TOOL_RESULT_RE = re.compile(r"<tool_result tool=\"(?P<tool>[^\"]+)\">\n(?P<body>.*?)\n</tool_result>", re.DOTALL)
 
 
 class MockClient:
@@ -21,7 +21,7 @@ class MockClient:
             return json.dumps(
                 {
                     "assistant_message": "",
-                    "tool_calls": [{"action": call_match.group("action"), "arguments": args}],
+                    "tool_calls": [{"tool": call_match.group("tool"), "arguments": args}],
                 },
                 ensure_ascii=False,
             )
@@ -32,7 +32,7 @@ class MockClient:
                 {
                     "assistant_message": "",
                     "tool_calls": [
-                        {"action": "engine.enter_skill", "arguments": {"skill": skill_match.group("skill").strip()}}
+                        {"tool": "engine.enter_skill", "arguments": {"skill": skill_match.group("skill").strip()}}
                     ],
                 },
                 ensure_ascii=False,

@@ -3,772 +3,657 @@
     {
       "from": "agent/general_chat",
       "to": "skill/general/root",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "agent/parts_design_chat",
       "to": "skill/parts_design/root",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "agent/review_agent",
       "to": "skill/general/root",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "agent/wiki_front_chat",
       "to": "skill/wiki_hub/root",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "agent/worker_agent",
       "to": "skill/general/root",
-      "kind": "link"
-    },
-    {
-      "from": "control/protocol_index",
-      "to": "control/repo_lint",
-      "kind": "link"
-    },
-    {
-      "from": "control/protocol_index",
-      "to": "wiki/index",
-      "kind": "link"
-    },
-    {
-      "from": "control/repo_lint",
-      "to": "control/protocol_index",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/memory",
-      "to": "tool/compact/now",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/memory",
-      "to": "tool/governance/load_refs",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/query",
-      "to": "tool/engine/inspect_action",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/query",
-      "to": "tool/engine/inspect_skill",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/query",
-      "to": "tool/engine/list_child_skills",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/query",
-      "to": "tool/files/list_dir",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/query",
-      "to": "tool/files/read_text",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/report",
-      "to": "tool/files/read_text",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/report",
-      "to": "tool/files/write_text",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/routing",
-      "to": "tool/engine/enter_skill",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/routing",
-      "to": "tool/engine/list_child_skills",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/routing",
-      "to": "tool/governance/inspect_tool_surface",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/task",
-      "to": "tool/task/claim",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/task",
-      "to": "tool/task/create",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/task",
-      "to": "tool/task/get",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/task",
-      "to": "tool/task/list",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/task",
-      "to": "tool/task/update",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/task",
-      "to": "tool/todo/update",
-      "kind": "link"
-    },
-    {
-      "from": "skill/core/task",
-      "to": "tool/todo/view",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/general/root",
       "to": "skill/core/query",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/general/root",
       "to": "skill/core/report",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/general/root",
       "to": "skill/core/task",
-      "kind": "link"
-    },
-    {
-      "from": "skill/general/root",
-      "to": "tool/engine/enter_skill",
-      "kind": "link"
-    },
-    {
-      "from": "skill/general/root",
-      "to": "tool/engine/inspect_action",
-      "kind": "link"
-    },
-    {
-      "from": "skill/general/root",
-      "to": "tool/engine/inspect_skill",
-      "kind": "link"
-    },
-    {
-      "from": "skill/general/root",
-      "to": "tool/engine/list_child_skills",
-      "kind": "link"
-    },
-    {
-      "from": "skill/general/root",
-      "to": "tool/files/edit_text",
-      "kind": "link"
-    },
-    {
-      "from": "skill/general/root",
-      "to": "tool/files/list_dir",
-      "kind": "link"
-    },
-    {
-      "from": "skill/general/root",
-      "to": "tool/files/read_text",
-      "kind": "link"
-    },
-    {
-      "from": "skill/general/root",
-      "to": "tool/files/write_text",
-      "kind": "link"
-    },
-    {
-      "from": "skill/general/root",
-      "to": "tool/shell/run",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/agent_build",
-      "to": "tool/subagent/ask",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/agent_build",
-      "to": "tool/subagent/batch_run",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/compact_guard",
-      "to": "tool/compact/now",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/compact_guard",
-      "to": "tool/governance/normalize_tool_result",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/protocol_governance",
-      "to": "tool/protocol/request_shutdown",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/protocol_governance",
-      "to": "tool/protocol/respond_shutdown",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/protocol_governance",
-      "to": "tool/protocol/review_plan",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/protocol_governance",
-      "to": "tool/protocol/submit_plan",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/protocol_governance",
-      "to": "tool/team/read_inbox",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/refs_bridge",
-      "to": "tool/engine/inspect_skill",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/refs_bridge",
-      "to": "tool/governance/load_refs",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/task_governance",
-      "to": "tool/task/claim",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/task_governance",
-      "to": "tool/task/create",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/task_governance",
-      "to": "tool/task/list",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/task_governance",
-      "to": "tool/task/update",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/task_governance",
-      "to": "tool/todo/update",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/tool_surface",
-      "to": "tool/engine/inspect_action",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/tool_surface",
-      "to": "tool/governance/inspect_tool_surface",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/tool_surface",
-      "to": "tool/governance/normalize_tool_result",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/workspace_governance",
-      "to": "tool/workspace/create",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/workspace_governance",
-      "to": "tool/workspace/keep",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/workspace_governance",
-      "to": "tool/workspace/list",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/workspace_governance",
-      "to": "tool/workspace/remove",
-      "kind": "link"
-    },
-    {
-      "from": "skill/governance/workspace_governance",
-      "to": "tool/workspace/run",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/parts_design/camshaft/root",
       "to": "skill/parts_design/common/report",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/camshaft/root",
-      "to": "tool/files/read_text",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/camshaft/root",
-      "to": "tool/files/write_text",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/camshaft/root",
-      "to": "tool/shell/run",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/common/report",
-      "to": "tool/files/read_text",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/common/report",
-      "to": "tool/files/write_text",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/common/requirement_parse",
-      "to": "tool/files/write_text",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/common/requirement_parse",
-      "to": "tool/task/create",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/common/requirement_parse",
-      "to": "tool/task/list",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/common/requirement_parse",
-      "to": "tool/todo/update",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/common/requirement_parse",
-      "to": "tool/todo/view",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/parts_design/conrod/root",
       "to": "skill/parts_design/common/report",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/parts_design/conrod/root",
       "to": "skill/parts_design/common/requirement_parse",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/conrod/root",
-      "to": "tool/engine/inspect_action",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/conrod/root",
-      "to": "tool/engine/inspect_skill",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/conrod/root",
-      "to": "tool/files/read_text",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/conrod/root",
-      "to": "tool/files/write_text",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/conrod/root",
-      "to": "tool/task/create",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/conrod/root",
-      "to": "tool/task/list",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/conrod/root",
-      "to": "tool/task/update",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/conrod/root",
-      "to": "tool/todo/update",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/conrod/root",
-      "to": "tool/todo/view",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/conrod/root",
-      "to": "tool/workspace/create",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/conrod/root",
-      "to": "tool/workspace/run",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/parts_design/crankshaft/root",
       "to": "skill/parts_design/common/report",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/parts_design/crankshaft/root",
       "to": "skill/parts_design/common/requirement_parse",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/crankshaft/root",
-      "to": "tool/engine/inspect_action",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/crankshaft/root",
-      "to": "tool/engine/inspect_skill",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/crankshaft/root",
-      "to": "tool/files/read_text",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/crankshaft/root",
-      "to": "tool/files/write_text",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/crankshaft/root",
-      "to": "tool/task/create",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/crankshaft/root",
-      "to": "tool/task/list",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/crankshaft/root",
-      "to": "tool/task/update",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/crankshaft/root",
-      "to": "tool/todo/update",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/crankshaft/root",
-      "to": "tool/todo/view",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/crankshaft/root",
-      "to": "tool/workspace/create",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/crankshaft/root",
-      "to": "tool/workspace/run",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/parts_design/root",
       "to": "skill/core/query",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/parts_design/root",
       "to": "skill/core/report",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/parts_design/root",
       "to": "skill/core/task",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/parts_design/root",
       "to": "skill/parts_design/camshaft/root",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/parts_design/root",
       "to": "skill/parts_design/common/report",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/parts_design/root",
       "to": "skill/parts_design/common/requirement_parse",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/parts_design/root",
       "to": "skill/parts_design/conrod/root",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/parts_design/root",
       "to": "skill/parts_design/crankshaft/root",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/root",
-      "to": "tool/engine/enter_skill",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/root",
-      "to": "tool/engine/inspect_action",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/root",
-      "to": "tool/engine/inspect_skill",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/root",
-      "to": "tool/engine/list_child_skills",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/root",
-      "to": "tool/files/list_dir",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/root",
-      "to": "tool/files/read_text",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/root",
-      "to": "tool/files/write_text",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/root",
-      "to": "tool/shell/run",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/root",
-      "to": "tool/workspace/create",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/root",
-      "to": "tool/workspace/keep",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/root",
-      "to": "tool/workspace/list",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/root",
-      "to": "tool/workspace/remove",
-      "kind": "link"
-    },
-    {
-      "from": "skill/parts_design/root",
-      "to": "tool/workspace/run",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/wiki_hub/ingest",
       "to": "skill/governance/agent_build",
-      "kind": "link"
-    },
-    {
-      "from": "skill/wiki_hub/ingest",
-      "to": "tool/wiki_admin/ingest_files",
-      "kind": "link"
-    },
-    {
-      "from": "skill/wiki_hub/ingest",
-      "to": "tool/wiki_admin/refresh_system",
-      "kind": "link"
-    },
-    {
-      "from": "skill/wiki_hub/lint",
-      "to": "tool/wiki_admin/lint",
-      "kind": "link"
-    },
-    {
-      "from": "skill/wiki_hub/query",
-      "to": "tool/wiki/answer",
-      "kind": "link"
-    },
-    {
-      "from": "skill/wiki_hub/query",
-      "to": "tool/wiki/read_page",
-      "kind": "link"
-    },
-    {
-      "from": "skill/wiki_hub/query",
-      "to": "tool/wiki/read_source",
-      "kind": "link"
-    },
-    {
-      "from": "skill/wiki_hub/query",
-      "to": "tool/wiki/search",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/wiki_hub/root",
       "to": "skill/governance/agent_build",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/wiki_hub/root",
       "to": "skill/wiki_hub/ingest",
-      "kind": "link"
-    },
-    {
-      "from": "skill/wiki_hub/root",
-      "to": "skill/wiki_hub/lint",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "skill/wiki_hub/root",
       "to": "skill/wiki_hub/query",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
-      "from": "skill/wiki_hub/root",
-      "to": "tool/wiki/answer",
-      "kind": "link"
+      "from": "tool/external/fs/diff_text",
+      "to": "tool/external/fs",
+      "kind": "wiki_link"
     },
     {
-      "from": "skill/wiki_hub/root",
-      "to": "tool/wiki/read_page",
-      "kind": "link"
+      "from": "tool/external/fs/edit_text",
+      "to": "tool/external/fs",
+      "kind": "wiki_link"
     },
     {
-      "from": "skill/wiki_hub/root",
-      "to": "tool/wiki/read_source",
-      "kind": "link"
+      "from": "tool/external/fs/list_dir",
+      "to": "tool/external/fs",
+      "kind": "wiki_link"
     },
     {
-      "from": "skill/wiki_hub/root",
-      "to": "tool/wiki/search",
-      "kind": "link"
+      "from": "tool/external/fs/read_text",
+      "to": "tool/external/fs",
+      "kind": "wiki_link"
     },
     {
-      "from": "skill/wiki_hub/root",
-      "to": "tool/wiki_admin/ingest_files",
-      "kind": "link"
+      "from": "tool/external/fs",
+      "to": "tool/external/fs/diff_text",
+      "kind": "wiki_link"
     },
     {
-      "from": "skill/wiki_hub/root",
-      "to": "tool/wiki_admin/lint",
-      "kind": "link"
+      "from": "tool/external/fs",
+      "to": "tool/external/fs/edit_text",
+      "kind": "wiki_link"
     },
     {
-      "from": "skill/wiki_hub/root",
-      "to": "tool/wiki_admin/refresh_system",
-      "kind": "link"
+      "from": "tool/external/fs",
+      "to": "tool/external/fs/list_dir",
+      "kind": "wiki_link"
     },
     {
-      "from": "tool/wiki_admin/ingest_files",
-      "to": "skill/wiki_hub/ingest",
-      "kind": "link"
+      "from": "tool/external/fs",
+      "to": "tool/external/fs/read_text",
+      "kind": "wiki_link"
     },
     {
-      "from": "tool/wiki_admin/ingest_files",
-      "to": "skill/wiki_hub/root",
-      "kind": "link"
+      "from": "tool/external/fs",
+      "to": "tool/external/fs/write_text",
+      "kind": "wiki_link"
     },
     {
-      "from": "tool/wiki_admin/lint",
-      "to": "skill/wiki_hub/lint",
-      "kind": "link"
+      "from": "tool/external/fs/write_text",
+      "to": "tool/external/fs",
+      "kind": "wiki_link"
     },
     {
-      "from": "tool/wiki_admin/lint",
-      "to": "skill/wiki_hub/root",
-      "kind": "link"
+      "from": "tool/external/shell/run",
+      "to": "tool/external/shell",
+      "kind": "wiki_link"
     },
     {
-      "from": "tool/wiki_admin/refresh_system",
-      "to": "skill/wiki_hub/ingest",
-      "kind": "link"
+      "from": "tool/external/shell",
+      "to": "tool/external/shell/run",
+      "kind": "wiki_link"
     },
     {
-      "from": "tool/wiki_admin/refresh_system",
-      "to": "skill/wiki_hub/root",
-      "kind": "link"
+      "from": "tool/external/textops/preview_replace",
+      "to": "tool/external/textops",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/textops/search",
+      "to": "tool/external/textops",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/textops",
+      "to": "tool/external/textops/preview_replace",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/textops",
+      "to": "tool/external/textops/search",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/wiki/answer",
+      "to": "tool/external/wiki",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/wiki/read_page",
+      "to": "tool/external/wiki",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/wiki/read_source",
+      "to": "tool/external/wiki",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/wiki/search",
+      "to": "tool/external/wiki",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/wiki",
+      "to": "tool/external/wiki/answer",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/wiki",
+      "to": "tool/external/wiki/read_page",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/wiki",
+      "to": "tool/external/wiki/read_source",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/wiki",
+      "to": "tool/external/wiki/search",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/wiki_admin/ingest_files",
+      "to": "tool/external/wiki_admin",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/wiki_admin/refresh_system",
+      "to": "tool/external/wiki_admin",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/wiki_admin",
+      "to": "tool/external/wiki_admin/ingest_files",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/wiki_admin",
+      "to": "tool/external/wiki_admin/refresh_system",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/workspace/create",
+      "to": "tool/external/workspace",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/workspace/keep",
+      "to": "tool/external/workspace",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/workspace/list",
+      "to": "tool/external/workspace",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/workspace/remove",
+      "to": "tool/external/workspace",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/workspace/run",
+      "to": "tool/external/workspace",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/workspace",
+      "to": "tool/external/workspace/create",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/workspace",
+      "to": "tool/external/workspace/keep",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/workspace",
+      "to": "tool/external/workspace/list",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/workspace",
+      "to": "tool/external/workspace/remove",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/external/workspace",
+      "to": "tool/external/workspace/run",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/autonomy/claim_next_task",
+      "to": "tool/system/autonomy",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/autonomy",
+      "to": "tool/system/autonomy/claim_next_task",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/background/check",
+      "to": "tool/system/background",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/background/run",
+      "to": "tool/system/background",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/background",
+      "to": "tool/system/background/check",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/background",
+      "to": "tool/system/background/run",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/compact/now",
+      "to": "tool/system/compact",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/compact",
+      "to": "tool/system/compact/now",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/inspect/inspect_tool_surface",
+      "to": "tool/system/inspect",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/inspect",
+      "to": "tool/system/inspect/inspect_tool_surface",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/normalize/normalize_tool_result",
+      "to": "tool/system/normalize",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/normalize",
+      "to": "tool/system/normalize/normalize_tool_result",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/protocol/request_shutdown",
+      "to": "tool/system/protocol",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/protocol/respond_shutdown",
+      "to": "tool/system/protocol",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/protocol/review_plan",
+      "to": "tool/system/protocol",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/protocol/submit_plan",
+      "to": "tool/system/protocol",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/protocol",
+      "to": "tool/system/protocol/request_shutdown",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/protocol",
+      "to": "tool/system/protocol/respond_shutdown",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/protocol",
+      "to": "tool/system/protocol/review_plan",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/protocol",
+      "to": "tool/system/protocol/submit_plan",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/refs/load_refs",
+      "to": "tool/system/refs",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/refs",
+      "to": "tool/system/refs/load_refs",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/runtime/enter_skill",
+      "to": "tool/system/runtime",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/runtime/inspect_skill",
+      "to": "tool/system/runtime",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/runtime/inspect_tool",
+      "to": "tool/system/runtime",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/runtime/list_child_skills",
+      "to": "tool/system/runtime",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/runtime",
+      "to": "tool/system/runtime/enter_skill",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/runtime",
+      "to": "tool/system/runtime/inspect_skill",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/runtime",
+      "to": "tool/system/runtime/inspect_tool",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/system/runtime",
+      "to": "tool/system/runtime/list_child_skills",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/subagent/ask",
+      "to": "tool/workflow/subagent",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/subagent/batch_run",
+      "to": "tool/workflow/subagent",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/subagent",
+      "to": "tool/workflow/subagent/ask",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/subagent",
+      "to": "tool/workflow/subagent/batch_run",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/task/claim",
+      "to": "tool/workflow/task",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/task/create",
+      "to": "tool/workflow/task",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/task/get",
+      "to": "tool/workflow/task",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/task/list",
+      "to": "tool/workflow/task",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/task/update",
+      "to": "tool/workflow/task",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/task",
+      "to": "tool/workflow/task/claim",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/task",
+      "to": "tool/workflow/task/create",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/task",
+      "to": "tool/workflow/task/get",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/task",
+      "to": "tool/workflow/task/list",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/task",
+      "to": "tool/workflow/task/update",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/team/broadcast",
+      "to": "tool/workflow/team",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/team/list_workers",
+      "to": "tool/workflow/team",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/team/read_inbox",
+      "to": "tool/workflow/team",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/team/send_message",
+      "to": "tool/workflow/team",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/team/spawn_worker",
+      "to": "tool/workflow/team",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/team",
+      "to": "tool/workflow/team/broadcast",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/team",
+      "to": "tool/workflow/team/list_workers",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/team",
+      "to": "tool/workflow/team/read_inbox",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/team",
+      "to": "tool/workflow/team/send_message",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/team",
+      "to": "tool/workflow/team/spawn_worker",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/todo/update",
+      "to": "tool/workflow/todo",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/todo/view",
+      "to": "tool/workflow/todo",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/todo",
+      "to": "tool/workflow/todo/update",
+      "kind": "wiki_link"
+    },
+    {
+      "from": "tool/workflow/todo",
+      "to": "tool/workflow/todo/view",
+      "kind": "wiki_link"
     },
     {
       "from": "wiki/index",
       "to": "control/protocol_index",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "wiki/index",
       "to": "wiki/store",
-      "kind": "link"
+      "kind": "wiki_link"
+    },
+    {
+      "from": "wiki/link",
+      "to": "page",
+      "kind": "wiki_link"
     },
     {
       "from": "wiki/link",
       "to": "wiki/render",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "wiki/link",
       "to": "wiki/store",
-      "kind": "link"
+      "kind": "wiki_link"
+    },
+    {
+      "from": "wiki/render",
+      "to": "...",
+      "kind": "wiki_link"
     },
     {
       "from": "wiki/render",
       "to": "wiki/service",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "wiki/search",
       "to": "wiki/store",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "wiki/service",
       "to": "control/protocol_index",
-      "kind": "link"
+      "kind": "wiki_link"
     },
     {
       "from": "wiki/service",
       "to": "wiki/store",
-      "kind": "link"
+      "kind": "wiki_link"
     }
   ]
 }

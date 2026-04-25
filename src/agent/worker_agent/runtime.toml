@@ -1,3 +1,6 @@
 max_prompt_chars = 16000
 provider = "mock"
 model = "mock"
+tool_permission_level = 2
+allowed_tool_categories = ["engine", "workspace_io", "text", "task", "todo", "wiki_read"]
+denied_tool_categories = ["wiki_admin", "shell_exec", "external_mcp"]

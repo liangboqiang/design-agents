@@ -1,478 +1,646 @@
 {
   "pages": {
     "agent/general_chat": {
-      "kind": "agent",
       "title": "General Chat",
       "summary": "General-purpose chat agent using the governed runtime and LLM Wiki knowledge hub.",
-      "path": "src/agent/general_chat/page.md"
+      "path": "src/agent/general_chat/wiki.md",
+      "source_type": "system"
     },
     "agent/parts_design_chat": {
-      "kind": "agent",
       "title": "Parts Design Chat",
       "summary": "Parts design agent with task, workspace, governance support, and an LLM Wiki canonical knowledge hub.",
-      "path": "src/agent/parts_design_chat/page.md"
+      "path": "src/agent/parts_design_chat/wiki.md",
+      "source_type": "system"
     },
     "agent/review_agent": {
-      "kind": "agent",
       "title": "Review Agent",
       "summary": "Review-focused agent with inspection-heavy surface defaults.",
-      "path": "src/agent/review_agent/page.md"
+      "path": "src/agent/review_agent/wiki.md",
+      "source_type": "system"
     },
     "agent/wiki_front_chat": {
-      "kind": "agent",
       "title": "Wiki Front Chat",
       "summary": "Front-line chat agent for reading from the shared wiki store and triggering wiki maintenance when needed.",
-      "path": "src/agent/wiki_front_chat/page.md"
+      "path": "src/agent/wiki_front_chat/wiki.md",
+      "source_type": "system"
     },
     "agent/worker_agent": {
-      "kind": "agent",
       "title": "Worker Agent",
       "summary": "Thin worker agent that shares the same runtime and governance stack.",
-      "path": "src/agent/worker_agent/page.md"
-    },
-    "control/protocol_index": {
-      "kind": "control",
-      "title": "Control Protocol Index",
-      "summary": "负责扫描 `src/` 下的单页真相结构，生成实体索引、页面目录和链接图。",
-      "path": "src/control/protocol_index/page.md"
-    },
-    "control/repo_lint": {
-      "kind": "control",
-      "title": "Control Repository Lint",
-      "summary": "负责校验仓库是否遵守单页真相协议和旧链路清理规则。",
-      "path": "src/control/repo_lint/page.md"
-    },
-    "page/skill/parts_design/root/knowledge": {
-      "kind": "page",
-      "title": "Parts Design Knowledge",
-      "summary": "Place domain-specific notes, parameter dictionaries, and reference documents for parts-design skills here.",
-      "path": "src/skill/parts_design/root/knowledge/README.md"
-    },
-    "page/skill/wiki_hub/root/knowledge": {
-      "kind": "page",
-      "title": "Wiki Hub Knowledge Seed",
-      "summary": "Place business notes, seed docs, and reference material for the shared wiki flow here.",
-      "path": "src/skill/wiki_hub/root/knowledge/README.md"
+      "path": "src/agent/worker_agent/wiki.md",
+      "source_type": "system"
     },
     "skill/core/memory": {
-      "kind": "skill",
       "title": "Core Memory",
-      "summary": "Uses 2 tool(s).",
-      "path": "src/skill/core/memory/page.md"
+      "summary": "Skill page for `skill/core/memory`.",
+      "path": "src/skill/core/memory/wiki.md",
+      "source_type": "system"
     },
     "skill/core/query": {
-      "kind": "skill",
       "title": "Core Query",
-      "summary": "Uses 5 tool(s).",
-      "path": "src/skill/core/query/page.md"
+      "summary": "Skill page for `skill/core/query`.",
+      "path": "src/skill/core/query/wiki.md",
+      "source_type": "system"
     },
     "skill/core/report": {
-      "kind": "skill",
       "title": "Core Report",
-      "summary": "Uses 2 tool(s).",
-      "path": "src/skill/core/report/page.md"
+      "summary": "Skill page for `skill/core/report`.",
+      "path": "src/skill/core/report/wiki.md",
+      "source_type": "system"
     },
     "skill/core/routing": {
-      "kind": "skill",
       "title": "Core Routing",
-      "summary": "Uses 3 tool(s).",
-      "path": "src/skill/core/routing/page.md"
+      "summary": "Skill page for `skill/core/routing`.",
+      "path": "src/skill/core/routing/wiki.md",
+      "source_type": "system"
     },
     "skill/core/task": {
-      "kind": "skill",
       "title": "Core Task",
-      "summary": "Uses 7 tool(s).",
-      "path": "src/skill/core/task/page.md"
+      "summary": "Skill page for `skill/core/task`.",
+      "path": "src/skill/core/task/wiki.md",
+      "source_type": "system"
     },
     "skill/general/root": {
-      "kind": "skill",
       "title": "General Root",
-      "summary": "Uses 9 tool(s). Exposes 2 child skill(s). References 1 related skill(s).",
-      "path": "src/skill/general/root/page.md"
+      "summary": "Skill page for `skill/general/root`.",
+      "path": "src/skill/general/root/wiki.md",
+      "source_type": "system"
     },
     "skill/governance/agent_build": {
-      "kind": "skill",
       "title": "Governance Agent Build",
-      "summary": "Uses 2 tool(s).",
-      "path": "src/skill/governance/agent_build/page.md"
+      "summary": "Skill page for `skill/governance/agent_build`.",
+      "path": "src/skill/governance/agent_build/wiki.md",
+      "source_type": "system"
     },
     "skill/governance/compact_guard": {
-      "kind": "skill",
       "title": "Governance Compact Guard",
-      "summary": "Uses 2 tool(s).",
-      "path": "src/skill/governance/compact_guard/page.md"
+      "summary": "Skill page for `skill/governance/compact_guard`.",
+      "path": "src/skill/governance/compact_guard/wiki.md",
+      "source_type": "system"
     },
     "skill/governance/protocol_governance": {
-      "kind": "skill",
       "title": "Governance Protocol Governance",
-      "summary": "Uses 5 tool(s).",
-      "path": "src/skill/governance/protocol_governance/page.md"
+      "summary": "Skill page for `skill/governance/protocol_governance`.",
+      "path": "src/skill/governance/protocol_governance/wiki.md",
+      "source_type": "system"
     },
     "skill/governance/refs_bridge": {
-      "kind": "skill",
       "title": "Governance Refs Bridge",
-      "summary": "Uses 2 tool(s).",
-      "path": "src/skill/governance/refs_bridge/page.md"
+      "summary": "Skill page for `skill/governance/refs_bridge`.",
+      "path": "src/skill/governance/refs_bridge/wiki.md",
+      "source_type": "system"
     },
     "skill/governance/task_governance": {
-      "kind": "skill",
       "title": "Governance Task Governance",
-      "summary": "Uses 5 tool(s).",
-      "path": "src/skill/governance/task_governance/page.md"
+      "summary": "Skill page for `skill/governance/task_governance`.",
+      "path": "src/skill/governance/task_governance/wiki.md",
+      "source_type": "system"
     },
     "skill/governance/tool_surface": {
-      "kind": "skill",
       "title": "Governance Tool Surface",
-      "summary": "Uses 3 tool(s).",
-      "path": "src/skill/governance/tool_surface/page.md"
+      "summary": "Skill page for `skill/governance/tool_surface`.",
+      "path": "src/skill/governance/tool_surface/wiki.md",
+      "source_type": "system"
     },
     "skill/governance/workspace_governance": {
-      "kind": "skill",
       "title": "Governance Workspace Governance",
-      "summary": "Uses 5 tool(s).",
-      "path": "src/skill/governance/workspace_governance/page.md"
+      "summary": "Skill page for `skill/governance/workspace_governance`.",
+      "path": "src/skill/governance/workspace_governance/wiki.md",
+      "source_type": "system"
     },
     "skill/parts_design/camshaft/root": {
-      "kind": "skill",
       "title": "Parts Design Camshaft Root",
-      "summary": "Uses 3 tool(s). References 1 related skill(s).",
-      "path": "src/skill/parts_design/camshaft/root/page.md"
+      "summary": "Skill page for `skill/parts_design/camshaft/root`.",
+      "path": "src/skill/parts_design/camshaft/root/wiki.md",
+      "source_type": "system"
     },
     "skill/parts_design/common/report": {
-      "kind": "skill",
       "title": "Parts Design Common Report",
-      "summary": "Uses 2 tool(s).",
-      "path": "src/skill/parts_design/common/report/page.md"
+      "summary": "Skill page for `skill/parts_design/common/report`.",
+      "path": "src/skill/parts_design/common/report/wiki.md",
+      "source_type": "system"
     },
     "skill/parts_design/common/requirement_parse": {
-      "kind": "skill",
       "title": "Parts Design Common Requirement Parse",
-      "summary": "Uses 5 tool(s).",
-      "path": "src/skill/parts_design/common/requirement_parse/page.md"
+      "summary": "Skill page for `skill/parts_design/common/requirement_parse`.",
+      "path": "src/skill/parts_design/common/requirement_parse/wiki.md",
+      "source_type": "system"
     },
     "skill/parts_design/conrod/root": {
-      "kind": "skill",
       "title": "Parts Design Conrod Root",
-      "summary": "Uses 11 tool(s). References 2 related skill(s).",
-      "path": "src/skill/parts_design/conrod/root/page.md"
+      "summary": "Skill page for `skill/parts_design/conrod/root`.",
+      "path": "src/skill/parts_design/conrod/root/wiki.md",
+      "source_type": "system"
     },
     "skill/parts_design/crankshaft/root": {
-      "kind": "skill",
       "title": "Parts Design Crankshaft Root",
-      "summary": "Uses 11 tool(s). References 2 related skill(s).",
-      "path": "src/skill/parts_design/crankshaft/root/page.md"
+      "summary": "Skill page for `skill/parts_design/crankshaft/root`.",
+      "path": "src/skill/parts_design/crankshaft/root/wiki.md",
+      "source_type": "system"
+    },
+    "wiki/skill/parts_design/root/knowledge/README.md": {
+      "title": "Parts Design Knowledge",
+      "summary": "Place domain-specific notes, parameter dictionaries, and reference documents for parts-design skills here.",
+      "path": "src/skill/parts_design/root/knowledge/README.md",
+      "source_type": "system"
     },
     "skill/parts_design/root": {
-      "kind": "skill",
       "title": "Parts Design Root",
-      "summary": "Uses 13 tool(s). Exposes 7 child skill(s). References 1 related skill(s).",
-      "path": "src/skill/parts_design/root/page.md"
+      "summary": "Skill page for `skill/parts_design/root`.",
+      "path": "src/skill/parts_design/root/wiki.md",
+      "source_type": "system"
     },
     "skill/wiki_hub/ingest": {
-      "kind": "skill",
       "title": "Wiki Hub Ingest",
       "summary": "Refresh the shared wiki store and bring new source files into it.",
-      "path": "src/skill/wiki_hub/ingest/page.md"
-    },
-    "skill/wiki_hub/lint": {
-      "kind": "skill",
-      "title": "Wiki Hub Lint",
-      "summary": "Check the shared wiki store for indexing and link issues.",
-      "path": "src/skill/wiki_hub/lint/page.md"
+      "path": "src/skill/wiki_hub/ingest/wiki.md",
+      "source_type": "system"
     },
     "skill/wiki_hub/query": {
-      "kind": "skill",
       "title": "Wiki Hub Query",
       "summary": "Search, read, and answer from the shared wiki store.",
-      "path": "src/skill/wiki_hub/query/page.md"
+      "path": "src/skill/wiki_hub/query/wiki.md",
+      "source_type": "system"
+    },
+    "wiki/skill/wiki_hub/root/knowledge/README.md": {
+      "title": "Wiki Hub Knowledge Seed",
+      "summary": "Place business notes, seed docs, and reference material for the shared wiki flow here.",
+      "path": "src/skill/wiki_hub/root/knowledge/README.md",
+      "source_type": "system"
     },
     "skill/wiki_hub/root": {
-      "kind": "skill",
       "title": "Wiki Hub Root",
       "summary": "Coordinate shared wiki lookup, refresh, and maintenance work.",
-      "path": "src/skill/wiki_hub/root/page.md"
+      "path": "src/skill/wiki_hub/root/wiki.md",
+      "source_type": "system"
     },
-    "tool/compact/now": {
-      "kind": "tool",
-      "title": "Compact Now",
-      "summary": "Compact the current conversation state into the summary context.",
-      "path": "src/tool/compact/now/page.md"
+    "tool/external/db": {
+      "title": "DB MCP Tools",
+      "summary": "Database MCP toolbox adapter.",
+      "path": "src/tool/external/db/wiki.md",
+      "source_type": "system"
     },
-    "tool/engine/enter_skill": {
-      "kind": "tool",
-      "title": "Engine Enter Skill",
-      "summary": "Enter a reachable skill and switch the active runtime scope.",
-      "path": "src/tool/engine/enter_skill/page.md"
+    "tool/external/fs/diff_text": {
+      "title": "files.diff_text",
+      "summary": "Show a unified diff between two workspace text files.",
+      "path": "src/tool/external/fs/diff_text/wiki.md",
+      "source_type": "system"
     },
-    "tool/engine/inspect_action": {
-      "kind": "tool",
-      "title": "Engine Inspect Action",
-      "summary": "Inspect one action that is currently available in the runtime surface.",
-      "path": "src/tool/engine/inspect_action/page.md"
+    "tool/external/fs/edit_text": {
+      "title": "files.edit_text",
+      "summary": "Replace one exact text fragment inside an existing workspace file.",
+      "path": "src/tool/external/fs/edit_text/wiki.md",
+      "source_type": "system"
     },
-    "tool/engine/inspect_skill": {
-      "kind": "tool",
-      "title": "Engine Inspect Skill",
-      "summary": "Inspect a reachable skill and its surfaced behavior.",
-      "path": "src/tool/engine/inspect_skill/page.md"
+    "tool/external/fs/list_dir": {
+      "title": "files.list_dir",
+      "summary": "List files and directories inside a workspace directory.",
+      "path": "src/tool/external/fs/list_dir/wiki.md",
+      "source_type": "system"
     },
-    "tool/engine/list_child_skills": {
-      "kind": "tool",
-      "title": "Engine List Child Skills",
-      "summary": "List the child skills that can be entered from the current skill.",
-      "path": "src/tool/engine/list_child_skills/page.md"
+    "tool/external/fs/read_text": {
+      "title": "files.read_text",
+      "summary": "Read a text file from the current runtime workspace.",
+      "path": "src/tool/external/fs/read_text/wiki.md",
+      "source_type": "system"
     },
-    "tool/files/edit_text": {
-      "kind": "tool",
-      "title": "Files Edit Text",
-      "summary": "Edit text content inside a workspace file.",
-      "path": "src/tool/files/edit_text/page.md"
+    "tool/external/fs": {
+      "title": "Filesystem Tools",
+      "summary": "Workspace file reading, writing, editing, listing, and diffing tools.",
+      "path": "src/tool/external/fs/wiki.md",
+      "source_type": "system"
     },
-    "tool/files/list_dir": {
-      "kind": "tool",
-      "title": "Files List Dir",
-      "summary": "List files and folders in the current workspace.",
-      "path": "src/tool/files/list_dir/page.md"
+    "tool/external/fs/write_text": {
+      "title": "files.write_text",
+      "summary": "Write text into a file inside the current runtime workspace.",
+      "path": "src/tool/external/fs/write_text/wiki.md",
+      "source_type": "system"
     },
-    "tool/files/read_text": {
-      "kind": "tool",
-      "title": "Files Read Text",
-      "summary": "Read text content from a workspace file.",
-      "path": "src/tool/files/read_text/page.md"
+    "tool/external/kb": {
+      "title": "KB MCP Tools",
+      "summary": "Knowledge-base MCP toolbox adapter.",
+      "path": "src/tool/external/kb/wiki.md",
+      "source_type": "system"
     },
-    "tool/files/write_text": {
-      "kind": "tool",
-      "title": "Files Write Text",
-      "summary": "Write text content to a workspace file.",
-      "path": "src/tool/files/write_text/page.md"
+    "tool/external/nx": {
+      "title": "NX MCP Tools",
+      "summary": "NX MCP toolbox adapter.",
+      "path": "src/tool/external/nx/wiki.md",
+      "source_type": "system"
     },
-    "tool/governance/inspect_tool_surface": {
-      "kind": "tool",
-      "title": "Governance Inspect Tool Surface",
-      "summary": "Inspect the visible tool surface and exposed actions.",
-      "path": "src/tool/governance/inspect_tool_surface/page.md"
+    "tool/external/shell/run": {
+      "title": "shell.run",
+      "summary": "Run a shell command inside the current runtime workspace.",
+      "path": "src/tool/external/shell/run/wiki.md",
+      "source_type": "system"
     },
-    "tool/governance/load_refs": {
-      "kind": "tool",
-      "title": "Governance Load Refs",
-      "summary": "Load referenced skills into the active governed surface.",
-      "path": "src/tool/governance/load_refs/page.md"
+    "tool/external/shell": {
+      "title": "Shell Tools",
+      "summary": "Workspace shell execution tools.",
+      "path": "src/tool/external/shell/wiki.md",
+      "source_type": "system"
     },
-    "tool/governance/normalize_tool_result": {
-      "kind": "tool",
-      "title": "Governance Normalize Tool Result",
-      "summary": "Normalize tool outputs into a cleaner runtime result format.",
-      "path": "src/tool/governance/normalize_tool_result/page.md"
+    "tool/external/textops/preview_replace": {
+      "title": "textops.preview_replace",
+      "summary": "Preview a one-shot text replacement without writing the file.",
+      "path": "src/tool/external/textops/preview_replace/wiki.md",
+      "source_type": "system"
     },
-    "tool/protocol/request_shutdown": {
-      "kind": "tool",
-      "title": "Protocol Request Shutdown",
-      "summary": "Request a governed shutdown handshake for the current run.",
-      "path": "src/tool/protocol/request_shutdown/page.md"
+    "tool/external/textops/search": {
+      "title": "textops.search",
+      "summary": "Search for a substring inside a workspace text file.",
+      "path": "src/tool/external/textops/search/wiki.md",
+      "source_type": "system"
     },
-    "tool/protocol/respond_shutdown": {
-      "kind": "tool",
-      "title": "Protocol Respond Shutdown",
-      "summary": "Respond to a governed shutdown request.",
-      "path": "src/tool/protocol/respond_shutdown/page.md"
+    "tool/external/textops": {
+      "title": "Text Operations Tools",
+      "summary": "Text search and replacement preview tools for workspace files.",
+      "path": "src/tool/external/textops/wiki.md",
+      "source_type": "system"
     },
-    "tool/protocol/review_plan": {
-      "kind": "tool",
-      "title": "Protocol Review Plan",
-      "summary": "Review a proposed execution plan before continuing work.",
-      "path": "src/tool/protocol/review_plan/page.md"
+    "tool/external/wiki/answer": {
+      "title": "wiki.answer",
+      "summary": "Draft an answer from top wiki pages.",
+      "path": "src/tool/external/wiki/answer/wiki.md",
+      "source_type": "system"
     },
-    "tool/protocol/submit_plan": {
-      "kind": "tool",
-      "title": "Protocol Submit Plan",
-      "summary": "Submit a plan for governed review and tracking.",
-      "path": "src/tool/protocol/submit_plan/page.md"
-    },
-    "tool/shell/run": {
-      "kind": "tool",
-      "title": "Shell Run",
-      "summary": "Run a shell command in the current workspace.",
-      "path": "src/tool/shell/run/page.md"
-    },
-    "tool/subagent/ask": {
-      "kind": "tool",
-      "title": "Subagent Ask",
-      "summary": "Delegate one focused question to a subagent.",
-      "path": "src/tool/subagent/ask/page.md"
-    },
-    "tool/subagent/batch_run": {
-      "kind": "tool",
-      "title": "Subagent Batch Run",
-      "summary": "Run a batch of subagent jobs in one coordinated pass.",
-      "path": "src/tool/subagent/batch_run/page.md"
-    },
-    "tool/task/claim": {
-      "kind": "tool",
-      "title": "Task Claim",
-      "summary": "Claim a task from the shared task queue.",
-      "path": "src/tool/task/claim/page.md"
-    },
-    "tool/task/create": {
-      "kind": "tool",
-      "title": "Task Create",
-      "summary": "Create a task in the shared task queue.",
-      "path": "src/tool/task/create/page.md"
-    },
-    "tool/task/get": {
-      "kind": "tool",
-      "title": "Task Get",
-      "summary": "Read one task from the shared task queue.",
-      "path": "src/tool/task/get/page.md"
-    },
-    "tool/task/list": {
-      "kind": "tool",
-      "title": "Task List",
-      "summary": "List tasks from the shared task queue.",
-      "path": "src/tool/task/list/page.md"
-    },
-    "tool/task/update": {
-      "kind": "tool",
-      "title": "Task Update",
-      "summary": "Update an existing task in the shared task queue.",
-      "path": "src/tool/task/update/page.md"
-    },
-    "tool/team/read_inbox": {
-      "kind": "tool",
-      "title": "Team Read Inbox",
-      "summary": "Read messages from the shared team inbox.",
-      "path": "src/tool/team/read_inbox/page.md"
-    },
-    "tool/todo/update": {
-      "kind": "tool",
-      "title": "Todo Update",
-      "summary": "Update the runtime todo list.",
-      "path": "src/tool/todo/update/page.md"
-    },
-    "tool/todo/view": {
-      "kind": "tool",
-      "title": "Todo View",
-      "summary": "Read the current runtime todo list.",
-      "path": "src/tool/todo/view/page.md"
-    },
-    "tool/wiki/answer": {
-      "kind": "tool",
-      "title": "Answer From Wiki",
-      "summary": "Draft an answer from the shared wiki store.",
-      "path": "src/tool/wiki/answer/page.md"
-    },
-    "tool/wiki/read_page": {
-      "kind": "tool",
-      "title": "Read Wiki Page",
+    "tool/external/wiki/read_page": {
+      "title": "wiki.read_page",
       "summary": "Read one rendered page from the shared wiki store.",
-      "path": "src/tool/wiki/read_page/page.md"
+      "path": "src/tool/external/wiki/read_page/wiki.md",
+      "source_type": "system"
     },
-    "tool/wiki/read_source": {
-      "kind": "tool",
-      "title": "Read Wiki Source",
-      "summary": "Read the original source text behind a wiki page.",
-      "path": "src/tool/wiki/read_source/page.md"
+    "tool/external/wiki/read_source": {
+      "title": "wiki.read_source",
+      "summary": "Read the original source text linked from a wiki page.",
+      "path": "src/tool/external/wiki/read_source/wiki.md",
+      "source_type": "system"
     },
-    "tool/wiki/search": {
-      "kind": "tool",
-      "title": "Search Wiki",
-      "summary": "Search pages in the shared wiki store.",
-      "path": "src/tool/wiki/search/page.md"
+    "tool/external/wiki/search": {
+      "title": "wiki.search",
+      "summary": "Search shared wiki pages.",
+      "path": "src/tool/external/wiki/search/wiki.md",
+      "source_type": "system"
     },
-    "tool/wiki_admin/ingest_files": {
-      "kind": "tool",
-      "title": "Ingest Wiki Files",
+    "tool/external/wiki": {
+      "title": "Wiki Tools",
+      "summary": "Read-oriented tools for the shared wiki store.",
+      "path": "src/tool/external/wiki/wiki.md",
+      "source_type": "system"
+    },
+    "tool/external/wiki_admin/ingest_files": {
+      "title": "wiki_admin.ingest_files",
       "summary": "Ingest user-provided files into the shared wiki store.",
-      "path": "src/tool/wiki_admin/ingest_files/page.md"
+      "path": "src/tool/external/wiki_admin/ingest_files/wiki.md",
+      "source_type": "system"
     },
-    "tool/wiki_admin/lint": {
-      "kind": "tool",
-      "title": "Lint Wiki Store",
-      "summary": "Lint the shared wiki store and protocol links.",
-      "path": "src/tool/wiki_admin/lint/page.md"
+    "tool/external/wiki_admin/refresh_system": {
+      "title": "wiki_admin.refresh_system",
+      "summary": "Refresh the shared wiki system pages from governed sources.",
+      "path": "src/tool/external/wiki_admin/refresh_system/wiki.md",
+      "source_type": "system"
     },
-    "tool/wiki_admin/refresh_system": {
-      "kind": "tool",
-      "title": "Refresh Wiki System",
-      "summary": "Refresh the shared wiki index and system summaries.",
-      "path": "src/tool/wiki_admin/refresh_system/page.md"
+    "tool/external/wiki_admin": {
+      "title": "Wiki Admin Tools",
+      "summary": "Administrative tools for refreshing and ingesting the shared wiki store.",
+      "path": "src/tool/external/wiki_admin/wiki.md",
+      "source_type": "system"
     },
-    "tool/workspace/create": {
-      "kind": "tool",
-      "title": "Workspace Create",
-      "summary": "Create a workspace for the current task.",
-      "path": "src/tool/workspace/create/page.md"
+    "tool/external/workspace/create": {
+      "title": "workspace.create",
+      "summary": "Create an isolated workspace.",
+      "path": "src/tool/external/workspace/create/wiki.md",
+      "source_type": "system"
     },
-    "tool/workspace/keep": {
-      "kind": "tool",
-      "title": "Workspace Keep",
-      "summary": "Persist the current workspace for later reuse.",
-      "path": "src/tool/workspace/keep/page.md"
+    "tool/external/workspace/keep": {
+      "title": "workspace.keep",
+      "summary": "Mark a managed workspace as kept.",
+      "path": "src/tool/external/workspace/keep/wiki.md",
+      "source_type": "system"
     },
-    "tool/workspace/list": {
-      "kind": "tool",
-      "title": "Workspace List",
-      "summary": "List available task workspaces.",
-      "path": "src/tool/workspace/list/page.md"
+    "tool/external/workspace/list": {
+      "title": "workspace.list",
+      "summary": "List current managed workspaces.",
+      "path": "src/tool/external/workspace/list/wiki.md",
+      "source_type": "system"
     },
-    "tool/workspace/remove": {
-      "kind": "tool",
-      "title": "Workspace Remove",
-      "summary": "Remove a task workspace that is no longer needed.",
-      "path": "src/tool/workspace/remove/page.md"
+    "tool/external/workspace/remove": {
+      "title": "workspace.remove",
+      "summary": "Remove a managed workspace and optionally complete its task.",
+      "path": "src/tool/external/workspace/remove/wiki.md",
+      "source_type": "system"
     },
-    "tool/workspace/run": {
-      "kind": "tool",
-      "title": "Workspace Run",
-      "summary": "Run a command inside a task workspace.",
-      "path": "src/tool/workspace/run/page.md"
+    "tool/external/workspace/run": {
+      "title": "workspace.run",
+      "summary": "Run a shell command inside a named workspace.",
+      "path": "src/tool/external/workspace/run/wiki.md",
+      "source_type": "system"
+    },
+    "tool/external/workspace": {
+      "title": "Workspace Tools",
+      "summary": "Workspace lifecycle and execution tools for task-specific sandboxes.",
+      "path": "src/tool/external/workspace/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/autonomy/claim_next_task": {
+      "title": "autonomy.claim_next_task",
+      "summary": "Claim the next unowned task.",
+      "path": "src/tool/system/autonomy/claim_next_task/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/autonomy": {
+      "title": "Autonomy Tools",
+      "summary": "Autonomous task-claim tools for background workers.",
+      "path": "src/tool/system/autonomy/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/background/check": {
+      "title": "background.check",
+      "summary": "Check the status of a background task.",
+      "path": "src/tool/system/background/check/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/background/run": {
+      "title": "background.run",
+      "summary": "Run a shell command in the background.",
+      "path": "src/tool/system/background/run/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/background": {
+      "title": "Background Tools",
+      "summary": "Background command execution tools.",
+      "path": "src/tool/system/background/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/compact/now": {
+      "title": "compact.now",
+      "summary": "Compact the current conversation history.",
+      "path": "src/tool/system/compact/now/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/compact": {
+      "title": "Compact Tools",
+      "summary": "History compaction tools for runtime context control.",
+      "path": "src/tool/system/compact/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/inspect/inspect_tool_surface": {
+      "title": "governance.inspect_tool_surface",
+      "summary": "Inspect the visible tool surface.",
+      "path": "src/tool/system/inspect/inspect_tool_surface/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/inspect": {
+      "title": "Inspect Tools",
+      "summary": "Tool surface inspection utilities.",
+      "path": "src/tool/system/inspect/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/isolation": {
+      "title": "Isolation Tools",
+      "summary": "Isolation state tools that contribute runtime state fragments.",
+      "path": "src/tool/system/isolation/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/normalize/normalize_tool_result": {
+      "title": "governance.normalize_tool_result",
+      "summary": "Normalize an arbitrary tool result into a compact JSON payload.",
+      "path": "src/tool/system/normalize/normalize_tool_result/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/normalize": {
+      "title": "Normalize Tools",
+      "summary": "Tool result normalization utilities.",
+      "path": "src/tool/system/normalize/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/protocol/request_shutdown": {
+      "title": "protocol.request_shutdown",
+      "summary": "Request graceful worker shutdown.",
+      "path": "src/tool/system/protocol/request_shutdown/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/protocol/respond_shutdown": {
+      "title": "protocol.respond_shutdown",
+      "summary": "Approve or reject a shutdown request.",
+      "path": "src/tool/system/protocol/respond_shutdown/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/protocol/review_plan": {
+      "title": "protocol.review_plan",
+      "summary": "Approve or reject a submitted plan.",
+      "path": "src/tool/system/protocol/review_plan/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/protocol/submit_plan": {
+      "title": "protocol.submit_plan",
+      "summary": "Submit a plan for review.",
+      "path": "src/tool/system/protocol/submit_plan/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/protocol": {
+      "title": "Protocol Tools",
+      "summary": "Review and shutdown protocol tools for coordinated workers.",
+      "path": "src/tool/system/protocol/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/refs/load_refs": {
+      "title": "governance.load_refs",
+      "summary": "Inspect the currently activated refs closure.",
+      "path": "src/tool/system/refs/load_refs/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/refs": {
+      "title": "Refs Tools",
+      "summary": "Refs inspection utilities.",
+      "path": "src/tool/system/refs/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/runtime/enter_skill": {
+      "title": "engine.enter_skill",
+      "summary": "Switch the active runtime skill to another reachable skill.",
+      "path": "src/tool/system/runtime/enter_skill/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/runtime/inspect_skill": {
+      "title": "engine.inspect_skill",
+      "summary": "Read the full page for a reachable skill.",
+      "path": "src/tool/system/runtime/inspect_skill/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/runtime/inspect_tool": {
+      "title": "engine.inspect_tool",
+      "summary": "Inspect the schema and description for one currently visible tool.",
+      "path": "src/tool/system/runtime/inspect_tool/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/runtime/list_child_skills": {
+      "title": "engine.list_child_skills",
+      "summary": "List the direct child skills of the current active skill.",
+      "path": "src/tool/system/runtime/list_child_skills/wiki.md",
+      "source_type": "system"
+    },
+    "tool/system/runtime": {
+      "title": "Engine Tools",
+      "summary": "Runtime navigation and surface inspection tools that are always available to the model.",
+      "path": "src/tool/system/runtime/wiki.md",
+      "source_type": "system"
+    },
+    "tool": {
+      "title": "Tool Domain",
+      "summary": "`tool/` is the only tool extension domain in the runtime.",
+      "path": "src/tool/wiki.md",
+      "source_type": "system"
+    },
+    "tool/workflow/subagent/ask": {
+      "title": "subagent.ask",
+      "summary": "Run one delegated subagent task.",
+      "path": "src/tool/workflow/subagent/ask/wiki.md",
+      "source_type": "system"
+    },
+    "tool/workflow/subagent/batch_run": {
+      "title": "subagent.batch_run",
+      "summary": "Run multiple delegated subagent jobs.",
+      "path": "src/tool/workflow/subagent/batch_run/wiki.md",
+      "source_type": "system"
+    },
+    "tool/workflow/subagent": {
+      "title": "Subagent Tools",
+      "summary": "Delegation tools for child runtimes.",
+      "path": "src/tool/workflow/subagent/wiki.md",
+      "source_type": "system"
+    },
+    "tool/workflow/task/claim": {
+      "title": "task.claim",
+      "summary": "Claim an unowned task.",
+      "path": "src/tool/workflow/task/claim/wiki.md",
+      "source_type": "system"
+    },
+    "tool/workflow/task/create": {
+      "title": "task.create",
+      "summary": "Create a task in the shared task queue.",
+      "path": "src/tool/workflow/task/create/wiki.md",
+      "source_type": "system"
+    },
+    "tool/workflow/task/get": {
+      "title": "task.get",
+      "summary": "Read one task from the shared task queue.",
+      "path": "src/tool/workflow/task/get/wiki.md",
+      "source_type": "system"
+    },
+    "tool/workflow/task/list": {
+      "title": "task.list",
+      "summary": "List tasks in the shared task queue.",
+      "path": "src/tool/workflow/task/list/wiki.md",
+      "source_type": "system"
+    },
+    "tool/workflow/task/update": {
+      "title": "task.update",
+      "summary": "Update task status, owner, or dependencies.",
+      "path": "src/tool/workflow/task/update/wiki.md",
+      "source_type": "system"
+    },
+    "tool/workflow/task": {
+      "title": "Task Tools",
+      "summary": "Shared task queue tools.",
+      "path": "src/tool/workflow/task/wiki.md",
+      "source_type": "system"
+    },
+    "tool/workflow/team/broadcast": {
+      "title": "team.broadcast",
+      "summary": "Broadcast a message to all workers.",
+      "path": "src/tool/workflow/team/broadcast/wiki.md",
+      "source_type": "system"
+    },
+    "tool/workflow/team/list_workers": {
+      "title": "team.list_workers",
+      "summary": "List registered worker runtimes.",
+      "path": "src/tool/workflow/team/list_workers/wiki.md",
+      "source_type": "system"
+    },
+    "tool/workflow/team/read_inbox": {
+      "title": "team.read_inbox",
+      "summary": "Read the lead inbox.",
+      "path": "src/tool/workflow/team/read_inbox/wiki.md",
+      "source_type": "system"
+    },
+    "tool/workflow/team/send_message": {
+      "title": "team.send_message",
+      "summary": "Send a message to one worker inbox.",
+      "path": "src/tool/workflow/team/send_message/wiki.md",
+      "source_type": "system"
+    },
+    "tool/workflow/team/spawn_worker": {
+      "title": "team.spawn_worker",
+      "summary": "Spawn a managed worker runtime.",
+      "path": "src/tool/workflow/team/spawn_worker/wiki.md",
+      "source_type": "system"
+    },
+    "tool/workflow/team": {
+      "title": "Team Tools",
+      "summary": "Worker coordination tools for multi-agent execution.",
+      "path": "src/tool/workflow/team/wiki.md",
+      "source_type": "system"
+    },
+    "tool/workflow/todo/update": {
+      "title": "todo.update",
+      "summary": "Update the runtime todo list.",
+      "path": "src/tool/workflow/todo/update/wiki.md",
+      "source_type": "system"
+    },
+    "tool/workflow/todo/view": {
+      "title": "todo.view",
+      "summary": "Read the current runtime todo list.",
+      "path": "src/tool/workflow/todo/view/wiki.md",
+      "source_type": "system"
+    },
+    "tool/workflow/todo": {
+      "title": "Todo Tools",
+      "summary": "Runtime todo state tools.",
+      "path": "src/tool/workflow/todo/wiki.md",
+      "source_type": "system"
     },
     "wiki/index": {
-      "kind": "wiki",
       "title": "Wiki Index",
       "summary": "Wiki index persistence copies the control-plane registry read model into [[wiki/store]].",
-      "path": "src/wiki/index/page.md"
+      "path": "src/wiki/index/wiki.md",
+      "source_type": "system"
     },
     "wiki/link": {
-      "kind": "wiki",
       "title": "Wiki Link",
       "summary": "Wiki link resolution describes `[[page]]` references from the persisted [[wiki/store]] read model.",
-      "path": "src/wiki/link/page.md"
+      "path": "src/wiki/link/wiki.md",
+      "source_type": "system"
     },
     "wiki/planner": {
-      "kind": "wiki",
       "title": "Wiki Planner",
       "summary": "Planning helpers for wiki ingestion and extraction flows.",
-      "path": "src/wiki/planner/page.md"
+      "path": "src/wiki/planner/wiki.md",
+      "source_type": "system"
     },
     "wiki/render": {
-      "kind": "wiki",
       "title": "Wiki Render",
       "summary": "Render wiki pages into a reader-friendly view without mutating the source markdown.",
-      "path": "src/wiki/render/page.md"
+      "path": "src/wiki/render/wiki.md",
+      "source_type": "system"
     },
     "wiki/search": {
-      "kind": "wiki",
       "title": "Wiki Search",
       "summary": "Wiki search ranks pages from the persisted [[wiki/store]] catalog.",
-      "path": "src/wiki/search/page.md"
+      "path": "src/wiki/search/wiki.md",
+      "source_type": "system"
     },
     "wiki/service": {
-      "kind": "wiki",
       "title": "Wiki Service",
       "summary": "Shared wiki adapter backed by `src/wiki/store`.",
-      "path": "src/wiki/service/page.md"
+      "path": "src/wiki/service/wiki.md",
+      "source_type": "system"
     },
     "wiki/source_policy": {
-      "kind": "wiki",
       "title": "Wiki Source Policy",
       "summary": "Source selection rules for system, runtime, control, and knowledge files.",
-      "path": "src/wiki/source_policy/page.md"
-    },
-    "wiki/store": {
-      "kind": "wiki",
-      "title": "Wiki Store",
-      "summary": "Persistent JSON store for protocol index outputs, refresh jobs, and attachments.",
-      "path": "src/wiki/store/page.md"
+      "path": "src/wiki/source_policy/wiki.md",
+      "source_type": "system"
     }
   }
 }

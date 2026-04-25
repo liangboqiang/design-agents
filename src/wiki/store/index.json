@@ -4,1124 +4,222 @@
       "kind": "agent",
       "title": "General Chat",
       "summary": "General-purpose chat agent using the governed runtime and LLM Wiki knowledge hub.",
-      "path": "src/agent/general_chat/page.md",
-      "folder": "src/agent/general_chat",
-      "truth_ext": [
-        "__init__.py",
-        "impl.py",
-        "runtime.toml"
-      ],
+      "path": "src/agent/general_chat/wiki.md",
+      "source_type": "system",
       "links": [
         "skill/general/root"
-      ],
-      "content_hash": "0676b9b95977873e4cc34d0dac92a3ae09727e6b",
-      "runtime_action": null,
-      "section_map": {
-        "root skill": "- [[skill/general/root]]",
-        "toolboxes": "- `files`\n- `shell`\n- `textops`\n- `runtime_tools`\n- `load_refs`\n- `inspect_tools`\n- `wiki`",
-        "capabilities": "- `todo`\n- `task`\n- `compact`\n- `background`\n- `subagent`",
-        "context": "你是一个通用对话智能体入口，负责把用户请求映射到当前可见的 skill、tool 和 wiki 能力上。你的上下文直接写在本页中，不再引用 context 模板。\n\n### 行为原则\n\n- 先判断用户请求是普通问答、文件操作、知识检索、任务拆解还是需要进入子技能。\n- 只使用运行时暴露的可见工具，不推断隐藏工具或隐藏工具箱。\n- 需要知识时优先使用可见的 wiki 能力。\n- 简单问题直接回答；复杂问题先给出简短判断，再调用合适工具。"
-      },
-      "section_links": {
-        "root skill": [
-          "skill/general/root"
-        ],
-        "toolboxes": [],
-        "capabilities": [],
-        "context": []
-      },
-      "code_items": {
-        "root skill": [
-          "[[skill/general/root]]"
-        ],
-        "toolboxes": [
-          "files",
-          "shell",
-          "textops",
-          "runtime_tools",
-          "load_refs",
-          "inspect_tools",
-          "wiki"
-        ],
-        "capabilities": [
-          "todo",
-          "task",
-          "compact",
-          "background",
-          "subagent"
-        ],
-        "context": [
-          "先判断用户请求是普通问答、文件操作、知识检索、任务拆解还是需要进入子技能。",
-          "只使用运行时暴露的可见工具，不推断隐藏工具或隐藏工具箱。",
-          "需要知识时优先使用可见的 wiki 能力。",
-          "简单问题直接回答；复杂问题先给出简短判断，再调用合适工具。"
-        ]
-      },
-      "settings": {
-        "max_prompt_chars": "18000",
-        "provider": "mock",
-        "model": "mock"
-      }
+      ]
     },
     "agent/parts_design_chat": {
       "kind": "agent",
       "title": "Parts Design Chat",
       "summary": "Parts design agent with task, workspace, governance support, and an LLM Wiki canonical knowledge hub.",
-      "path": "src/agent/parts_design_chat/page.md",
-      "folder": "src/agent/parts_design_chat",
-      "truth_ext": [
-        "__init__.py",
-        "impl.py",
-        "runtime.toml"
-      ],
+      "path": "src/agent/parts_design_chat/wiki.md",
+      "source_type": "system",
       "links": [
         "skill/parts_design/root"
-      ],
-      "content_hash": "1cebad5d2c160c5ec44e05cc93187a3617fa9cb6",
-      "runtime_action": null,
-      "section_map": {
-        "root skill": "- [[skill/parts_design/root]]",
-        "toolboxes": "- `files`\n- `shell`\n- `textops`\n- `runtime_tools`\n- `load_refs`\n- `inspect_tools`\n- `normalize_tools`\n- `wiki`",
-        "capabilities": "- `todo`\n- `task`\n- `compact`\n- `workspace`\n- `background`\n- `subagent`",
-        "context": "你是零部件设计智能体入口，面向连杆、曲轴、凸轮轴等内燃动力零部件设计任务。你的上下文直接写在本页中，不再引用 context 模板。\n\n### 行为原则\n\n- 先澄清设计对象、设计阶段、输入参数、输出形式和约束边界。\n- 复杂任务优先进入匹配的零部件 child skill 或公共设计 skill。\n- 需要知识、SOP、工具说明或历史材料时优先使用 wiki 能力。\n- 保持工程闭环：需求解析、任务拆解、工具执行、结果解释、报告沉淀。"
-      },
-      "section_links": {
-        "root skill": [
-          "skill/parts_design/root"
-        ],
-        "toolboxes": [],
-        "capabilities": [],
-        "context": []
-      },
-      "code_items": {
-        "root skill": [
-          "[[skill/parts_design/root]]"
-        ],
-        "toolboxes": [
-          "files",
-          "shell",
-          "textops",
-          "runtime_tools",
-          "load_refs",
-          "inspect_tools",
-          "normalize_tools",
-          "wiki"
-        ],
-        "capabilities": [
-          "todo",
-          "task",
-          "compact",
-          "workspace",
-          "background",
-          "subagent"
-        ],
-        "context": [
-          "先澄清设计对象、设计阶段、输入参数、输出形式和约束边界。",
-          "复杂任务优先进入匹配的零部件 child skill 或公共设计 skill。",
-          "需要知识、SOP、工具说明或历史材料时优先使用 wiki 能力。",
-          "保持工程闭环：需求解析、任务拆解、工具执行、结果解释、报告沉淀。"
-        ]
-      },
-      "settings": {
-        "max_prompt_chars": "22000",
-        "provider": "mock",
-        "model": "mock"
-      }
+      ]
     },
     "agent/review_agent": {
       "kind": "agent",
       "title": "Review Agent",
       "summary": "Review-focused agent with inspection-heavy surface defaults.",
-      "path": "src/agent/review_agent/page.md",
-      "folder": "src/agent/review_agent",
-      "truth_ext": [
-        "__init__.py",
-        "impl.py",
-        "runtime.toml"
-      ],
+      "path": "src/agent/review_agent/wiki.md",
+      "source_type": "system",
       "links": [
         "skill/general/root"
-      ],
-      "content_hash": "0e61d0a90b30de5b458ddc59104890c35e787cb5",
-      "runtime_action": null,
-      "section_map": {
-        "root skill": "- [[skill/general/root]]",
-        "toolboxes": "- `files`\n- `textops`\n- `inspect_tools`\n- `normalize_tools`",
-        "capabilities": "- `compact`\n- `task`",
-        "context": "你是审查型智能体入口，重点检查方案、代码、工具表面和运行结果的一致性。你的上下文直接写在本页中，不再引用 context 模板。\n\n### 行为原则\n\n- 优先发现结构不一致、职责泄漏、重复表达、隐藏扩展口和不可维护路径。\n- 使用 inspect、normalize、files 等可见工具支撑判断。\n- 输出应直指问题、原因、影响和整改动作。\n- 不做无根据推断，不使用不可见能力。"
-      },
-      "section_links": {
-        "root skill": [
-          "skill/general/root"
-        ],
-        "toolboxes": [],
-        "capabilities": [],
-        "context": []
-      },
-      "code_items": {
-        "root skill": [
-          "[[skill/general/root]]"
-        ],
-        "toolboxes": [
-          "files",
-          "textops",
-          "inspect_tools",
-          "normalize_tools"
-        ],
-        "capabilities": [
-          "compact",
-          "task"
-        ],
-        "context": [
-          "优先发现结构不一致、职责泄漏、重复表达、隐藏扩展口和不可维护路径。",
-          "使用 inspect、normalize、files 等可见工具支撑判断。",
-          "输出应直指问题、原因、影响和整改动作。",
-          "不做无根据推断，不使用不可见能力。"
-        ]
-      },
-      "settings": {
-        "max_prompt_chars": "16000",
-        "provider": "mock",
-        "model": "mock"
-      }
+      ]
     },
     "agent/wiki_front_chat": {
       "kind": "agent",
       "title": "Wiki Front Chat",
       "summary": "Front-line chat agent for reading from the shared wiki store and triggering wiki maintenance when needed.",
-      "path": "src/agent/wiki_front_chat/page.md",
-      "folder": "src/agent/wiki_front_chat",
-      "truth_ext": [
-        "__init__.py",
-        "impl.py",
-        "runtime.toml"
-      ],
+      "path": "src/agent/wiki_front_chat/wiki.md",
+      "source_type": "system",
       "links": [
         "skill/wiki_hub/root"
-      ],
-      "content_hash": "a506223d1fb425a96afe62c95d126e4ff5cae216",
-      "runtime_action": null,
-      "section_map": {
-        "root skill": "- [[skill/wiki_hub/root]]",
-        "toolboxes": "- `wiki`\n- `wiki_admin`",
-        "capabilities": "- `subagent`\n- `compact`",
-        "context": "你是知识库前台智能体入口，负责读取共享 wiki、回答知识问题，并在需要时触发 wiki 维护工具。你的上下文直接写在本页中，不再引用 context 模板。\n\n### 行为原则\n\n- 优先检索和读取已编译的 wiki 页面。\n- 当知识库过期或缺失时，使用可见的 wiki_admin 能力刷新或导入。\n- 回答时说明依据来自 wiki 页面还是原始 source。\n- 不绕过 wiki 中枢直接猜测项目事实。"
-      },
-      "section_links": {
-        "root skill": [
-          "skill/wiki_hub/root"
-        ],
-        "toolboxes": [],
-        "capabilities": [],
-        "context": []
-      },
-      "code_items": {
-        "root skill": [
-          "[[skill/wiki_hub/root]]"
-        ],
-        "toolboxes": [
-          "wiki",
-          "wiki_admin"
-        ],
-        "capabilities": [
-          "subagent",
-          "compact"
-        ],
-        "context": [
-          "优先检索和读取已编译的 wiki 页面。",
-          "当知识库过期或缺失时，使用可见的 wiki_admin 能力刷新或导入。",
-          "回答时说明依据来自 wiki 页面还是原始 source。",
-          "不绕过 wiki 中枢直接猜测项目事实。"
-        ]
-      },
-      "settings": {
-        "max_prompt_chars": "22000",
-        "provider": "mock",
-        "model": "mock"
-      }
+      ]
     },
     "agent/worker_agent": {
       "kind": "agent",
       "title": "Worker Agent",
       "summary": "Thin worker agent that shares the same runtime and governance stack.",
-      "path": "src/agent/worker_agent/page.md",
-      "folder": "src/agent/worker_agent",
-      "truth_ext": [
-        "__init__.py",
-        "impl.py",
-        "runtime.toml"
-      ],
+      "path": "src/agent/worker_agent/wiki.md",
+      "source_type": "system",
       "links": [
         "skill/general/root"
-      ],
-      "content_hash": "380e72bd63c351edc4979335043a312560011fa6",
-      "runtime_action": null,
-      "section_map": {
-        "root skill": "- [[skill/general/root]]",
-        "toolboxes": "- `files`\n- `shell`\n- `textops`",
-        "capabilities": "- `todo`\n- `task`\n- `compact`\n- `autonomy`",
-        "context": "你是轻量 worker 智能体入口，负责在父运行时分配的窄任务范围内执行短链路工作。你的上下文直接写在本页中，不再引用 context 模板。\n\n### 行为原则\n\n- 只围绕当前任务目标行动，不主动扩大范围。\n- 优先使用当前可见的文件、shell、文本处理和任务工具。\n- 有阻塞时记录任务状态并返回清晰原因。\n- 不创建额外治理结构，不假设隐藏工具存在。"
-      },
-      "section_links": {
-        "root skill": [
-          "skill/general/root"
-        ],
-        "toolboxes": [],
-        "capabilities": [],
-        "context": []
-      },
-      "code_items": {
-        "root skill": [
-          "[[skill/general/root]]"
-        ],
-        "toolboxes": [
-          "files",
-          "shell",
-          "textops"
-        ],
-        "capabilities": [
-          "todo",
-          "task",
-          "compact",
-          "autonomy"
-        ],
-        "context": [
-          "只围绕当前任务目标行动，不主动扩大范围。",
-          "优先使用当前可见的文件、shell、文本处理和任务工具。",
-          "有阻塞时记录任务状态并返回清晰原因。",
-          "不创建额外治理结构，不假设隐藏工具存在。"
-        ]
-      },
-      "settings": {
-        "max_prompt_chars": "16000",
-        "provider": "mock",
-        "model": "mock"
-      }
-    },
-    "control/protocol_index": {
-      "kind": "control",
-      "title": "Control Protocol Index",
-      "summary": "负责扫描 `src/` 下的单页真相结构，生成实体索引、页面目录和链接图。",
-      "path": "src/control/protocol_index/page.md",
-      "folder": "src/control/protocol_index",
-      "truth_ext": [
-        "__init__.py",
-        "impl.py"
-      ],
-      "links": [
-        "control/repo_lint",
-        "wiki/index"
-      ],
-      "content_hash": "611fed8d4920a51ba018182869b3296c259e5ed1",
-      "runtime_action": null,
-      "section_map": {
-        "输出": "- `src/wiki/store/index.json`\n- `src/wiki/store/catalog.json`\n- `src/wiki/store/graph.json`",
-        "refs": "- [[control/repo_lint]]\n- [[wiki/index]]"
-      },
-      "section_links": {
-        "输出": [],
-        "refs": [
-          "control/repo_lint",
-          "wiki/index"
-        ]
-      },
-      "code_items": {
-        "输出": [
-          "src/wiki/store/index.json",
-          "src/wiki/store/catalog.json",
-          "src/wiki/store/graph.json"
-        ],
-        "refs": [
-          "[[control/repo_lint]]",
-          "[[wiki/index]]"
-        ]
-      },
-      "settings": {}
-    },
-    "control/repo_lint": {
-      "kind": "control",
-      "title": "Control Repository Lint",
-      "summary": "负责校验仓库是否遵守单页真相协议和旧链路清理规则。",
-      "path": "src/control/repo_lint/page.md",
-      "folder": "src/control/repo_lint",
-      "truth_ext": [
-        "__init__.py",
-        "impl.py"
-      ],
-      "links": [
-        "control/protocol_index"
-      ],
-      "content_hash": "30c46a3666a73a5d621687e5ff7369206fb33bcb",
-      "runtime_action": null,
-      "section_map": {
-        "核心规则": "- 单文件夹最多一个 `.md`\n- `[[...]]` 链接必须可解析\n- 仓库中不得残留旧知识库路径和旧动作名",
-        "refs": "- [[control/protocol_index]]"
-      },
-      "section_links": {
-        "核心规则": [],
-        "refs": [
-          "control/protocol_index"
-        ]
-      },
-      "code_items": {
-        "核心规则": [
-          ".md",
-          "[[...]]",
-          "仓库中不得残留旧知识库路径和旧动作名"
-        ],
-        "refs": [
-          "[[control/protocol_index]]"
-        ]
-      },
-      "settings": {}
+      ]
     },
     "skill/core/memory": {
       "kind": "skill",
       "title": "Core Memory",
-      "summary": "Uses 2 tool(s).",
-      "path": "src/skill/core/memory/page.md",
-      "folder": "src/skill/core/memory",
-      "truth_ext": [],
-      "links": [
-        "tool/compact/now",
-        "tool/governance/load_refs"
-      ],
-      "content_hash": "3430c2663d896977f183efe327265969e06a7b05",
-      "runtime_action": null,
-      "section_map": {
-        "tools": "- [[tool/compact/now]]\n- [[tool/governance/load_refs]]"
-      },
-      "section_links": {
-        "tools": [
-          "tool/compact/now",
-          "tool/governance/load_refs"
-        ]
-      },
-      "code_items": {
-        "tools": [
-          "[[tool/compact/now]]",
-          "[[tool/governance/load_refs]]"
-        ]
-      },
-      "settings": {}
+      "summary": "Skill page for `skill/core/memory`.",
+      "path": "src/skill/core/memory/wiki.md",
+      "source_type": "system",
+      "links": []
     },
     "skill/core/query": {
       "kind": "skill",
       "title": "Core Query",
-      "summary": "Uses 5 tool(s).",
-      "path": "src/skill/core/query/page.md",
-      "folder": "src/skill/core/query",
-      "truth_ext": [],
-      "links": [
-        "tool/engine/inspect_action",
-        "tool/engine/inspect_skill",
-        "tool/engine/list_child_skills",
-        "tool/files/list_dir",
-        "tool/files/read_text"
-      ],
-      "content_hash": "6795abe297acb7ef0cb18ae7fd57b9c23009340e",
-      "runtime_action": null,
-      "section_map": {
-        "tools": "- [[tool/engine/inspect_skill]]\n- [[tool/engine/inspect_action]]\n- [[tool/engine/list_child_skills]]\n- [[tool/files/read_text]]\n- [[tool/files/list_dir]]"
-      },
-      "section_links": {
-        "tools": [
-          "tool/engine/inspect_skill",
-          "tool/engine/inspect_action",
-          "tool/engine/list_child_skills",
-          "tool/files/read_text",
-          "tool/files/list_dir"
-        ]
-      },
-      "code_items": {
-        "tools": [
-          "[[tool/engine/inspect_skill]]",
-          "[[tool/engine/inspect_action]]",
-          "[[tool/engine/list_child_skills]]",
-          "[[tool/files/read_text]]",
-          "[[tool/files/list_dir]]"
-        ]
-      },
-      "settings": {}
+      "summary": "Skill page for `skill/core/query`.",
+      "path": "src/skill/core/query/wiki.md",
+      "source_type": "system",
+      "links": []
     },
     "skill/core/report": {
       "kind": "skill",
       "title": "Core Report",
-      "summary": "Uses 2 tool(s).",
-      "path": "src/skill/core/report/page.md",
-      "folder": "src/skill/core/report",
-      "truth_ext": [],
-      "links": [
-        "tool/files/read_text",
-        "tool/files/write_text"
-      ],
-      "content_hash": "0f240eaa17ae1fe0fc8582b53a395c8d87603f1b",
-      "runtime_action": null,
-      "section_map": {
-        "tools": "- [[tool/files/write_text]]\n- [[tool/files/read_text]]"
-      },
-      "section_links": {
-        "tools": [
-          "tool/files/write_text",
-          "tool/files/read_text"
-        ]
-      },
-      "code_items": {
-        "tools": [
-          "[[tool/files/write_text]]",
-          "[[tool/files/read_text]]"
-        ]
-      },
-      "settings": {}
+      "summary": "Skill page for `skill/core/report`.",
+      "path": "src/skill/core/report/wiki.md",
+      "source_type": "system",
+      "links": []
     },
     "skill/core/routing": {
       "kind": "skill",
       "title": "Core Routing",
-      "summary": "Uses 3 tool(s).",
-      "path": "src/skill/core/routing/page.md",
-      "folder": "src/skill/core/routing",
-      "truth_ext": [],
-      "links": [
-        "tool/engine/enter_skill",
-        "tool/engine/list_child_skills",
-        "tool/governance/inspect_tool_surface"
-      ],
-      "content_hash": "3139798d195ecc16d2557e0c699b4cfcc9bc9c2d",
-      "runtime_action": null,
-      "section_map": {
-        "tools": "- [[tool/engine/list_child_skills]]\n- [[tool/engine/enter_skill]]\n- [[tool/governance/inspect_tool_surface]]"
-      },
-      "section_links": {
-        "tools": [
-          "tool/engine/list_child_skills",
-          "tool/engine/enter_skill",
-          "tool/governance/inspect_tool_surface"
-        ]
-      },
-      "code_items": {
-        "tools": [
-          "[[tool/engine/list_child_skills]]",
-          "[[tool/engine/enter_skill]]",
-          "[[tool/governance/inspect_tool_surface]]"
-        ]
-      },
-      "settings": {}
+      "summary": "Skill page for `skill/core/routing`.",
+      "path": "src/skill/core/routing/wiki.md",
+      "source_type": "system",
+      "links": []
     },
     "skill/core/task": {
       "kind": "skill",
       "title": "Core Task",
-      "summary": "Uses 7 tool(s).",
-      "path": "src/skill/core/task/page.md",
-      "folder": "src/skill/core/task",
-      "truth_ext": [],
-      "links": [
-        "tool/task/claim",
-        "tool/task/create",
-        "tool/task/get",
-        "tool/task/list",
-        "tool/task/update",
-        "tool/todo/update",
-        "tool/todo/view"
-      ],
-      "content_hash": "8bc5d2875ac0acc8be4e08f16c9a2766e5af1123",
-      "runtime_action": null,
-      "section_map": {
-        "tools": "- [[tool/todo/update]]\n- [[tool/todo/view]]\n- [[tool/task/create]]\n- [[tool/task/update]]\n- [[tool/task/list]]\n- [[tool/task/get]]\n- [[tool/task/claim]]"
-      },
-      "section_links": {
-        "tools": [
-          "tool/todo/update",
-          "tool/todo/view",
-          "tool/task/create",
-          "tool/task/update",
-          "tool/task/list",
-          "tool/task/get",
-          "tool/task/claim"
-        ]
-      },
-      "code_items": {
-        "tools": [
-          "[[tool/todo/update]]",
-          "[[tool/todo/view]]",
-          "[[tool/task/create]]",
-          "[[tool/task/update]]",
-          "[[tool/task/list]]",
-          "[[tool/task/get]]",
-          "[[tool/task/claim]]"
-        ]
-      },
-      "settings": {}
+      "summary": "Skill page for `skill/core/task`.",
+      "path": "src/skill/core/task/wiki.md",
+      "source_type": "system",
+      "links": []
     },
     "skill/general/root": {
       "kind": "skill",
       "title": "General Root",
-      "summary": "Uses 9 tool(s). Exposes 2 child skill(s). References 1 related skill(s).",
-      "path": "src/skill/general/root/page.md",
-      "folder": "src/skill/general/root",
-      "truth_ext": [],
+      "summary": "Skill page for `skill/general/root`.",
+      "path": "src/skill/general/root/wiki.md",
+      "source_type": "system",
       "links": [
         "skill/core/query",
         "skill/core/report",
-        "skill/core/task",
-        "tool/engine/enter_skill",
-        "tool/engine/inspect_action",
-        "tool/engine/inspect_skill",
-        "tool/engine/list_child_skills",
-        "tool/files/edit_text",
-        "tool/files/list_dir",
-        "tool/files/read_text",
-        "tool/files/write_text",
-        "tool/shell/run"
-      ],
-      "content_hash": "bfcc18737242cd89814cffe15c71796e12f36453",
-      "runtime_action": null,
-      "section_map": {
-        "child skills": "- [[skill/core/query]]\n- [[skill/core/task]]",
-        "refs": "- [[skill/core/report]]",
-        "tools": "- [[tool/engine/inspect_skill]]\n- [[tool/engine/inspect_action]]\n- [[tool/engine/enter_skill]]\n- [[tool/engine/list_child_skills]]\n- [[tool/files/list_dir]]\n- [[tool/files/read_text]]\n- [[tool/files/write_text]]\n- [[tool/files/edit_text]]\n- [[tool/shell/run]]"
-      },
-      "section_links": {
-        "child skills": [
-          "skill/core/query",
-          "skill/core/task"
-        ],
-        "refs": [
-          "skill/core/report"
-        ],
-        "tools": [
-          "tool/engine/inspect_skill",
-          "tool/engine/inspect_action",
-          "tool/engine/enter_skill",
-          "tool/engine/list_child_skills",
-          "tool/files/list_dir",
-          "tool/files/read_text",
-          "tool/files/write_text",
-          "tool/files/edit_text",
-          "tool/shell/run"
-        ]
-      },
-      "code_items": {
-        "child skills": [
-          "[[skill/core/query]]",
-          "[[skill/core/task]]"
-        ],
-        "refs": [
-          "[[skill/core/report]]"
-        ],
-        "tools": [
-          "[[tool/engine/inspect_skill]]",
-          "[[tool/engine/inspect_action]]",
-          "[[tool/engine/enter_skill]]",
-          "[[tool/engine/list_child_skills]]",
-          "[[tool/files/list_dir]]",
-          "[[tool/files/read_text]]",
-          "[[tool/files/write_text]]",
-          "[[tool/files/edit_text]]",
-          "[[tool/shell/run]]"
-        ]
-      },
-      "settings": {}
+        "skill/core/task"
+      ]
     },
     "skill/governance/agent_build": {
       "kind": "skill",
       "title": "Governance Agent Build",
-      "summary": "Uses 2 tool(s).",
-      "path": "src/skill/governance/agent_build/page.md",
-      "folder": "src/skill/governance/agent_build",
-      "truth_ext": [],
-      "links": [
-        "tool/subagent/ask",
-        "tool/subagent/batch_run"
-      ],
-      "content_hash": "3729f7d07ea2aa424cad3455a8b4648c3c2c7c51",
-      "runtime_action": null,
-      "section_map": {
-        "scope": "- 子智能体和批量子任务创建的行为说明归属于本 skill。\n- control plane 只保留运行代码，不再保留只有 `page.md` 的治理说明页。\n- 构建 child agent 时应继承父运行时的 registry、LLM 配置、存储根与可见工具箱边界。",
-        "tools": "- [[tool/subagent/ask]]\n- [[tool/subagent/batch_run]]"
-      },
-      "section_links": {
-        "scope": [],
-        "tools": [
-          "tool/subagent/ask",
-          "tool/subagent/batch_run"
-        ]
-      },
-      "code_items": {
-        "scope": [
-          "子智能体和批量子任务创建的行为说明归属于本 skill。",
-          "page.md",
-          "构建 child agent 时应继承父运行时的 registry、LLM 配置、存储根与可见工具箱边界。"
-        ],
-        "tools": [
-          "[[tool/subagent/ask]]",
-          "[[tool/subagent/batch_run]]"
-        ]
-      },
-      "settings": {}
+      "summary": "Skill page for `skill/governance/agent_build`.",
+      "path": "src/skill/governance/agent_build/wiki.md",
+      "source_type": "system",
+      "links": []
     },
     "skill/governance/compact_guard": {
       "kind": "skill",
       "title": "Governance Compact Guard",
-      "summary": "Uses 2 tool(s).",
-      "path": "src/skill/governance/compact_guard/page.md",
-      "folder": "src/skill/governance/compact_guard",
-      "truth_ext": [],
-      "links": [
-        "tool/compact/now",
-        "tool/governance/normalize_tool_result"
-      ],
-      "content_hash": "67f6f15803825bbfda0d9c13250b1ac4427fc7fb",
-      "runtime_action": null,
-      "section_map": {
-        "tools": "- [[tool/compact/now]]\n- [[tool/governance/normalize_tool_result]]"
-      },
-      "section_links": {
-        "tools": [
-          "tool/compact/now",
-          "tool/governance/normalize_tool_result"
-        ]
-      },
-      "code_items": {
-        "tools": [
-          "[[tool/compact/now]]",
-          "[[tool/governance/normalize_tool_result]]"
-        ]
-      },
-      "settings": {}
+      "summary": "Skill page for `skill/governance/compact_guard`.",
+      "path": "src/skill/governance/compact_guard/wiki.md",
+      "source_type": "system",
+      "links": []
     },
     "skill/governance/protocol_governance": {
       "kind": "skill",
       "title": "Governance Protocol Governance",
-      "summary": "Uses 5 tool(s).",
-      "path": "src/skill/governance/protocol_governance/page.md",
-      "folder": "src/skill/governance/protocol_governance",
-      "truth_ext": [],
-      "links": [
-        "tool/protocol/request_shutdown",
-        "tool/protocol/respond_shutdown",
-        "tool/protocol/review_plan",
-        "tool/protocol/submit_plan",
-        "tool/team/read_inbox"
-      ],
-      "content_hash": "20fe1c6bb8399c9b71dd281f33903ff18be67986",
-      "runtime_action": null,
-      "section_map": {
-        "tools": "- [[tool/protocol/request_shutdown]]\n- [[tool/protocol/respond_shutdown]]\n- [[tool/protocol/submit_plan]]\n- [[tool/protocol/review_plan]]\n- [[tool/team/read_inbox]]"
-      },
-      "section_links": {
-        "tools": [
-          "tool/protocol/request_shutdown",
-          "tool/protocol/respond_shutdown",
-          "tool/protocol/submit_plan",
-          "tool/protocol/review_plan",
-          "tool/team/read_inbox"
-        ]
-      },
-      "code_items": {
-        "tools": [
-          "[[tool/protocol/request_shutdown]]",
-          "[[tool/protocol/respond_shutdown]]",
-          "[[tool/protocol/submit_plan]]",
-          "[[tool/protocol/review_plan]]",
-          "[[tool/team/read_inbox]]"
-        ]
-      },
-      "settings": {}
+      "summary": "Skill page for `skill/governance/protocol_governance`.",
+      "path": "src/skill/governance/protocol_governance/wiki.md",
+      "source_type": "system",
+      "links": []
     },
     "skill/governance/refs_bridge": {
       "kind": "skill",
       "title": "Governance Refs Bridge",
-      "summary": "Uses 2 tool(s).",
-      "path": "src/skill/governance/refs_bridge/page.md",
-      "folder": "src/skill/governance/refs_bridge",
-      "truth_ext": [],
-      "links": [
-        "tool/engine/inspect_skill",
-        "tool/governance/load_refs"
-      ],
-      "content_hash": "13828734e874c3b2f73019af1f7fa53e35dd7056",
-      "runtime_action": null,
-      "section_map": {
-        "tools": "- [[tool/governance/load_refs]]\n- [[tool/engine/inspect_skill]]"
-      },
-      "section_links": {
-        "tools": [
-          "tool/governance/load_refs",
-          "tool/engine/inspect_skill"
-        ]
-      },
-      "code_items": {
-        "tools": [
-          "[[tool/governance/load_refs]]",
-          "[[tool/engine/inspect_skill]]"
-        ]
-      },
-      "settings": {}
+      "summary": "Skill page for `skill/governance/refs_bridge`.",
+      "path": "src/skill/governance/refs_bridge/wiki.md",
+      "source_type": "system",
+      "links": []
     },
     "skill/governance/task_governance": {
       "kind": "skill",
       "title": "Governance Task Governance",
-      "summary": "Uses 5 tool(s).",
-      "path": "src/skill/governance/task_governance/page.md",
-      "folder": "src/skill/governance/task_governance",
-      "truth_ext": [],
-      "links": [
-        "tool/task/claim",
-        "tool/task/create",
-        "tool/task/list",
-        "tool/task/update",
-        "tool/todo/update"
-      ],
-      "content_hash": "88995a1d4ee2365cd3ef64b0f9b4f4dbacccd746",
-      "runtime_action": null,
-      "section_map": {
-        "tools": "- [[tool/todo/update]]\n- [[tool/task/create]]\n- [[tool/task/update]]\n- [[tool/task/list]]\n- [[tool/task/claim]]"
-      },
-      "section_links": {
-        "tools": [
-          "tool/todo/update",
-          "tool/task/create",
-          "tool/task/update",
-          "tool/task/list",
-          "tool/task/claim"
-        ]
-      },
-      "code_items": {
-        "tools": [
-          "[[tool/todo/update]]",
-          "[[tool/task/create]]",
-          "[[tool/task/update]]",
-          "[[tool/task/list]]",
-          "[[tool/task/claim]]"
-        ]
-      },
-      "settings": {}
+      "summary": "Skill page for `skill/governance/task_governance`.",
+      "path": "src/skill/governance/task_governance/wiki.md",
+      "source_type": "system",
+      "links": []
     },
     "skill/governance/tool_surface": {
       "kind": "skill",
       "title": "Governance Tool Surface",
-      "summary": "Uses 3 tool(s).",
-      "path": "src/skill/governance/tool_surface/page.md",
-      "folder": "src/skill/governance/tool_surface",
-      "truth_ext": [],
-      "links": [
-        "tool/engine/inspect_action",
-        "tool/governance/inspect_tool_surface",
-        "tool/governance/normalize_tool_result"
-      ],
-      "content_hash": "39a895c7f756c006a0d2c6aaf336f71867874fff",
-      "runtime_action": null,
-      "section_map": {
-        "tools": "- [[tool/governance/inspect_tool_surface]]\n- [[tool/governance/normalize_tool_result]]\n- [[tool/engine/inspect_action]]"
-      },
-      "section_links": {
-        "tools": [
-          "tool/governance/inspect_tool_surface",
-          "tool/governance/normalize_tool_result",
-          "tool/engine/inspect_action"
-        ]
-      },
-      "code_items": {
-        "tools": [
-          "[[tool/governance/inspect_tool_surface]]",
-          "[[tool/governance/normalize_tool_result]]",
-          "[[tool/engine/inspect_action]]"
-        ]
-      },
-      "settings": {}
+      "summary": "Skill page for `skill/governance/tool_surface`.",
+      "path": "src/skill/governance/tool_surface/wiki.md",
+      "source_type": "system",
+      "links": []
     },
     "skill/governance/workspace_governance": {
       "kind": "skill",
       "title": "Governance Workspace Governance",
-      "summary": "Uses 5 tool(s).",
-      "path": "src/skill/governance/workspace_governance/page.md",
-      "folder": "src/skill/governance/workspace_governance",
-      "truth_ext": [],
-      "links": [
-        "tool/workspace/create",
-        "tool/workspace/keep",
-        "tool/workspace/list",
-        "tool/workspace/remove",
-        "tool/workspace/run"
-      ],
-      "content_hash": "da9e7da0853259c855f93887bd128e798e6092f8",
-      "runtime_action": null,
-      "section_map": {
-        "tools": "- [[tool/workspace/create]]\n- [[tool/workspace/list]]\n- [[tool/workspace/run]]\n- [[tool/workspace/keep]]\n- [[tool/workspace/remove]]"
-      },
-      "section_links": {
-        "tools": [
-          "tool/workspace/create",
-          "tool/workspace/list",
-          "tool/workspace/run",
-          "tool/workspace/keep",
-          "tool/workspace/remove"
-        ]
-      },
-      "code_items": {
-        "tools": [
-          "[[tool/workspace/create]]",
-          "[[tool/workspace/list]]",
-          "[[tool/workspace/run]]",
-          "[[tool/workspace/keep]]",
-          "[[tool/workspace/remove]]"
-        ]
-      },
-      "settings": {}
+      "summary": "Skill page for `skill/governance/workspace_governance`.",
+      "path": "src/skill/governance/workspace_governance/wiki.md",
+      "source_type": "system",
+      "links": []
     },
     "skill/parts_design/camshaft/root": {
       "kind": "skill",
       "title": "Parts Design Camshaft Root",
-      "summary": "Uses 3 tool(s). References 1 related skill(s).",
-      "path": "src/skill/parts_design/camshaft/root/page.md",
-      "folder": "src/skill/parts_design/camshaft/root",
-      "truth_ext": [],
+      "summary": "Skill page for `skill/parts_design/camshaft/root`.",
+      "path": "src/skill/parts_design/camshaft/root/wiki.md",
+      "source_type": "system",
       "links": [
-        "skill/parts_design/common/report",
-        "tool/files/read_text",
-        "tool/files/write_text",
-        "tool/shell/run"
-      ],
-      "content_hash": "6104517982e27bdbd38f5559890a4151382d0956",
-      "runtime_action": null,
-      "section_map": {
-        "refs": "- [[skill/parts_design/common/report]]",
-        "tools": "- [[tool/files/read_text]]\n- [[tool/files/write_text]]\n- [[tool/shell/run]]"
-      },
-      "section_links": {
-        "refs": [
-          "skill/parts_design/common/report"
-        ],
-        "tools": [
-          "tool/files/read_text",
-          "tool/files/write_text",
-          "tool/shell/run"
-        ]
-      },
-      "code_items": {
-        "refs": [
-          "[[skill/parts_design/common/report]]"
-        ],
-        "tools": [
-          "[[tool/files/read_text]]",
-          "[[tool/files/write_text]]",
-          "[[tool/shell/run]]"
-        ]
-      },
-      "settings": {}
+        "skill/parts_design/common/report"
+      ]
     },
     "skill/parts_design/common/report": {
       "kind": "skill",
       "title": "Parts Design Common Report",
-      "summary": "Uses 2 tool(s).",
-      "path": "src/skill/parts_design/common/report/page.md",
-      "folder": "src/skill/parts_design/common/report",
-      "truth_ext": [],
-      "links": [
-        "tool/files/read_text",
-        "tool/files/write_text"
-      ],
-      "content_hash": "f13eb61762f99eab099f413277b6d317a6ab1f3d",
-      "runtime_action": null,
-      "section_map": {
-        "tools": "- [[tool/files/write_text]]\n- [[tool/files/read_text]]"
-      },
-      "section_links": {
-        "tools": [
-          "tool/files/write_text",
-          "tool/files/read_text"
-        ]
-      },
-      "code_items": {
-        "tools": [
-          "[[tool/files/write_text]]",
-          "[[tool/files/read_text]]"
-        ]
-      },
-      "settings": {}
+      "summary": "Skill page for `skill/parts_design/common/report`.",
+      "path": "src/skill/parts_design/common/report/wiki.md",
+      "source_type": "system",
+      "links": []
     },
     "skill/parts_design/common/requirement_parse": {
       "kind": "skill",
       "title": "Parts Design Common Requirement Parse",
-      "summary": "Uses 5 tool(s).",
-      "path": "src/skill/parts_design/common/requirement_parse/page.md",
-      "folder": "src/skill/parts_design/common/requirement_parse",
-      "truth_ext": [],
-      "links": [
-        "tool/files/write_text",
-        "tool/task/create",
-        "tool/task/list",
-        "tool/todo/update",
-        "tool/todo/view"
-      ],
-      "content_hash": "b72320e839ba8c6a64640931c2241bf5a9548a89",
-      "runtime_action": null,
-      "section_map": {
-        "tools": "- [[tool/todo/update]]\n- [[tool/todo/view]]\n- [[tool/task/create]]\n- [[tool/task/list]]\n- [[tool/files/write_text]]"
-      },
-      "section_links": {
-        "tools": [
-          "tool/todo/update",
-          "tool/todo/view",
-          "tool/task/create",
-          "tool/task/list",
-          "tool/files/write_text"
-        ]
-      },
-      "code_items": {
-        "tools": [
-          "[[tool/todo/update]]",
-          "[[tool/todo/view]]",
-          "[[tool/task/create]]",
-          "[[tool/task/list]]",
-          "[[tool/files/write_text]]"
-        ]
-      },
-      "settings": {}
+      "summary": "Skill page for `skill/parts_design/common/requirement_parse`.",
+      "path": "src/skill/parts_design/common/requirement_parse/wiki.md",
+      "source_type": "system",
+      "links": []
     },
     "skill/parts_design/conrod/root": {
       "kind": "skill",
       "title": "Parts Design Conrod Root",
-      "summary": "Uses 11 tool(s). References 2 related skill(s).",
-      "path": "src/skill/parts_design/conrod/root/page.md",
-      "folder": "src/skill/parts_design/conrod/root",
-      "truth_ext": [],
+      "summary": "Skill page for `skill/parts_design/conrod/root`.",
+      "path": "src/skill/parts_design/conrod/root/wiki.md",
+      "source_type": "system",
       "links": [
         "skill/parts_design/common/report",
-        "skill/parts_design/common/requirement_parse",
-        "tool/engine/inspect_action",
-        "tool/engine/inspect_skill",
-        "tool/files/read_text",
-        "tool/files/write_text",
-        "tool/task/create",
-        "tool/task/list",
-        "tool/task/update",
-        "tool/todo/update",
-        "tool/todo/view",
-        "tool/workspace/create",
-        "tool/workspace/run"
-      ],
-      "content_hash": "8e83d57f72d617b2e20adec47899bc7393e2089c",
-      "runtime_action": null,
-      "section_map": {
-        "refs": "- [[skill/parts_design/common/requirement_parse]]\n- [[skill/parts_design/common/report]]",
-        "tools": "- [[tool/engine/inspect_skill]]\n- [[tool/engine/inspect_action]]\n- [[tool/todo/update]]\n- [[tool/todo/view]]\n- [[tool/task/create]]\n- [[tool/task/update]]\n- [[tool/task/list]]\n- [[tool/files/read_text]]\n- [[tool/files/write_text]]\n- [[tool/workspace/create]]\n- [[tool/workspace/run]]"
-      },
-      "section_links": {
-        "refs": [
-          "skill/parts_design/common/requirement_parse",
-          "skill/parts_design/common/report"
-        ],
-        "tools": [
-          "tool/engine/inspect_skill",
-          "tool/engine/inspect_action",
-          "tool/todo/update",
-          "tool/todo/view",
-          "tool/task/create",
-          "tool/task/update",
-          "tool/task/list",
-          "tool/files/read_text",
-          "tool/files/write_text",
-          "tool/workspace/create",
-          "tool/workspace/run"
-        ]
-      },
-      "code_items": {
-        "refs": [
-          "[[skill/parts_design/common/requirement_parse]]",
-          "[[skill/parts_design/common/report]]"
-        ],
-        "tools": [
-          "[[tool/engine/inspect_skill]]",
-          "[[tool/engine/inspect_action]]",
-          "[[tool/todo/update]]",
-          "[[tool/todo/view]]",
-          "[[tool/task/create]]",
-          "[[tool/task/update]]",
-          "[[tool/task/list]]",
-          "[[tool/files/read_text]]",
-          "[[tool/files/write_text]]",
-          "[[tool/workspace/create]]",
-          "[[tool/workspace/run]]"
-        ]
-      },
-      "settings": {}
+        "skill/parts_design/common/requirement_parse"
+      ]
     },
     "skill/parts_design/crankshaft/root": {
       "kind": "skill",
       "title": "Parts Design Crankshaft Root",
-      "summary": "Uses 11 tool(s). References 2 related skill(s).",
-      "path": "src/skill/parts_design/crankshaft/root/page.md",
-      "folder": "src/skill/parts_design/crankshaft/root",
-      "truth_ext": [],
+      "summary": "Skill page for `skill/parts_design/crankshaft/root`.",
+      "path": "src/skill/parts_design/crankshaft/root/wiki.md",
+      "source_type": "system",
       "links": [
         "skill/parts_design/common/report",
-        "skill/parts_design/common/requirement_parse",
-        "tool/engine/inspect_action",
-        "tool/engine/inspect_skill",
-        "tool/files/read_text",
-        "tool/files/write_text",
-        "tool/task/create",
-        "tool/task/list",
-        "tool/task/update",
-        "tool/todo/update",
-        "tool/todo/view",
-        "tool/workspace/create",
-        "tool/workspace/run"
-      ],
-      "content_hash": "41e5015504eb746cc0ecf26508bf7b287c7f6df6",
-      "runtime_action": null,
-      "section_map": {
-        "refs": "- [[skill/parts_design/common/requirement_parse]]\n- [[skill/parts_design/common/report]]",
-        "tools": "- [[tool/engine/inspect_skill]]\n- [[tool/engine/inspect_action]]\n- [[tool/todo/update]]\n- [[tool/todo/view]]\n- [[tool/task/create]]\n- [[tool/task/update]]\n- [[tool/task/list]]\n- [[tool/files/read_text]]\n- [[tool/files/write_text]]\n- [[tool/workspace/create]]\n- [[tool/workspace/run]]"
-      },
-      "section_links": {
-        "refs": [
-          "skill/parts_design/common/requirement_parse",
-          "skill/parts_design/common/report"
-        ],
-        "tools": [
-          "tool/engine/inspect_skill",
-          "tool/engine/inspect_action",
-          "tool/todo/update",
-          "tool/todo/view",
-          "tool/task/create",
-          "tool/task/update",
-          "tool/task/list",
-          "tool/files/read_text",
-          "tool/files/write_text",
-          "tool/workspace/create",
-          "tool/workspace/run"
-        ]
-      },
-      "code_items": {
-        "refs": [
-          "[[skill/parts_design/common/requirement_parse]]",
-          "[[skill/parts_design/common/report]]"
-        ],
-        "tools": [
-          "[[tool/engine/inspect_skill]]",
-          "[[tool/engine/inspect_action]]",
-          "[[tool/todo/update]]",
-          "[[tool/todo/view]]",
-          "[[tool/task/create]]",
-          "[[tool/task/update]]",
-          "[[tool/task/list]]",
-          "[[tool/files/read_text]]",
-          "[[tool/files/write_text]]",
-          "[[tool/workspace/create]]",
-          "[[tool/workspace/run]]"
-        ]
-      },
-      "settings": {}
+        "skill/parts_design/common/requirement_parse"
+      ]
+    },
+    "wiki/skill/parts_design/root/knowledge/README.md": {
+      "kind": "skill",
+      "title": "Parts Design Knowledge",
+      "summary": "Place domain-specific notes, parameter dictionaries, and reference documents for parts-design skills here.",
+      "path": "src/skill/parts_design/root/knowledge/README.md",
+      "source_type": "system",
+      "links": []
     },
     "skill/parts_design/root": {
       "kind": "skill",
       "title": "Parts Design Root",
-      "summary": "Uses 13 tool(s). Exposes 7 child skill(s). References 1 related skill(s).",
-      "path": "src/skill/parts_design/root/page.md",
-      "folder": "src/skill/parts_design/root",
-      "truth_ext": [],
+      "summary": "Skill page for `skill/parts_design/root`.",
+      "path": "src/skill/parts_design/root/wiki.md",
+      "source_type": "system",
       "links": [
         "skill/core/query",
         "skill/core/report",
@@ -1130,1523 +228,847 @@
         "skill/parts_design/common/report",
         "skill/parts_design/common/requirement_parse",
         "skill/parts_design/conrod/root",
-        "skill/parts_design/crankshaft/root",
-        "tool/engine/enter_skill",
-        "tool/engine/inspect_action",
-        "tool/engine/inspect_skill",
-        "tool/engine/list_child_skills",
-        "tool/files/list_dir",
-        "tool/files/read_text",
-        "tool/files/write_text",
-        "tool/shell/run",
-        "tool/workspace/create",
-        "tool/workspace/keep",
-        "tool/workspace/list",
-        "tool/workspace/remove",
-        "tool/workspace/run"
-      ],
-      "content_hash": "bbd29c89081a0bc43fa414b5ea4d726514556824",
-      "runtime_action": null,
-      "section_map": {
-        "child skills": "- [[skill/core/query]]\n- [[skill/core/task]]\n- [[skill/parts_design/common/requirement_parse]]\n- [[skill/parts_design/common/report]]\n- [[skill/parts_design/conrod/root]]\n- [[skill/parts_design/crankshaft/root]]\n- [[skill/parts_design/camshaft/root]]",
-        "refs": "- [[skill/core/report]]",
-        "tools": "- [[tool/engine/inspect_skill]]\n- [[tool/engine/inspect_action]]\n- [[tool/engine/enter_skill]]\n- [[tool/engine/list_child_skills]]\n- [[tool/files/list_dir]]\n- [[tool/files/read_text]]\n- [[tool/files/write_text]]\n- [[tool/shell/run]]\n- [[tool/workspace/create]]\n- [[tool/workspace/list]]\n- [[tool/workspace/run]]\n- [[tool/workspace/keep]]\n- [[tool/workspace/remove]]"
-      },
-      "section_links": {
-        "child skills": [
-          "skill/core/query",
-          "skill/core/task",
-          "skill/parts_design/common/requirement_parse",
-          "skill/parts_design/common/report",
-          "skill/parts_design/conrod/root",
-          "skill/parts_design/crankshaft/root",
-          "skill/parts_design/camshaft/root"
-        ],
-        "refs": [
-          "skill/core/report"
-        ],
-        "tools": [
-          "tool/engine/inspect_skill",
-          "tool/engine/inspect_action",
-          "tool/engine/enter_skill",
-          "tool/engine/list_child_skills",
-          "tool/files/list_dir",
-          "tool/files/read_text",
-          "tool/files/write_text",
-          "tool/shell/run",
-          "tool/workspace/create",
-          "tool/workspace/list",
-          "tool/workspace/run",
-          "tool/workspace/keep",
-          "tool/workspace/remove"
-        ]
-      },
-      "code_items": {
-        "child skills": [
-          "[[skill/core/query]]",
-          "[[skill/core/task]]",
-          "[[skill/parts_design/common/requirement_parse]]",
-          "[[skill/parts_design/common/report]]",
-          "[[skill/parts_design/conrod/root]]",
-          "[[skill/parts_design/crankshaft/root]]",
-          "[[skill/parts_design/camshaft/root]]"
-        ],
-        "refs": [
-          "[[skill/core/report]]"
-        ],
-        "tools": [
-          "[[tool/engine/inspect_skill]]",
-          "[[tool/engine/inspect_action]]",
-          "[[tool/engine/enter_skill]]",
-          "[[tool/engine/list_child_skills]]",
-          "[[tool/files/list_dir]]",
-          "[[tool/files/read_text]]",
-          "[[tool/files/write_text]]",
-          "[[tool/shell/run]]",
-          "[[tool/workspace/create]]",
-          "[[tool/workspace/list]]",
-          "[[tool/workspace/run]]",
-          "[[tool/workspace/keep]]",
-          "[[tool/workspace/remove]]"
-        ]
-      },
-      "settings": {}
+        "skill/parts_design/crankshaft/root"
+      ]
     },
     "skill/wiki_hub/ingest": {
       "kind": "skill",
       "title": "Wiki Hub Ingest",
       "summary": "Refresh the shared wiki store and bring new source files into it.",
-      "path": "src/skill/wiki_hub/ingest/page.md",
-      "folder": "src/skill/wiki_hub/ingest",
-      "truth_ext": [],
+      "path": "src/skill/wiki_hub/ingest/wiki.md",
+      "source_type": "system",
       "links": [
-        "skill/governance/agent_build",
-        "tool/wiki_admin/ingest_files",
-        "tool/wiki_admin/refresh_system"
-      ],
-      "content_hash": "6df7a8c9709087da20a02728859174b81aa6a3c8",
-      "runtime_action": null,
-      "section_map": {
-        "refs": "- [[skill/governance/agent_build]]",
-        "tools": "- [[tool/wiki_admin/refresh_system]]\n- [[tool/wiki_admin/ingest_files]]"
-      },
-      "section_links": {
-        "refs": [
-          "skill/governance/agent_build"
-        ],
-        "tools": [
-          "tool/wiki_admin/refresh_system",
-          "tool/wiki_admin/ingest_files"
-        ]
-      },
-      "code_items": {
-        "refs": [
-          "[[skill/governance/agent_build]]"
-        ],
-        "tools": [
-          "[[tool/wiki_admin/refresh_system]]",
-          "[[tool/wiki_admin/ingest_files]]"
-        ]
-      },
-      "settings": {}
-    },
-    "skill/wiki_hub/lint": {
-      "kind": "skill",
-      "title": "Wiki Hub Lint",
-      "summary": "Check the shared wiki store for indexing and link issues.",
-      "path": "src/skill/wiki_hub/lint/page.md",
-      "folder": "src/skill/wiki_hub/lint",
-      "truth_ext": [],
-      "links": [
-        "tool/wiki_admin/lint"
-      ],
-      "content_hash": "d0b2c57230f2aa0de3b23850ea0483c639a7c3b7",
-      "runtime_action": null,
-      "section_map": {
-        "tools": "- [[tool/wiki_admin/lint]]"
-      },
-      "section_links": {
-        "tools": [
-          "tool/wiki_admin/lint"
-        ]
-      },
-      "code_items": {
-        "tools": [
-          "[[tool/wiki_admin/lint]]"
-        ]
-      },
-      "settings": {}
+        "skill/governance/agent_build"
+      ]
     },
     "skill/wiki_hub/query": {
       "kind": "skill",
       "title": "Wiki Hub Query",
       "summary": "Search, read, and answer from the shared wiki store.",
-      "path": "src/skill/wiki_hub/query/page.md",
-      "folder": "src/skill/wiki_hub/query",
-      "truth_ext": [],
-      "links": [
-        "tool/wiki/answer",
-        "tool/wiki/read_page",
-        "tool/wiki/read_source",
-        "tool/wiki/search"
-      ],
-      "content_hash": "070d6873886d51c9e6caf35226e3ec661edab07b",
-      "runtime_action": null,
-      "section_map": {
-        "tools": "- [[tool/wiki/search]]\n- [[tool/wiki/read_page]]\n- [[tool/wiki/read_source]]\n- [[tool/wiki/answer]]"
-      },
-      "section_links": {
-        "tools": [
-          "tool/wiki/search",
-          "tool/wiki/read_page",
-          "tool/wiki/read_source",
-          "tool/wiki/answer"
-        ]
-      },
-      "code_items": {
-        "tools": [
-          "[[tool/wiki/search]]",
-          "[[tool/wiki/read_page]]",
-          "[[tool/wiki/read_source]]",
-          "[[tool/wiki/answer]]"
-        ]
-      },
-      "settings": {}
+      "path": "src/skill/wiki_hub/query/wiki.md",
+      "source_type": "system",
+      "links": []
+    },
+    "wiki/skill/wiki_hub/root/knowledge/README.md": {
+      "kind": "skill",
+      "title": "Wiki Hub Knowledge Seed",
+      "summary": "Place business notes, seed docs, and reference material for the shared wiki flow here.",
+      "path": "src/skill/wiki_hub/root/knowledge/README.md",
+      "source_type": "system",
+      "links": []
     },
     "skill/wiki_hub/root": {
       "kind": "skill",
       "title": "Wiki Hub Root",
       "summary": "Coordinate shared wiki lookup, refresh, and maintenance work.",
-      "path": "src/skill/wiki_hub/root/page.md",
-      "folder": "src/skill/wiki_hub/root",
-      "truth_ext": [],
+      "path": "src/skill/wiki_hub/root/wiki.md",
+      "source_type": "system",
       "links": [
         "skill/governance/agent_build",
         "skill/wiki_hub/ingest",
-        "skill/wiki_hub/lint",
-        "skill/wiki_hub/query",
-        "tool/wiki/answer",
-        "tool/wiki/read_page",
-        "tool/wiki/read_source",
-        "tool/wiki/search",
-        "tool/wiki_admin/ingest_files",
-        "tool/wiki_admin/lint",
-        "tool/wiki_admin/refresh_system"
-      ],
-      "content_hash": "df73e3efd940e3ad05222bed5af28d98df21f8e0",
-      "runtime_action": null,
-      "section_map": {
-        "child skills": "- [[skill/wiki_hub/ingest]]\n- [[skill/wiki_hub/query]]\n- [[skill/wiki_hub/lint]]",
-        "refs": "- [[skill/governance/agent_build]]",
-        "tools": "- [[tool/wiki/search]]\n- [[tool/wiki/read_page]]\n- [[tool/wiki/read_source]]\n- [[tool/wiki/answer]]\n- [[tool/wiki_admin/refresh_system]]\n- [[tool/wiki_admin/ingest_files]]\n- [[tool/wiki_admin/lint]]"
-      },
-      "section_links": {
-        "child skills": [
-          "skill/wiki_hub/ingest",
-          "skill/wiki_hub/query",
-          "skill/wiki_hub/lint"
-        ],
-        "refs": [
-          "skill/governance/agent_build"
-        ],
-        "tools": [
-          "tool/wiki/search",
-          "tool/wiki/read_page",
-          "tool/wiki/read_source",
-          "tool/wiki/answer",
-          "tool/wiki_admin/refresh_system",
-          "tool/wiki_admin/ingest_files",
-          "tool/wiki_admin/lint"
-        ]
-      },
-      "code_items": {
-        "child skills": [
-          "[[skill/wiki_hub/ingest]]",
-          "[[skill/wiki_hub/query]]",
-          "[[skill/wiki_hub/lint]]"
-        ],
-        "refs": [
-          "[[skill/governance/agent_build]]"
-        ],
-        "tools": [
-          "[[tool/wiki/search]]",
-          "[[tool/wiki/read_page]]",
-          "[[tool/wiki/read_source]]",
-          "[[tool/wiki/answer]]",
-          "[[tool/wiki_admin/refresh_system]]",
-          "[[tool/wiki_admin/ingest_files]]",
-          "[[tool/wiki_admin/lint]]"
-        ]
-      },
-      "settings": {}
+        "skill/wiki_hub/query"
+      ]
     },
-    "tool/compact/now": {
-      "kind": "tool",
-      "title": "Compact Now",
-      "summary": "Compact the current conversation state into the summary context.",
-      "path": "src/tool/compact/now/page.md",
-      "folder": "src/tool/compact/now",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "2a91b941fd68cc5fd77db5b0d405d11e22bc37e7",
-      "runtime_action": "compact.now",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+    "tool/external/db": {
+      "kind": "toolbox",
+      "title": "DB MCP Tools",
+      "summary": "Database MCP toolbox adapter.",
+      "path": "src/tool/external/db/wiki.md",
+      "source_type": "system",
+      "links": []
     },
-    "tool/engine/enter_skill": {
+    "tool/external/fs/diff_text": {
       "kind": "tool",
-      "title": "Engine Enter Skill",
-      "summary": "Enter a reachable skill and switch the active runtime scope.",
-      "path": "src/tool/engine/enter_skill/page.md",
-      "folder": "src/tool/engine/enter_skill",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "6bb056d50dc300095c5d52dfa0446d099f2dc269",
-      "runtime_action": "engine.enter_skill",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "title": "files.diff_text",
+      "summary": "Show a unified diff between two workspace text files.",
+      "path": "src/tool/external/fs/diff_text/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/fs"
+      ]
     },
-    "tool/engine/inspect_action": {
+    "tool/external/fs/edit_text": {
       "kind": "tool",
-      "title": "Engine Inspect Action",
-      "summary": "Inspect one action that is currently available in the runtime surface.",
-      "path": "src/tool/engine/inspect_action/page.md",
-      "folder": "src/tool/engine/inspect_action",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "92edefe5cd6432772e99f0b83faf96b6ffecfc14",
-      "runtime_action": "engine.inspect_action",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "title": "files.edit_text",
+      "summary": "Replace one exact text fragment inside an existing workspace file.",
+      "path": "src/tool/external/fs/edit_text/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/fs"
+      ]
     },
-    "tool/engine/inspect_skill": {
+    "tool/external/fs/list_dir": {
       "kind": "tool",
-      "title": "Engine Inspect Skill",
-      "summary": "Inspect a reachable skill and its surfaced behavior.",
-      "path": "src/tool/engine/inspect_skill/page.md",
-      "folder": "src/tool/engine/inspect_skill",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "3597f6b230177ba8e0400ea7a78f14e45ea24d02",
-      "runtime_action": "engine.inspect_skill",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "title": "files.list_dir",
+      "summary": "List files and directories inside a workspace directory.",
+      "path": "src/tool/external/fs/list_dir/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/fs"
+      ]
     },
-    "tool/engine/list_child_skills": {
+    "tool/external/fs/read_text": {
       "kind": "tool",
-      "title": "Engine List Child Skills",
-      "summary": "List the child skills that can be entered from the current skill.",
-      "path": "src/tool/engine/list_child_skills/page.md",
-      "folder": "src/tool/engine/list_child_skills",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "5d29a05a7c2ca428e90cef060ebfc51f02907673",
-      "runtime_action": "engine.list_child_skills",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "title": "files.read_text",
+      "summary": "Read a text file from the current runtime workspace.",
+      "path": "src/tool/external/fs/read_text/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/fs"
+      ]
     },
-    "tool/files/edit_text": {
-      "kind": "tool",
-      "title": "Files Edit Text",
-      "summary": "Edit text content inside a workspace file.",
-      "path": "src/tool/files/edit_text/page.md",
-      "folder": "src/tool/files/edit_text",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "65286b670e18cc6129e0ffc1ddccf22ab83d4192",
-      "runtime_action": "files.edit_text",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+    "tool/external/fs": {
+      "kind": "toolbox",
+      "title": "Filesystem Tools",
+      "summary": "Workspace file reading, writing, editing, listing, and diffing tools.",
+      "path": "src/tool/external/fs/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/fs/diff_text",
+        "tool/external/fs/edit_text",
+        "tool/external/fs/list_dir",
+        "tool/external/fs/read_text",
+        "tool/external/fs/write_text"
+      ]
     },
-    "tool/files/list_dir": {
+    "tool/external/fs/write_text": {
       "kind": "tool",
-      "title": "Files List Dir",
-      "summary": "List files and folders in the current workspace.",
-      "path": "src/tool/files/list_dir/page.md",
-      "folder": "src/tool/files/list_dir",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "5c8c2472e53525dc7da9a6ff16c3c434bf4cfe78",
-      "runtime_action": "files.list_dir",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "title": "files.write_text",
+      "summary": "Write text into a file inside the current runtime workspace.",
+      "path": "src/tool/external/fs/write_text/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/fs"
+      ]
     },
-    "tool/files/read_text": {
-      "kind": "tool",
-      "title": "Files Read Text",
-      "summary": "Read text content from a workspace file.",
-      "path": "src/tool/files/read_text/page.md",
-      "folder": "src/tool/files/read_text",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "56b97ba3b49eb4ef2a5951672d352079de18319a",
-      "runtime_action": "files.read_text",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+    "tool/external/kb": {
+      "kind": "toolbox",
+      "title": "KB MCP Tools",
+      "summary": "Knowledge-base MCP toolbox adapter.",
+      "path": "src/tool/external/kb/wiki.md",
+      "source_type": "system",
+      "links": []
     },
-    "tool/files/write_text": {
-      "kind": "tool",
-      "title": "Files Write Text",
-      "summary": "Write text content to a workspace file.",
-      "path": "src/tool/files/write_text/page.md",
-      "folder": "src/tool/files/write_text",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "fbd6779fe710afd7296db2ca9f107c235abc0f1f",
-      "runtime_action": "files.write_text",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+    "tool/external/nx": {
+      "kind": "toolbox",
+      "title": "NX MCP Tools",
+      "summary": "NX MCP toolbox adapter.",
+      "path": "src/tool/external/nx/wiki.md",
+      "source_type": "system",
+      "links": []
     },
-    "tool/governance/inspect_tool_surface": {
+    "tool/external/shell/run": {
       "kind": "tool",
-      "title": "Governance Inspect Tool Surface",
-      "summary": "Inspect the visible tool surface and exposed actions.",
-      "path": "src/tool/governance/inspect_tool_surface/page.md",
-      "folder": "src/tool/governance/inspect_tool_surface",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "2e68252811f14cc5f48edca9f4095145a535250a",
-      "runtime_action": "governance.inspect_tool_surface",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "title": "shell.run",
+      "summary": "Run a shell command inside the current runtime workspace.",
+      "path": "src/tool/external/shell/run/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/shell"
+      ]
     },
-    "tool/governance/load_refs": {
-      "kind": "tool",
-      "title": "Governance Load Refs",
-      "summary": "Load referenced skills into the active governed surface.",
-      "path": "src/tool/governance/load_refs/page.md",
-      "folder": "src/tool/governance/load_refs",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "82b2afa9520a64c4f5ad7036fa8199be2697dfdf",
-      "runtime_action": "governance.load_refs",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+    "tool/external/shell": {
+      "kind": "toolbox",
+      "title": "Shell Tools",
+      "summary": "Workspace shell execution tools.",
+      "path": "src/tool/external/shell/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/shell/run"
+      ]
     },
-    "tool/governance/normalize_tool_result": {
+    "tool/external/textops/preview_replace": {
       "kind": "tool",
-      "title": "Governance Normalize Tool Result",
-      "summary": "Normalize tool outputs into a cleaner runtime result format.",
-      "path": "src/tool/governance/normalize_tool_result/page.md",
-      "folder": "src/tool/governance/normalize_tool_result",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "52f3815b3dafbc9a54525501f63771b2eb9b4dc3",
-      "runtime_action": "governance.normalize_tool_result",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "title": "textops.preview_replace",
+      "summary": "Preview a one-shot text replacement without writing the file.",
+      "path": "src/tool/external/textops/preview_replace/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/textops"
+      ]
     },
-    "tool/protocol/request_shutdown": {
+    "tool/external/textops/search": {
       "kind": "tool",
-      "title": "Protocol Request Shutdown",
-      "summary": "Request a governed shutdown handshake for the current run.",
-      "path": "src/tool/protocol/request_shutdown/page.md",
-      "folder": "src/tool/protocol/request_shutdown",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "a536ef2f94f2d1439cdd1e5741b8759e9911e597",
-      "runtime_action": "protocol.request_shutdown",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "title": "textops.search",
+      "summary": "Search for a substring inside a workspace text file.",
+      "path": "src/tool/external/textops/search/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/textops"
+      ]
     },
-    "tool/protocol/respond_shutdown": {
-      "kind": "tool",
-      "title": "Protocol Respond Shutdown",
-      "summary": "Respond to a governed shutdown request.",
-      "path": "src/tool/protocol/respond_shutdown/page.md",
-      "folder": "src/tool/protocol/respond_shutdown",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "67352e63323c158990aaa2161e5ab3deb961abc4",
-      "runtime_action": "protocol.respond_shutdown",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+    "tool/external/textops": {
+      "kind": "toolbox",
+      "title": "Text Operations Tools",
+      "summary": "Text search and replacement preview tools for workspace files.",
+      "path": "src/tool/external/textops/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/textops/preview_replace",
+        "tool/external/textops/search"
+      ]
     },
-    "tool/protocol/review_plan": {
+    "tool/external/wiki/answer": {
       "kind": "tool",
-      "title": "Protocol Review Plan",
-      "summary": "Review a proposed execution plan before continuing work.",
-      "path": "src/tool/protocol/review_plan/page.md",
-      "folder": "src/tool/protocol/review_plan",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "fa3e51643b51ff7eb9a682b35b2ed6e8cb3b2dc1",
-      "runtime_action": "protocol.review_plan",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "title": "wiki.answer",
+      "summary": "Draft an answer from top wiki pages.",
+      "path": "src/tool/external/wiki/answer/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/wiki"
+      ]
     },
-    "tool/protocol/submit_plan": {
+    "tool/external/wiki/read_page": {
       "kind": "tool",
-      "title": "Protocol Submit Plan",
-      "summary": "Submit a plan for governed review and tracking.",
-      "path": "src/tool/protocol/submit_plan/page.md",
-      "folder": "src/tool/protocol/submit_plan",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "6b301340c9838907f1775678c50d066a314d95ff",
-      "runtime_action": "protocol.submit_plan",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
-    },
-    "tool/shell/run": {
-      "kind": "tool",
-      "title": "Shell Run",
-      "summary": "Run a shell command in the current workspace.",
-      "path": "src/tool/shell/run/page.md",
-      "folder": "src/tool/shell/run",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "d2a70c2b97db1fdf328efb0625c2d1f8696c89b4",
-      "runtime_action": "shell.run",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
-    },
-    "tool/subagent/ask": {
-      "kind": "tool",
-      "title": "Subagent Ask",
-      "summary": "Delegate one focused question to a subagent.",
-      "path": "src/tool/subagent/ask/page.md",
-      "folder": "src/tool/subagent/ask",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "050800f6c892b1dba5a563e663da9be296e91e4c",
-      "runtime_action": "subagent.ask",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
-    },
-    "tool/subagent/batch_run": {
-      "kind": "tool",
-      "title": "Subagent Batch Run",
-      "summary": "Run a batch of subagent jobs in one coordinated pass.",
-      "path": "src/tool/subagent/batch_run/page.md",
-      "folder": "src/tool/subagent/batch_run",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "4ad693474ac66ce986b05f5b785ce7193aef352d",
-      "runtime_action": "subagent.batch_run",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
-    },
-    "tool/task/claim": {
-      "kind": "tool",
-      "title": "Task Claim",
-      "summary": "Claim a task from the shared task queue.",
-      "path": "src/tool/task/claim/page.md",
-      "folder": "src/tool/task/claim",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "4b035485ed4b4df4a46f68a18313f392f93bc795",
-      "runtime_action": "task.claim",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
-    },
-    "tool/task/create": {
-      "kind": "tool",
-      "title": "Task Create",
-      "summary": "Create a task in the shared task queue.",
-      "path": "src/tool/task/create/page.md",
-      "folder": "src/tool/task/create",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "b66ec531b1c18ef3ca655236de44a61d620fd685",
-      "runtime_action": "task.create",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
-    },
-    "tool/task/get": {
-      "kind": "tool",
-      "title": "Task Get",
-      "summary": "Read one task from the shared task queue.",
-      "path": "src/tool/task/get/page.md",
-      "folder": "src/tool/task/get",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "bd3d7239cdcab6284924804243310c76054d2ce1",
-      "runtime_action": "task.get",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
-    },
-    "tool/task/list": {
-      "kind": "tool",
-      "title": "Task List",
-      "summary": "List tasks from the shared task queue.",
-      "path": "src/tool/task/list/page.md",
-      "folder": "src/tool/task/list",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "6033bb26b8c7894bb24dbbcb458af549bfdc9c60",
-      "runtime_action": "task.list",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
-    },
-    "tool/task/update": {
-      "kind": "tool",
-      "title": "Task Update",
-      "summary": "Update an existing task in the shared task queue.",
-      "path": "src/tool/task/update/page.md",
-      "folder": "src/tool/task/update",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "41100b7f0636510ef4b5f6a2a482d44e6955be71",
-      "runtime_action": "task.update",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
-    },
-    "tool/team/read_inbox": {
-      "kind": "tool",
-      "title": "Team Read Inbox",
-      "summary": "Read messages from the shared team inbox.",
-      "path": "src/tool/team/read_inbox/page.md",
-      "folder": "src/tool/team/read_inbox",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "db1e1b33b61cfa39c08c46a96b42e8bd6f789da1",
-      "runtime_action": "team.read_inbox",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
-    },
-    "tool/todo/update": {
-      "kind": "tool",
-      "title": "Todo Update",
-      "summary": "Update the runtime todo list.",
-      "path": "src/tool/todo/update/page.md",
-      "folder": "src/tool/todo/update",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "8806d714aee0ed869ee2aa789eeae80568aef0b2",
-      "runtime_action": "todo.update",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
-    },
-    "tool/todo/view": {
-      "kind": "tool",
-      "title": "Todo View",
-      "summary": "Read the current runtime todo list.",
-      "path": "src/tool/todo/view/page.md",
-      "folder": "src/tool/todo/view",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "27328029db4633a7dcaf7ed63c138d2972e560e7",
-      "runtime_action": "todo.view",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
-    },
-    "tool/wiki/answer": {
-      "kind": "tool",
-      "title": "Answer From Wiki",
-      "summary": "Draft an answer from the shared wiki store.",
-      "path": "src/tool/wiki/answer/page.md",
-      "folder": "src/tool/wiki/answer",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "13395a49d242dc2a4fbf549c873e14ac80beb1f9",
-      "runtime_action": "wiki.answer",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
-    },
-    "tool/wiki/read_page": {
-      "kind": "tool",
-      "title": "Read Wiki Page",
+      "title": "wiki.read_page",
       "summary": "Read one rendered page from the shared wiki store.",
-      "path": "src/tool/wiki/read_page/page.md",
-      "folder": "src/tool/wiki/read_page",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "71b5cdcf0f84c1d01419d589cd514b97b2e66ec2",
-      "runtime_action": "wiki.read_page",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "path": "src/tool/external/wiki/read_page/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/wiki"
+      ]
     },
-    "tool/wiki/read_source": {
+    "tool/external/wiki/read_source": {
       "kind": "tool",
-      "title": "Read Wiki Source",
-      "summary": "Read the original source text behind a wiki page.",
-      "path": "src/tool/wiki/read_source/page.md",
-      "folder": "src/tool/wiki/read_source",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "7a378f319a998edd03bd25537c4fdbcc64adbe35",
-      "runtime_action": "wiki.read_source",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "title": "wiki.read_source",
+      "summary": "Read the original source text linked from a wiki page.",
+      "path": "src/tool/external/wiki/read_source/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/wiki"
+      ]
     },
-    "tool/wiki/search": {
+    "tool/external/wiki/search": {
       "kind": "tool",
-      "title": "Search Wiki",
-      "summary": "Search pages in the shared wiki store.",
-      "path": "src/tool/wiki/search/page.md",
-      "folder": "src/tool/wiki/search",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "9ec45c80d41f773930c055a71876e2c047ca1a38",
-      "runtime_action": "wiki.search",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "title": "wiki.search",
+      "summary": "Search shared wiki pages.",
+      "path": "src/tool/external/wiki/search/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/wiki"
+      ]
     },
-    "tool/wiki_admin/ingest_files": {
+    "tool/external/wiki": {
+      "kind": "toolbox",
+      "title": "Wiki Tools",
+      "summary": "Read-oriented tools for the shared wiki store.",
+      "path": "src/tool/external/wiki/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/wiki/answer",
+        "tool/external/wiki/read_page",
+        "tool/external/wiki/read_source",
+        "tool/external/wiki/search"
+      ]
+    },
+    "tool/external/wiki_admin/ingest_files": {
       "kind": "tool",
-      "title": "Ingest Wiki Files",
+      "title": "wiki_admin.ingest_files",
       "summary": "Ingest user-provided files into the shared wiki store.",
-      "path": "src/tool/wiki_admin/ingest_files/page.md",
-      "folder": "src/tool/wiki_admin/ingest_files",
-      "truth_ext": [
-        "impl.py"
-      ],
+      "path": "src/tool/external/wiki_admin/ingest_files/wiki.md",
+      "source_type": "system",
       "links": [
-        "skill/wiki_hub/ingest",
-        "skill/wiki_hub/root"
-      ],
-      "content_hash": "38bb28baee3762a77fe6dff67aab2e8adebc89a6",
-      "runtime_action": "wiki_admin.ingest_files",
-      "section_map": {
-        "implementation": "- `impl.py`",
-        "related pages": "- [[skill/wiki_hub/ingest]]\n- [[skill/wiki_hub/root]]"
-      },
-      "section_links": {
-        "implementation": [],
-        "related pages": [
-          "skill/wiki_hub/ingest",
-          "skill/wiki_hub/root"
-        ]
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ],
-        "related pages": [
-          "[[skill/wiki_hub/ingest]]",
-          "[[skill/wiki_hub/root]]"
-        ]
-      },
-      "settings": {}
+        "tool/external/wiki_admin"
+      ]
     },
-    "tool/wiki_admin/lint": {
+    "tool/external/wiki_admin/refresh_system": {
       "kind": "tool",
-      "title": "Lint Wiki Store",
-      "summary": "Lint the shared wiki store and protocol links.",
-      "path": "src/tool/wiki_admin/lint/page.md",
-      "folder": "src/tool/wiki_admin/lint",
-      "truth_ext": [
-        "impl.py"
-      ],
+      "title": "wiki_admin.refresh_system",
+      "summary": "Refresh the shared wiki system pages from governed sources.",
+      "path": "src/tool/external/wiki_admin/refresh_system/wiki.md",
+      "source_type": "system",
       "links": [
-        "skill/wiki_hub/lint",
-        "skill/wiki_hub/root"
-      ],
-      "content_hash": "d7c9a65ea7d6e032e6773678ef4fd5c132d76037",
-      "runtime_action": "wiki_admin.lint",
-      "section_map": {
-        "implementation": "- `impl.py`",
-        "related pages": "- [[skill/wiki_hub/lint]]\n- [[skill/wiki_hub/root]]"
-      },
-      "section_links": {
-        "implementation": [],
-        "related pages": [
-          "skill/wiki_hub/lint",
-          "skill/wiki_hub/root"
-        ]
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ],
-        "related pages": [
-          "[[skill/wiki_hub/lint]]",
-          "[[skill/wiki_hub/root]]"
-        ]
-      },
-      "settings": {}
+        "tool/external/wiki_admin"
+      ]
     },
-    "tool/wiki_admin/refresh_system": {
-      "kind": "tool",
-      "title": "Refresh Wiki System",
-      "summary": "Refresh the shared wiki index and system summaries.",
-      "path": "src/tool/wiki_admin/refresh_system/page.md",
-      "folder": "src/tool/wiki_admin/refresh_system",
-      "truth_ext": [
-        "impl.py"
-      ],
+    "tool/external/wiki_admin": {
+      "kind": "toolbox",
+      "title": "Wiki Admin Tools",
+      "summary": "Administrative tools for refreshing and ingesting the shared wiki store.",
+      "path": "src/tool/external/wiki_admin/wiki.md",
+      "source_type": "system",
       "links": [
-        "skill/wiki_hub/ingest",
-        "skill/wiki_hub/root"
-      ],
-      "content_hash": "a19a0b92607077b46436de67f2e26bb6c30007b0",
-      "runtime_action": "wiki_admin.refresh_system",
-      "section_map": {
-        "implementation": "- `impl.py`",
-        "related pages": "- [[skill/wiki_hub/ingest]]\n- [[skill/wiki_hub/root]]"
-      },
-      "section_links": {
-        "implementation": [],
-        "related pages": [
-          "skill/wiki_hub/ingest",
-          "skill/wiki_hub/root"
-        ]
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ],
-        "related pages": [
-          "[[skill/wiki_hub/ingest]]",
-          "[[skill/wiki_hub/root]]"
-        ]
-      },
-      "settings": {}
+        "tool/external/wiki_admin/ingest_files",
+        "tool/external/wiki_admin/refresh_system"
+      ]
     },
-    "tool/workspace/create": {
+    "tool/external/workspace/create": {
       "kind": "tool",
-      "title": "Workspace Create",
-      "summary": "Create a workspace for the current task.",
-      "path": "src/tool/workspace/create/page.md",
-      "folder": "src/tool/workspace/create",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "f99551555d35e66e462d84ff9fdd444fb919e6ce",
-      "runtime_action": "workspace.create",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "title": "workspace.create",
+      "summary": "Create an isolated workspace.",
+      "path": "src/tool/external/workspace/create/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/workspace"
+      ]
     },
-    "tool/workspace/keep": {
+    "tool/external/workspace/keep": {
       "kind": "tool",
-      "title": "Workspace Keep",
-      "summary": "Persist the current workspace for later reuse.",
-      "path": "src/tool/workspace/keep/page.md",
-      "folder": "src/tool/workspace/keep",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "cdda37a43630d3a1f56c86b520a80597fd946e1a",
-      "runtime_action": "workspace.keep",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "title": "workspace.keep",
+      "summary": "Mark a managed workspace as kept.",
+      "path": "src/tool/external/workspace/keep/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/workspace"
+      ]
     },
-    "tool/workspace/list": {
+    "tool/external/workspace/list": {
       "kind": "tool",
-      "title": "Workspace List",
-      "summary": "List available task workspaces.",
-      "path": "src/tool/workspace/list/page.md",
-      "folder": "src/tool/workspace/list",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "5bef1a903baf0e8f86a2e36b573df48f7b0a0b19",
-      "runtime_action": "workspace.list",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "title": "workspace.list",
+      "summary": "List current managed workspaces.",
+      "path": "src/tool/external/workspace/list/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/workspace"
+      ]
     },
-    "tool/workspace/remove": {
+    "tool/external/workspace/remove": {
       "kind": "tool",
-      "title": "Workspace Remove",
-      "summary": "Remove a task workspace that is no longer needed.",
-      "path": "src/tool/workspace/remove/page.md",
-      "folder": "src/tool/workspace/remove",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "600f6eaebba0784f155ef3d2700f610309a97515",
-      "runtime_action": "workspace.remove",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "title": "workspace.remove",
+      "summary": "Remove a managed workspace and optionally complete its task.",
+      "path": "src/tool/external/workspace/remove/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/workspace"
+      ]
     },
-    "tool/workspace/run": {
+    "tool/external/workspace/run": {
       "kind": "tool",
-      "title": "Workspace Run",
-      "summary": "Run a command inside a task workspace.",
-      "path": "src/tool/workspace/run/page.md",
-      "folder": "src/tool/workspace/run",
-      "truth_ext": [
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "ab8257d6a6de6bd046027fbca23b319d8e8cc214",
-      "runtime_action": "workspace.run",
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "title": "workspace.run",
+      "summary": "Run a shell command inside a named workspace.",
+      "path": "src/tool/external/workspace/run/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/workspace"
+      ]
+    },
+    "tool/external/workspace": {
+      "kind": "toolbox",
+      "title": "Workspace Tools",
+      "summary": "Workspace lifecycle and execution tools for task-specific sandboxes.",
+      "path": "src/tool/external/workspace/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/external/workspace/create",
+        "tool/external/workspace/keep",
+        "tool/external/workspace/list",
+        "tool/external/workspace/remove",
+        "tool/external/workspace/run"
+      ]
+    },
+    "tool/system/autonomy/claim_next_task": {
+      "kind": "tool",
+      "title": "autonomy.claim_next_task",
+      "summary": "Claim the next unowned task.",
+      "path": "src/tool/system/autonomy/claim_next_task/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/autonomy"
+      ]
+    },
+    "tool/system/autonomy": {
+      "kind": "toolbox",
+      "title": "Autonomy Tools",
+      "summary": "Autonomous task-claim tools for background workers.",
+      "path": "src/tool/system/autonomy/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/autonomy/claim_next_task"
+      ]
+    },
+    "tool/system/background/check": {
+      "kind": "tool",
+      "title": "background.check",
+      "summary": "Check the status of a background task.",
+      "path": "src/tool/system/background/check/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/background"
+      ]
+    },
+    "tool/system/background/run": {
+      "kind": "tool",
+      "title": "background.run",
+      "summary": "Run a shell command in the background.",
+      "path": "src/tool/system/background/run/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/background"
+      ]
+    },
+    "tool/system/background": {
+      "kind": "toolbox",
+      "title": "Background Tools",
+      "summary": "Background command execution tools.",
+      "path": "src/tool/system/background/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/background/check",
+        "tool/system/background/run"
+      ]
+    },
+    "tool/system/compact/now": {
+      "kind": "tool",
+      "title": "compact.now",
+      "summary": "Compact the current conversation history.",
+      "path": "src/tool/system/compact/now/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/compact"
+      ]
+    },
+    "tool/system/compact": {
+      "kind": "toolbox",
+      "title": "Compact Tools",
+      "summary": "History compaction tools for runtime context control.",
+      "path": "src/tool/system/compact/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/compact/now"
+      ]
+    },
+    "tool/system/inspect/inspect_tool_surface": {
+      "kind": "tool",
+      "title": "governance.inspect_tool_surface",
+      "summary": "Inspect the visible tool surface.",
+      "path": "src/tool/system/inspect/inspect_tool_surface/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/inspect"
+      ]
+    },
+    "tool/system/inspect": {
+      "kind": "toolbox",
+      "title": "Inspect Tools",
+      "summary": "Tool surface inspection utilities.",
+      "path": "src/tool/system/inspect/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/inspect/inspect_tool_surface"
+      ]
+    },
+    "tool/system/isolation": {
+      "kind": "toolbox",
+      "title": "Isolation Tools",
+      "summary": "Isolation state tools that contribute runtime state fragments.",
+      "path": "src/tool/system/isolation/wiki.md",
+      "source_type": "system",
+      "links": []
+    },
+    "tool/system/normalize/normalize_tool_result": {
+      "kind": "tool",
+      "title": "governance.normalize_tool_result",
+      "summary": "Normalize an arbitrary tool result into a compact JSON payload.",
+      "path": "src/tool/system/normalize/normalize_tool_result/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/normalize"
+      ]
+    },
+    "tool/system/normalize": {
+      "kind": "toolbox",
+      "title": "Normalize Tools",
+      "summary": "Tool result normalization utilities.",
+      "path": "src/tool/system/normalize/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/normalize/normalize_tool_result"
+      ]
+    },
+    "tool/system/protocol/request_shutdown": {
+      "kind": "tool",
+      "title": "protocol.request_shutdown",
+      "summary": "Request graceful worker shutdown.",
+      "path": "src/tool/system/protocol/request_shutdown/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/protocol"
+      ]
+    },
+    "tool/system/protocol/respond_shutdown": {
+      "kind": "tool",
+      "title": "protocol.respond_shutdown",
+      "summary": "Approve or reject a shutdown request.",
+      "path": "src/tool/system/protocol/respond_shutdown/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/protocol"
+      ]
+    },
+    "tool/system/protocol/review_plan": {
+      "kind": "tool",
+      "title": "protocol.review_plan",
+      "summary": "Approve or reject a submitted plan.",
+      "path": "src/tool/system/protocol/review_plan/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/protocol"
+      ]
+    },
+    "tool/system/protocol/submit_plan": {
+      "kind": "tool",
+      "title": "protocol.submit_plan",
+      "summary": "Submit a plan for review.",
+      "path": "src/tool/system/protocol/submit_plan/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/protocol"
+      ]
+    },
+    "tool/system/protocol": {
+      "kind": "toolbox",
+      "title": "Protocol Tools",
+      "summary": "Review and shutdown protocol tools for coordinated workers.",
+      "path": "src/tool/system/protocol/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/protocol/request_shutdown",
+        "tool/system/protocol/respond_shutdown",
+        "tool/system/protocol/review_plan",
+        "tool/system/protocol/submit_plan"
+      ]
+    },
+    "tool/system/refs/load_refs": {
+      "kind": "tool",
+      "title": "governance.load_refs",
+      "summary": "Inspect the currently activated refs closure.",
+      "path": "src/tool/system/refs/load_refs/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/refs"
+      ]
+    },
+    "tool/system/refs": {
+      "kind": "toolbox",
+      "title": "Refs Tools",
+      "summary": "Refs inspection utilities.",
+      "path": "src/tool/system/refs/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/refs/load_refs"
+      ]
+    },
+    "tool/system/runtime/enter_skill": {
+      "kind": "tool",
+      "title": "engine.enter_skill",
+      "summary": "Switch the active runtime skill to another reachable skill.",
+      "path": "src/tool/system/runtime/enter_skill/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/runtime"
+      ]
+    },
+    "tool/system/runtime/inspect_skill": {
+      "kind": "tool",
+      "title": "engine.inspect_skill",
+      "summary": "Read the full page for a reachable skill.",
+      "path": "src/tool/system/runtime/inspect_skill/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/runtime"
+      ]
+    },
+    "tool/system/runtime/inspect_tool": {
+      "kind": "tool",
+      "title": "engine.inspect_tool",
+      "summary": "Inspect the schema and description for one currently visible tool.",
+      "path": "src/tool/system/runtime/inspect_tool/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/runtime"
+      ]
+    },
+    "tool/system/runtime/list_child_skills": {
+      "kind": "tool",
+      "title": "engine.list_child_skills",
+      "summary": "List the direct child skills of the current active skill.",
+      "path": "src/tool/system/runtime/list_child_skills/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/runtime"
+      ]
+    },
+    "tool/system/runtime": {
+      "kind": "toolbox",
+      "title": "Engine Tools",
+      "summary": "Runtime navigation and surface inspection tools that are always available to the model.",
+      "path": "src/tool/system/runtime/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/system/runtime/enter_skill",
+        "tool/system/runtime/inspect_skill",
+        "tool/system/runtime/inspect_tool",
+        "tool/system/runtime/list_child_skills"
+      ]
+    },
+    "tool": {
+      "kind": "tool",
+      "title": "Tool Domain",
+      "summary": "`tool/` is the only tool extension domain in the runtime.",
+      "path": "src/tool/wiki.md",
+      "source_type": "system",
+      "links": []
+    },
+    "tool/workflow/subagent/ask": {
+      "kind": "tool",
+      "title": "subagent.ask",
+      "summary": "Run one delegated subagent task.",
+      "path": "src/tool/workflow/subagent/ask/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/workflow/subagent"
+      ]
+    },
+    "tool/workflow/subagent/batch_run": {
+      "kind": "tool",
+      "title": "subagent.batch_run",
+      "summary": "Run multiple delegated subagent jobs.",
+      "path": "src/tool/workflow/subagent/batch_run/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/workflow/subagent"
+      ]
+    },
+    "tool/workflow/subagent": {
+      "kind": "toolbox",
+      "title": "Subagent Tools",
+      "summary": "Delegation tools for child runtimes.",
+      "path": "src/tool/workflow/subagent/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/workflow/subagent/ask",
+        "tool/workflow/subagent/batch_run"
+      ]
+    },
+    "tool/workflow/task/claim": {
+      "kind": "tool",
+      "title": "task.claim",
+      "summary": "Claim an unowned task.",
+      "path": "src/tool/workflow/task/claim/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/workflow/task"
+      ]
+    },
+    "tool/workflow/task/create": {
+      "kind": "tool",
+      "title": "task.create",
+      "summary": "Create a task in the shared task queue.",
+      "path": "src/tool/workflow/task/create/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/workflow/task"
+      ]
+    },
+    "tool/workflow/task/get": {
+      "kind": "tool",
+      "title": "task.get",
+      "summary": "Read one task from the shared task queue.",
+      "path": "src/tool/workflow/task/get/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/workflow/task"
+      ]
+    },
+    "tool/workflow/task/list": {
+      "kind": "tool",
+      "title": "task.list",
+      "summary": "List tasks in the shared task queue.",
+      "path": "src/tool/workflow/task/list/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/workflow/task"
+      ]
+    },
+    "tool/workflow/task/update": {
+      "kind": "tool",
+      "title": "task.update",
+      "summary": "Update task status, owner, or dependencies.",
+      "path": "src/tool/workflow/task/update/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/workflow/task"
+      ]
+    },
+    "tool/workflow/task": {
+      "kind": "toolbox",
+      "title": "Task Tools",
+      "summary": "Shared task queue tools.",
+      "path": "src/tool/workflow/task/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/workflow/task/claim",
+        "tool/workflow/task/create",
+        "tool/workflow/task/get",
+        "tool/workflow/task/list",
+        "tool/workflow/task/update"
+      ]
+    },
+    "tool/workflow/team/broadcast": {
+      "kind": "tool",
+      "title": "team.broadcast",
+      "summary": "Broadcast a message to all workers.",
+      "path": "src/tool/workflow/team/broadcast/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/workflow/team"
+      ]
+    },
+    "tool/workflow/team/list_workers": {
+      "kind": "tool",
+      "title": "team.list_workers",
+      "summary": "List registered worker runtimes.",
+      "path": "src/tool/workflow/team/list_workers/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/workflow/team"
+      ]
+    },
+    "tool/workflow/team/read_inbox": {
+      "kind": "tool",
+      "title": "team.read_inbox",
+      "summary": "Read the lead inbox.",
+      "path": "src/tool/workflow/team/read_inbox/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/workflow/team"
+      ]
+    },
+    "tool/workflow/team/send_message": {
+      "kind": "tool",
+      "title": "team.send_message",
+      "summary": "Send a message to one worker inbox.",
+      "path": "src/tool/workflow/team/send_message/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/workflow/team"
+      ]
+    },
+    "tool/workflow/team/spawn_worker": {
+      "kind": "tool",
+      "title": "team.spawn_worker",
+      "summary": "Spawn a managed worker runtime.",
+      "path": "src/tool/workflow/team/spawn_worker/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/workflow/team"
+      ]
+    },
+    "tool/workflow/team": {
+      "kind": "toolbox",
+      "title": "Team Tools",
+      "summary": "Worker coordination tools for multi-agent execution.",
+      "path": "src/tool/workflow/team/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/workflow/team/broadcast",
+        "tool/workflow/team/list_workers",
+        "tool/workflow/team/read_inbox",
+        "tool/workflow/team/send_message",
+        "tool/workflow/team/spawn_worker"
+      ]
+    },
+    "tool/workflow/todo/update": {
+      "kind": "tool",
+      "title": "todo.update",
+      "summary": "Update the runtime todo list.",
+      "path": "src/tool/workflow/todo/update/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/workflow/todo"
+      ]
+    },
+    "tool/workflow/todo/view": {
+      "kind": "tool",
+      "title": "todo.view",
+      "summary": "Read the current runtime todo list.",
+      "path": "src/tool/workflow/todo/view/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/workflow/todo"
+      ]
+    },
+    "tool/workflow/todo": {
+      "kind": "toolbox",
+      "title": "Todo Tools",
+      "summary": "Runtime todo state tools.",
+      "path": "src/tool/workflow/todo/wiki.md",
+      "source_type": "system",
+      "links": [
+        "tool/workflow/todo/update",
+        "tool/workflow/todo/view"
+      ]
     },
     "wiki/index": {
-      "kind": "wiki",
+      "kind": "knowledge",
       "title": "Wiki Index",
       "summary": "Wiki index persistence copies the control-plane registry read model into [[wiki/store]].",
-      "path": "src/wiki/index/page.md",
-      "folder": "src/wiki/index",
-      "truth_ext": [
-        "__init__.py",
-        "impl.py"
-      ],
+      "path": "src/wiki/index/wiki.md",
+      "source_type": "system",
       "links": [
         "control/protocol_index",
         "wiki/store"
-      ],
-      "content_hash": "ea6184b31ea1fc260e0458d536c8a66eb2a95575",
-      "runtime_action": null,
-      "section_map": {
-        "implementation": "- `impl.py`",
-        "refs": "- [[wiki/store]]\n- [[control/protocol_index]]"
-      },
-      "section_links": {
-        "implementation": [],
-        "refs": [
-          "wiki/store",
-          "control/protocol_index"
-        ]
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ],
-        "refs": [
-          "[[wiki/store]]",
-          "[[control/protocol_index]]"
-        ]
-      },
-      "settings": {}
+      ]
     },
     "wiki/link": {
-      "kind": "wiki",
+      "kind": "knowledge",
       "title": "Wiki Link",
       "summary": "Wiki link resolution describes `[[page]]` references from the persisted [[wiki/store]] read model.",
-      "path": "src/wiki/link/page.md",
-      "folder": "src/wiki/link",
-      "truth_ext": [
-        "__init__.py",
-        "impl.py"
-      ],
+      "path": "src/wiki/link/wiki.md",
+      "source_type": "system",
       "links": [
+        "page",
         "wiki/render",
         "wiki/store"
-      ],
-      "content_hash": "e2776061cb9284b8b59770c809f6e3cac8ee66ed",
-      "runtime_action": null,
-      "section_map": {
-        "implementation": "- `impl.py`",
-        "refs": "- [[wiki/store]]\n- [[wiki/render]]"
-      },
-      "section_links": {
-        "implementation": [],
-        "refs": [
-          "wiki/store",
-          "wiki/render"
-        ]
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ],
-        "refs": [
-          "[[wiki/store]]",
-          "[[wiki/render]]"
-        ]
-      },
-      "settings": {}
+      ]
     },
     "wiki/planner": {
-      "kind": "wiki",
+      "kind": "knowledge",
       "title": "Wiki Planner",
       "summary": "Planning helpers for wiki ingestion and extraction flows.",
-      "path": "src/wiki/planner/page.md",
-      "folder": "src/wiki/planner",
-      "truth_ext": [
-        "__init__.py",
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "c710cf528bea8853e8f659988c3bc5fa59a27207",
-      "runtime_action": null,
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "path": "src/wiki/planner/wiki.md",
+      "source_type": "system",
+      "links": []
     },
     "wiki/render": {
-      "kind": "wiki",
+      "kind": "knowledge",
       "title": "Wiki Render",
       "summary": "Render wiki pages into a reader-friendly view without mutating the source markdown.",
-      "path": "src/wiki/render/page.md",
-      "folder": "src/wiki/render",
-      "truth_ext": [
-        "__init__.py",
-        "impl.py"
-      ],
+      "path": "src/wiki/render/wiki.md",
+      "source_type": "system",
       "links": [
+        "...",
         "wiki/service"
-      ],
-      "content_hash": "bce9344735e4e05b1cd1966b34713ee978be5373",
-      "runtime_action": null,
-      "section_map": {
-        "refs": "- [[wiki/service]]"
-      },
-      "section_links": {
-        "refs": [
-          "wiki/service"
-        ]
-      },
-      "code_items": {
-        "refs": [
-          "[[wiki/service]]"
-        ]
-      },
-      "settings": {}
+      ]
     },
     "wiki/search": {
-      "kind": "wiki",
+      "kind": "knowledge",
       "title": "Wiki Search",
       "summary": "Wiki search ranks pages from the persisted [[wiki/store]] catalog.",
-      "path": "src/wiki/search/page.md",
-      "folder": "src/wiki/search",
-      "truth_ext": [
-        "__init__.py",
-        "impl.py"
-      ],
+      "path": "src/wiki/search/wiki.md",
+      "source_type": "system",
       "links": [
         "wiki/store"
-      ],
-      "content_hash": "506ea0bca8ac9126011283716bff9844719ecf45",
-      "runtime_action": null,
-      "section_map": {
-        "implementation": "- `impl.py`",
-        "refs": "- [[wiki/store]]"
-      },
-      "section_links": {
-        "implementation": [],
-        "refs": [
-          "wiki/store"
-        ]
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ],
-        "refs": [
-          "[[wiki/store]]"
-        ]
-      },
-      "settings": {}
+      ]
     },
     "wiki/service": {
-      "kind": "wiki",
+      "kind": "knowledge",
       "title": "Wiki Service",
       "summary": "Shared wiki adapter backed by `src/wiki/store`.",
-      "path": "src/wiki/service/page.md",
-      "folder": "src/wiki/service",
-      "truth_ext": [
-        "__init__.py",
-        "impl.py"
-      ],
+      "path": "src/wiki/service/wiki.md",
+      "source_type": "system",
       "links": [
         "control/protocol_index",
         "wiki/store"
-      ],
-      "content_hash": "342f429155d8174baf9a76da67de25050dd022d3",
-      "runtime_action": null,
-      "section_map": {
-        "implementation": "- `impl.py`",
-        "refs": "- [[wiki/store]]\n- [[control/protocol_index]]"
-      },
-      "section_links": {
-        "implementation": [],
-        "refs": [
-          "wiki/store",
-          "control/protocol_index"
-        ]
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ],
-        "refs": [
-          "[[wiki/store]]",
-          "[[control/protocol_index]]"
-        ]
-      },
-      "settings": {}
+      ]
     },
     "wiki/source_policy": {
-      "kind": "wiki",
+      "kind": "knowledge",
       "title": "Wiki Source Policy",
       "summary": "Source selection rules for system, runtime, control, and knowledge files.",
-      "path": "src/wiki/source_policy/page.md",
-      "folder": "src/wiki/source_policy",
-      "truth_ext": [
-        "__init__.py",
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "cb9445e0e23aacb8fd2a75c4ec42aefc854f6c25",
-      "runtime_action": null,
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
-    },
-    "wiki/store": {
-      "kind": "wiki",
-      "title": "Wiki Store",
-      "summary": "Persistent JSON store for protocol index outputs, refresh jobs, and attachments.",
-      "path": "src/wiki/store/page.md",
-      "folder": "src/wiki/store",
-      "truth_ext": [
-        "__init__.py",
-        "impl.py"
-      ],
-      "links": [],
-      "content_hash": "51077ac0d155daa77afcf9dc6b81eced2188876c",
-      "runtime_action": null,
-      "section_map": {
-        "implementation": "- `impl.py`"
-      },
-      "section_links": {
-        "implementation": []
-      },
-      "code_items": {
-        "implementation": [
-          "impl.py"
-        ]
-      },
-      "settings": {}
+      "path": "src/wiki/source_policy/wiki.md",
+      "source_type": "system",
+      "links": []
     }
   }
 }

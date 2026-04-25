@@ -1,3 +1,3 @@
-from .impl import WikiLinkRenderer
+from .renderer import WikiLinkRenderer
 
 __all__ = ["WikiLinkRenderer"]

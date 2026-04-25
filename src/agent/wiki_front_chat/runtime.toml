@@ -1,3 +1,6 @@
 max_prompt_chars = 22000
 provider = "mock"
 model = "mock"
+tool_permission_level = 3
+allowed_tool_categories = ["engine", "wiki_read", "wiki_admin", "orchestration", "governance"]
+denied_tools = ["shell.run", "workspace.run", "background.run"]

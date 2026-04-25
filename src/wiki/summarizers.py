@@ -7,13 +7,18 @@ from pathlib import Path
 
 import yaml
 
-from control.protocol_index import (
-    extract_markdown_links,
-    extract_markdown_title,
-    extract_section_code_items,
-    first_paragraph,
-    split_markdown_sections,
-)
+from wiki.adapter_bridge import LINK_RE, extract_title as extract_markdown_title, first_paragraph, split_sections as split_markdown_sections
+
+def extract_markdown_links(text: str) -> list[str]:
+    return [item.strip() for item in LINK_RE.findall(text) if item.strip()]
+
+def extract_section_code_items(text: str) -> list[str]:
+    import re
+    rows = [item.strip() for item in re.findall(r"`([^`]+)`", text) if item.strip()]
+    if rows:
+        return rows
+    return [line.strip()[2:].strip() for line in text.splitlines() if line.strip().startswith("- ")]
+
 
 from .config import WikiConfig
 
@@ -39,7 +44,7 @@ def _safe_text(path: Path, *, limit: int) -> str:
 def summarize_file(path: Path, relpath: str, *, kind: str, config: WikiConfig) -> tuple[str, list[str], str, dict]:
     suffix = path.suffix.lower()
     text = _safe_text(path, limit=config.max_file_chars)
-    if path.name == "page.md":
+    if path.name == "wiki.md":
         if kind == "skill":
             return _summarize_skill_page(relpath, text, config)
         if kind == "agent":
@@ -63,30 +68,37 @@ def _summarize_skill_page(relpath: str, text: str, config: WikiConfig):
     ]
     children = [link for link in extract_markdown_links(sections.get("Child Skills", "")) if link.startswith("skill/")]
     refs = [link for link in extract_markdown_links(sections.get("Refs", "")) if link.startswith("skill/")]
-    actions = extract_section_code_items(sections.get("Actions", ""))
+    tools = extract_section_code_items(sections.get("Tools", ""))
     if children:
         summary.append("Child skills: " + ", ".join(children[:8]))
     if refs:
         summary.append("Refs: " + ", ".join(refs[:8]))
-    if actions:
-        summary.append("Actions: " + ", ".join(actions[:8]))
+    if tools:
+        summary.append("Tools: " + ", ".join(tools[:8]))
     excerpt = _clip(text, config.max_excerpt_chars)
-    return title, summary[: config.max_summary_lines], excerpt, {"actions": actions, "children": children, "refs": refs}
+    return title, summary[: config.max_summary_lines], excerpt, {"tools": tools, "children": children, "refs": refs}
 
 
 def _summarize_agent_page(relpath: str, text: str, config: WikiConfig):
     sections = split_markdown_sections(text)
     title = extract_markdown_title(text, Path(relpath).parent.name)
     root_skill = next((link for link in extract_markdown_links(sections.get("Root Skill", "")) if link.startswith("skill/")), "")
+    tools = extract_section_code_items(sections.get("Tools", ""))
     toolboxes = extract_section_code_items(sections.get("Toolboxes", ""))
     capabilities = extract_section_code_items(sections.get("Capabilities", ""))
     summary = [f"Agent page: {title}", f"Root skill: {root_skill or 'unknown'}"]
+    if tools:
+        summary.append("Tools: " + ", ".join(tools[:10]))
     if toolboxes:
         summary.append("Toolboxes: " + ", ".join(toolboxes[:8]))
     if capabilities:
         summary.append("Capabilities: " + ", ".join(capabilities[:8]))
     excerpt = _clip(text, config.max_excerpt_chars)
-    return title, summary[: config.max_summary_lines], excerpt, {"toolboxes": toolboxes, "capabilities": capabilities}
+    return title, summary[: config.max_summary_lines], excerpt, {
+        "tools": tools,
+        "toolboxes": toolboxes,
+        "capabilities": capabilities,
+    }
 
 
 def _summarize_python(relpath: str, text: str, config: WikiConfig):

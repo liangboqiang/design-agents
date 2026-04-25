@@ -1,3 +1,3 @@
-from .impl import WikiSearcher
+from .searcher import WikiSearcher
 
 __all__ = ["WikiSearcher"]

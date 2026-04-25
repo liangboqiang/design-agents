@@ -1,21 +1,7 @@
-"""Runtime facade and builder entrypoints."""
-
-from .builder import EngineBuildRequest, RuntimeBuilder, build_engine, request_from_agent_spec
-from .child_factory import ChildFactory
+"""Runtime kernel facade."""
+from .bootstrap import RuntimeBootstrap, build_engine
 from .engine import Engine
-from .participant_set import AttachmentIngressParticipant, ParticipantSet
-from .session_state import SessionState
-from .skill_state import SkillState
+from .kernel import RuntimeKernel
+from .types import RuntimeRequest
 
-__all__ = [
-    "AttachmentIngressParticipant",
-    "ChildFactory",
-    "Engine",
-    "EngineBuildRequest",
-    "ParticipantSet",
-    "RuntimeBuilder",
-    "SessionState",
-    "SkillState",
-    "build_engine",
-    "request_from_agent_spec",
-]
+__all__ = ["RuntimeBootstrap", "RuntimeKernel", "RuntimeRequest", "Engine", "build_engine"]

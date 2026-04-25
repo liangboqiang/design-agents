@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from schemas.runtime import RuntimePaths
+from runtime.types import RuntimePaths
 
 
 def ensure_runtime_paths(base_dir: Path, user_id: str, conversation_id: str, task_id: str) -> RuntimePaths:

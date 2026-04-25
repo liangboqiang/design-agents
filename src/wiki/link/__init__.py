@@ -1,3 +1,3 @@
-from .impl import WikiLinkResolver
+from .resolver import WikiLinkResolver
 
 __all__ = ["WikiLinkResolver"]

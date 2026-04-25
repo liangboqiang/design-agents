@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import requests
 
 
 class AnthropicClient:
@@ -21,6 +20,7 @@ class AnthropicClient:
             "system": system_prompt,
             "messages": messages,
         }
+        import requests
         response = requests.post(
             self.url,
             headers={

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import requests
 
 
 class OpenAIClient:
@@ -20,6 +19,7 @@ class OpenAIClient:
             "response_format": {"type": "json_object"},
             "messages": [{"role": "system", "content": system_prompt}, *messages],
         }
+        import requests
         response = requests.post(
             self.url,
             headers={

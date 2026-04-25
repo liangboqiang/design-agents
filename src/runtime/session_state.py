@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from schemas.runtime import EngineSettings
+from runtime.types import EngineSettings
 from storage.history_store import HistoryStore
 from storage.inbox_store import InboxStore
 from storage.json_store import JsonStore

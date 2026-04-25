@@ -1,18 +1,15 @@
-"""Agent entrypoints backed by markdown truth pages."""
+"""Agent entrypoints backed by Wiki Pages and RuntimeRegistry."""
 
 from __future__ import annotations
 
 from typing import Any
 
-from control.registry import SpecRegistry
-from runtime.builder import RuntimeBuilder, request_from_agent_spec
-from runtime.engine import Engine
+from runtime.bootstrap import RuntimeBootstrap
+from runtime.types import RuntimeRequest
 from shared.paths import project_root
 
 
-def build_from_page(agent_name: str, overrides: dict[str, Any] | None = None) -> Engine:
-    merged = dict(overrides or {})
-    registry = merged.pop("registry", None) or SpecRegistry(project_root())
-    spec = registry.get_agent_spec(agent_name)
-    request = request_from_agent_spec(spec, registry=registry, **merged)
-    return RuntimeBuilder().build_engine(request)
+def build_from_page(agent_name: str, overrides: dict[str, Any] | None = None):
+    overrides = dict(overrides or {})
+    root = overrides.pop("project_root", project_root())
+    return RuntimeBootstrap().build(RuntimeRequest(agent_id=agent_name, project_root=root, **overrides))

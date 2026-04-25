@@ -1,3 +1,3 @@
-from .service import SharedWikiService
+from .node import WikiNode
 
-__all__ = ["SharedWikiService"]
+__all__ = ["WikiNode"]

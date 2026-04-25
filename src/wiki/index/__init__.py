@@ -1,3 +1,3 @@
-from .impl import WikiIndexWriter
+from .writer import WikiIndexWriter
 
 __all__ = ["WikiIndexWriter"]

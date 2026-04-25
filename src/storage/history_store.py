@@ -19,8 +19,8 @@ class HistoryStore:
     def append_assistant(self, content: str) -> None:
         self.store.append({"role": "assistant", "content": content})
 
-    def append_tool(self, action: str, content: str) -> None:
-        self.store.append({"role": "tool", "action": action, "content": content})
+    def append_tool(self, tool_id: str, content: str) -> None:
+        self.store.append({"role": "tool", "tool_id": tool_id, "content": content})
 
     def append_system(self, content: str) -> None:
         self.store.append({"role": "system", "content": content})

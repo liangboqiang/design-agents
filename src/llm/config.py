@@ -3,7 +3,11 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass
 
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv
+except Exception:  # noqa: BLE001
+    def load_dotenv(*args, **kwargs):
+        return False
 
 from .errors import LLMConfigurationError
 
